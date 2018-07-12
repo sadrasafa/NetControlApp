@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetControlApp", "NetControlApp\NetControlApp.csproj", "{30E250ED-8190-47D0-9CCE-3CB258E85229}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30E250ED-8190-47D0-9CCE-3CB258E85229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30E250ED-8190-47D0-9CCE-3CB258E85229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30E250ED-8190-47D0-9CCE-3CB258E85229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30E250ED-8190-47D0-9CCE-3CB258E85229}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {27E4D37F-77F2-4CE7-8AB4-58E62BC16628}
+	EndGlobalSection
+EndGlobal
