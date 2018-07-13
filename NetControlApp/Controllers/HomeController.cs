@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetControlApp.Models;
 
@@ -12,7 +13,14 @@ namespace NetControlApp.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return View("Dashboard");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult About()
@@ -25,6 +33,14 @@ namespace NetControlApp.Controllers
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
+
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Dashboard()
+        {
+            ViewData["Message"] = "Your dashboard.";
 
             return View();
         }
