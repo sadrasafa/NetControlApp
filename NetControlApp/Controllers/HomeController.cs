@@ -10,9 +10,17 @@ namespace NetControlApp.Controllers
 {
     public class HomeController : Controller
     {
+      
         public IActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return View("Dashboard");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult About()
