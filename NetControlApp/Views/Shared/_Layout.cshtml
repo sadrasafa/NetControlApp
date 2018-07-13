@@ -32,7 +32,6 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -42,7 +41,22 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - NetControlApp</p>
+            <div>
+                <div class="col-md-4 text-center">
+                    &copy; 2018 - NetControlApp<br />
+                    Turku Centre for Computer Science<br />
+                    Åbo Akademi
+                </div>
+                <div class="col-md-4 text-center">
+                    <strong>Address:</strong><br />
+                    Vesilinnantie 3, FI-20500 Turku<br />
+                    Phone: +358-22153310
+                </div>
+                <div class="col-md-4 text-center">
+                    <strong>Contact:</strong><br />
+                    <a href="mailto:vpopescu@abo.fi">Victor Popescu</a>
+                </div>
+            </div>
         </footer>
     </div>
 

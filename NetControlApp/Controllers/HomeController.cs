@@ -13,33 +13,11 @@ namespace NetControlApp.Controllers
     {
         public IActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Dashboard");
-            }
-            else
-            {
-                return View();
-            }
-        }
-
-        [Authorize]
-        public IActionResult Dashboard()
-        {
             return View();
         }
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 
