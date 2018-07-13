@@ -13,7 +13,14 @@ namespace NetControlApp.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Dashboard", "Dashboard");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult About()
