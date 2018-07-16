@@ -19,5 +19,9 @@ namespace NetControlApp.Controllers
         {
             return View();
         }
+        public IActionResult NewAnalysis()
+        {
+            return View();
+        }
     }
 }
