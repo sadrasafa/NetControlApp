@@ -14,5 +14,10 @@ namespace NetControlApp.Controllers
         {
             return View();
         }
+
+        public IActionResult ViewRecent()
+        {
+            return View();
+        }
     }
 }
