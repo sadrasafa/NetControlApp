@@ -5,12 +5,12 @@
     <UserSecretsId>aspnet-NetControlApp-B480EE07-341B-4CE9-ABB3-DCBE37DCDF32</UserSecretsId>
   </PropertyGroup>
 
-
   <ItemGroup>
     <PackageReference Include="bootstrap-tag" Version="1.0.0" />
     <PackageReference Include="BootstrapMvc.Bootstrap4" Version="1.2.0" />
     <PackageReference Include="CloudflareCacheTagMiddleware" Version="1.0.1" />
     <PackageReference Include="MaterialDesignLite.TagHelpers" Version="1.0.0" />
+    <PackageReference Include="MathNet.Numerics" Version="4.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.1" PrivateAssets="All" />
