@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using NetControlApp.Data;
 using NetControlApp.Models;
 using NetControlApp.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace NetControlApp
 {
@@ -26,6 +28,13 @@ namespace NetControlApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
@@ -35,7 +44,6 @@ namespace NetControlApp
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
 
             services.AddAuthentication()
                 .AddGoogle(googleOptions =>
@@ -51,10 +59,11 @@ namespace NetControlApp
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddMvc();
-
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            
 
         }
 
@@ -63,17 +72,18 @@ namespace NetControlApp
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseCookiePolicy();
             app.UseAuthentication();
 
             app.UseMvc(routes =>
