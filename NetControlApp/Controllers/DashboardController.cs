@@ -5,11 +5,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NetControlApp.Models.DashboardViewModels;
+using NetControlApp.Data;
+using NetControlApp.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace NetControlApp.Controllers
 {
     public class DashboardController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public DashboardController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
         [Authorize]
         public IActionResult Dashboard()
         {
@@ -17,9 +27,11 @@ namespace NetControlApp.Controllers
         }
 
         [Authorize]
-        public IActionResult ViewRecent()
+        public async Task<IActionResult> ViewRecent()
         {
-            return View();
+            ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
+            var runs = _context.Runs.Where(run => run.User == user).OrderByDescending(run => run.Time).Take(3) ;
+            return View(runs);
         }
 
         [Authorize]

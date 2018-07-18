@@ -40,7 +40,7 @@ namespace NetControlApp
             
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
-                config.SignIn.RequireConfirmedEmail = true;
+                config.SignIn.RequireConfirmedEmail = false;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
