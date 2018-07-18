@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Please Confirm Your Email";
+}
+
+<h2>@ViewData["Title"]</h2>
+<div>
+    <p>
+        A verification email has been sent you. Please confirm your email before logging in.
+    </p>
+    <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="get" class="form-horizontal">
+        <div>
+                <button type="submit" class="btn btn-default" name="OK" value="OK">OK</button>
+        </div>
+    </form>
+</div>

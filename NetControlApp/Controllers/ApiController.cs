@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NetControlApp.Data;
 using NetControlApp.Models;
+using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,9 +37,11 @@ namespace NetControlApp.Controllers
     public class ApiController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public ApiController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ApiController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         // GET: api/values
         [HttpGet]
@@ -56,12 +59,13 @@ namespace NetControlApp.Controllers
 
         // POST api/
         [HttpPost]
-        public DataJSON Post([FromBody] DataJSON value)
+        public async Task<DataJSON> PostAsync([FromBody] DataJSON value)
         {
+            ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
             var run = new RunModel
             {
                 RunName = value.runName,
-                UserId = value.userID,
+                User = user,
                 Time = DateTime.Now,
                 NetType = value.network.type,
                 Network = null,

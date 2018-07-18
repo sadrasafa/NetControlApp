@@ -13,7 +13,7 @@ namespace NetControlApp.Models
         public int RunId { get; set; }
 
         //[Required]
-        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
 
         //[Required]
         public string RunName { get; set; }

@@ -19,7 +19,8 @@ namespace NetControlApp.Controllers
             }
             else
             {
-                return View();
+                //return View();
+                return RedirectToAction("Login", "Account");
             }
         }
 

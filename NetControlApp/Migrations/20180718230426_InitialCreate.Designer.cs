@@ -10,8 +10,8 @@ using NetControlApp.Data;
 namespace NetControlApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180718134733_testMigration")]
-    partial class testMigration
+    [Migration("20180718230426_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -218,6 +218,8 @@ namespace NetControlApp.Migrations
 
                     b.HasKey("RunId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Runs");
                 });
 
@@ -264,6 +266,13 @@ namespace NetControlApp.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NetControlApp.Models.RunModel", b =>
+                {
+                    b.HasOne("NetControlApp.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

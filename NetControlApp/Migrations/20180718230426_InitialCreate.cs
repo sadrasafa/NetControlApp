@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NetControlApp.Migrations
 {
-    public partial class testMigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,51 +26,25 @@ namespace NetControlApp.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
                     Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    PhoneNumber = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Runs",
-                columns: table => new
-                {
-                    RunId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: true),
-                    RunName = table.Column<string>(nullable: true),
-                    Time = table.Column<DateTime>(nullable: true),
-                    NetType = table.Column<string>(nullable: true),
-                    NetNodes = table.Column<string>(nullable: true),
-                    DoContact = table.Column<bool>(nullable: true),
-                    Network = table.Column<string>(nullable: true),
-                    Target = table.Column<string>(nullable: true),
-                    DrugTarget = table.Column<string>(nullable: true),
-                    AlgorithmType = table.Column<string>(nullable: true),
-                    AlgorithmParams = table.Column<string>(nullable: true),
-                    Progress = table.Column<double>(nullable: true),
-                    BestResult = table.Column<string>(nullable: true),
-                    IsCompleted = table.Column<bool>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Runs", x => x.RunId);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,6 +153,38 @@ namespace NetControlApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Runs",
+                columns: table => new
+                {
+                    RunId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
+                    RunName = table.Column<string>(nullable: true),
+                    Time = table.Column<DateTime>(nullable: true),
+                    NetType = table.Column<string>(nullable: true),
+                    NetNodes = table.Column<string>(nullable: true),
+                    DoContact = table.Column<bool>(nullable: true),
+                    Network = table.Column<string>(nullable: true),
+                    Target = table.Column<string>(nullable: true),
+                    DrugTarget = table.Column<string>(nullable: true),
+                    AlgorithmType = table.Column<string>(nullable: true),
+                    AlgorithmParams = table.Column<string>(nullable: true),
+                    Progress = table.Column<double>(nullable: true),
+                    BestResult = table.Column<string>(nullable: true),
+                    IsCompleted = table.Column<bool>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Runs", x => x.RunId);
+                    table.ForeignKey(
+                        name: "FK_Runs_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -217,6 +223,11 @@ namespace NetControlApp.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Runs_UserId",
+                table: "Runs",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

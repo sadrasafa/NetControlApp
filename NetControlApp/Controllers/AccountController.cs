@@ -232,7 +232,8 @@ namespace NetControlApp.Controllers
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    //return RedirectToLocal(returnUrl);
+                    return RedirectToAction(nameof(InformEmailConfirmation)); //inform the user about the email confirmation
                 }
                 AddErrors(result);
             }
@@ -287,6 +288,11 @@ namespace NetControlApp.Controllers
             {
                 return RedirectToAction(nameof(Lockout));
             }
+            if (result.IsNotAllowed)
+            {
+                //if the user has already created an account but has not confirmed the email, inform them.
+                return RedirectToAction(nameof(InformEmailConfirmation));
+            }
             else
             {
                 // If the user does not have an account, then ask the user to create an account.
@@ -322,7 +328,8 @@ namespace NetControlApp.Controllers
                         await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
                         //await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        return RedirectToLocal(returnUrl);
+                        //return RedirectToLocal(returnUrl);
+                        return RedirectToAction(nameof(InformEmailConfirmation));
                     }
                 }
                 AddErrors(result);
@@ -433,6 +440,13 @@ namespace NetControlApp.Controllers
             return View();
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult InformEmailConfirmation(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
 
         [HttpGet]
         public IActionResult AccessDenied()

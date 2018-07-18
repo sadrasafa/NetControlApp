@@ -216,6 +216,8 @@ namespace NetControlApp.Migrations
 
                     b.HasKey("RunId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Runs");
                 });
 
@@ -262,6 +264,13 @@ namespace NetControlApp.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NetControlApp.Models.RunModel", b =>
+                {
+                    b.HasOne("NetControlApp.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }
