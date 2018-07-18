@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "TestAlgorithmRun";
+}
+
+<h2>Test algorithm run</h2>
+
+<p>Testing running the genetic algorithm. Every time this page is loaded, it should start a run and display the results below.</p>
+
+@{ 
+    var task = Task.Run(() => NetControlApp.Algorithms.TemporaryUsageExample.UsageGeneticNoSeed());
+    var result = await task;
+    <text>Run finished. @result.Count results obtained, each with a length of @result[0].Count:</text>
+    <text><br></text>
+    foreach (var item in result)
+    {
+        foreach (var gene in item)
+        {
+            <text>@gene  </text>
+        }
+        <text><br></text>
+    }
+}
+
