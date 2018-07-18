@@ -12,46 +12,46 @@ namespace NetControlApp.Models
         [Key]
         public int RunId { get; set; }
 
-        [Required]
-        public ApplicationUser User { get; set; }
+        //[Required]
+        public string UserId { get; set; }
 
-        [Required]
+        //[Required]
         public string RunName { get; set; }
 
-        [Required]
-        public DateTime Time { get; set; }
+        //[Required]
+        public DateTime? Time { get; set; }
 
-        [Required]
+        //[Required]
         public string NetType { get; set; }
 
-        [Required]
+        //[Required]
         public string NetNodes { get; set; }
 
-        [Required]
-        public bool DoContanct { get; set; }
+        //[Required]
+        public bool? DoContact { get; set; }
 
-        [Required]
+        //[Required]
         public string Network { get; set; }
 
-        [Required]
+        //[Required]
         public string Target { get; set; }
 
-        [Required]
+        //[Required]
         public string DrugTarget { get; set; }
 
-        [Required]
+        //[Required]
         public string AlgorithmType { get; set; }
 
-        [Required]
+        //[Required]
         public string AlgorithmParams { get; set; }
 
-        [Required]
-        public double Progress { get; set; }
+        //[Required]
+        public double? Progress { get; set; }
 
-        [Required]
+        //[Required]
         public string BestResult { get; set; }
 
-        [Required]
-        public bool IsCompleted { get; set; }
+        //[Required]
+        public bool? IsCompleted { get; set; }
     }
 }
