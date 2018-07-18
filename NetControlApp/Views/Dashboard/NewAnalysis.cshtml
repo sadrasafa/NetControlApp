@@ -1,39 +1,85 @@
 ﻿<link rel="stylesheet" href="~/assets/css/styles.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/assets/css/flat.css" />
 @{
     ViewData["Title"] = "Home Page";
 }
 
 
-<div class="features-boxed">
-    <div class="intro">
-        <h2 class="text-center">Please select an option</h2>
-    </div>
-    <div class="row justify-content-center features" id="content">
-        <div class="col-lg-1 col-md-1"></div>
-        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5 item">
-            <div class="box" style="background-color:rgb(234, 12, 12);height:209px;padding:39px;">
-                <div class="row">
-                    <div class="col" style="height:90px;"><i class="fa fa-list-ul icon" style="color:rgb(255,255,255);margin-bottom:0px;max-height:60px;min-height:60px;margin-top:15px;"></i></div>
+<div class="container-fluid mx-auto">
+    <form action="" method="get" id="Form" style="color:rgb(215,212,212);">
+        <div class="form-row" style="color:rgb(0,0,0);">
+            <div class="col-md-6 offset-lg-3 offset-xl-5" id="message" style="max-width:480px;margin-left:auto;margin-bottom:30px;margin-right:auto;margin-top:30px;">
+                <fieldset class="justify-content-center align-items-center align-content-center align-self-center">
+                    <legend style="margin-left:auto;margin-right:auto;"><strong><span style="text-decoration: underline;">Analysis</span></strong></legend>
+                </fieldset>
+                <hr>
+                <div class="form-group has-feedback">
+                    <label for="form_name"><strong>Name of the Analysis</strong></label><input class="form-control" type="text" name="from_name" required="" placeholder="Analysis name" id="form_name" tabindex="-1">
                 </div>
-                <h3 class="name" style="color:rgb(255,255,255);">View recent</h3>
-                <p class="description"></p><a href="#" class="learn-more" style="color:rgb(255,255,255);"></a>
+                <hr>
+                <div class="form-group">
+                    <label for="user_input"><strong>List the seed proteins to generate the network below or input a file with a graph</strong><br></label>
+                    <div class="form-group form-relative">
+                        <textarea class="form-control" rows="5" name="Comments" placeholder="Enter input seeds with ENTER separator"
+                                  id="user_input" required=""></textarea>
+                        <p id="copy" class="copy"></p>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend"></div>
+                    <div class="input-group-append"></div>
+                </div><input type="file" id="datafile" style="margin-top:20px;">
+                <hr>
+                <div class="form-group has-feedback">
+                    <label for="target_proteins"><strong>List of Additional Target Proteins </strong></label>
+                    <div class="form-group form-relative">
+                        <textarea class="form-control" rows="5" id="target_proteins"></textarea>
+                        <p class="copy" id="tpcopy">asdasdasdasdas</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col">
+                            <div><a class="btn btn-outline-primary btn-block" data-toggle="collapse" aria-expanded="false" aria-controls="collapseDiv1" role="button" href="#collapseDiv1" id="gen" style="width:100%;">Show Content</a></div>
+                        </div>
+                        <div class="col">
+                            <div><a class="btn btn-outline-primary btn-block" data-toggle="collapse" aria-expanded="false" aria-controls="collapseDiv2" role="button" href="#collapseDiv2" id="greedy" style="width:100%;">Show Content</a></div>
+                        </div>
+                    </div>
+                    <div id="collapseDiv1" class="collapse" style="margin-top:10px;">
+                        <div class="display-flex"><label class="d-inline-block" for="param1">Random seed</label><input class="form-control param d-inline-block" type="number" id="param1" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="-2147483647 -> 2147483647 (any C# accepted Int32 value)"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param2">Maximum number of iterations</label><input class="form-control param d-inline-block" type="number" id="param2" value="10000" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="1 -> 20000"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param3">Maximum number of iterations with no improvement</label><input class="form-control param d-inline-block" type="number" id="param3" value="1000" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="1 -> 2000"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param4">Population size</label><input class="form-control param d-inline-block" type="number" id="param4" value="80" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="4 -> 200"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param5">Maximum path length</label><input class="form-control param d-inline-block" type="number" id="param5" value="5" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="0 -> 25"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param6">Random elements per step</label><input class="form-control param d-inline-block" type="number" id="param6" value="15" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="1 -> 1000"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param7">Percentage of random chromosomes</label><input class="form-control param d-inline-block" type="number" id="param7" value="0.25" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="0 -> 1 (floating point)"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param8">Percentage of elite chromosomes</label><input class="form-control param d-inline-block" type="number" id="param8" value="0.25" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="0 -> 1 (floating point)"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param9">Probability of mutation</label><input class="form-control param d-inline-block" type="number" id="param9" value="0.001" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="0 -> 1 (floating point)"></i></div>
+                    </div>
+                    <div id="collapseDiv2" class="collapse" style="margin-top:0px;">
+                        <div class="display-flex"><label class="d-inline-block" for="param1">Maximum number of iterations</label><input class="form-control param d-inline-block" type="number" id="gparam1" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="-2147483647 -> 2147483647 (any C# accepted Int32 value)"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param2">Maximum number of iterations</label><input class="form-control param d-inline-block" type="number" id="gparam2" value="10000" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="1 -> 20000"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param3">Maximum number of iterations</label><input class="form-control param d-inline-block" type="number" id="gparam3" value="1000" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="1 -> 2000"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param4">Maximum number of iterations</label><input class="form-control param d-inline-block" type="number" id="gparam4" value="5" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="0 -> 25"></i></div>
+                        <div class="display-flex"><label class="d-inline-block" for="param5">Maximum number of iterations</label><input class="form-control param d-inline-block" type="text" id="gparam5" value="t" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="Yet to be decided"></i></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group has-feedback"><label for="target_proteins"><strong>Drug target proteins to be included in the analysis</strong></label><textarea class="form-control" rows="5" id="drug_target"></textarea></div>
+                <hr>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck"><label class="form-check-label" for="formCheck">Do you want to be notified via e-mail about the results?<br></label></div>
+                <hr>
+                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id="buton_send">Send <i class="fa fa-chevron-circle-right"></i></button></div>
             </div>
         </div>
-
-        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5 item">
-            <div class="box" style="height:209px;padding:39px;background-color:rgb(255, 106, 0);">
-                <div class="row">
-                    <div class="col"><i class="icon ion-android-checkmark-circle icon" style="height:60px;width:60px;padding:0px;margin-top:0px;color:rgb(255,255,255);padding-bottom:0px;margin-bottom:0px;"></i></div>
-                </div>
-                <h3 class="name" style="padding:0px;/*padding-bottom:0px;*/padding-top:0px;color:rgb(255,255,255);">New analysis</h3>
-                <p class="description"></p><a href="#" class="learn-more" style="color:rgb(255,255,255);"></a>
-            </div>
-        </div>
-        <div class="col-lg-1 col-md-1"></div>
-    </div>
-
+        <p id="demo">Demo:</p>
+    </form>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/js/script_form.js"></script>
+<script type="module" src="~/assets/js/script_form.js"></script>
