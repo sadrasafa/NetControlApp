@@ -58,7 +58,25 @@ namespace NetControlApp.Controllers
         [HttpPost]
         public DataJSON Post([FromBody] DataJSON value)
         {
-
+            var run = new RunModel
+            {
+                RunName = value.runName,
+                UserId = value.userID,
+                Time = DateTime.Now,
+                NetType = value.network.type,
+                Network = null,
+                NetNodes = value.network.nodes,
+                DoContact = value.do_contact,
+                Target = value.targets,
+                DrugTarget = value.drug_targets,
+                AlgorithmType = value.algorithm.type,
+                AlgorithmParams = value.algorithm.param,
+                Progress = null,
+                BestResult = null,
+                IsCompleted = false
+            };
+            _context.Add(run);
+            _context.SaveChanges();
             return value;
         }
 

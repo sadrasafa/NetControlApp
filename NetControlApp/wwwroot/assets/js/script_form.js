@@ -110,6 +110,7 @@ function Main(e){
         }
         algoType="greedy";
     }
+    var stringParam = param.join();
     var json_obj = {
         "runName" : formName,
         "network" : {
@@ -122,13 +123,13 @@ function Main(e){
         "do_contact" : doContact,
         "algorithm" : {
             "type": algoType,
-            "param": param,
+            "param": stringParam,
         }
     };
     var dictstring = JSON.stringify(json_obj);
     console.log(dictstring);
     var xhr = new XMLHttpRequest();
-    var url = "/api/";
+    var url = "/api";
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(dictstring);
