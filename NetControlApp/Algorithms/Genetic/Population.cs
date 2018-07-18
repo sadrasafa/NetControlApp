@@ -113,7 +113,6 @@ namespace NetControlApp.Algorithms
                 elites.RemoveAt(rand.Next(elites.Count));
             }
             Population.Chromosomes.AddRange(elites);
-            Console.WriteLine($"{Population.Chromosomes.Count} chromomsomes in population after adding the elite chromosomes.");
             // Determine the number of random individuals to be added to the population.
             var numberOfRandoms = (int)Math.Floor(randomPercentage * this.MaximumSize);
             for (int i = 0; i < numberOfRandoms; i++)
@@ -124,7 +123,6 @@ namespace NetControlApp.Algorithms
                 chromosome.Initialize(matrixPowers, list, lowerLimit, upperLimit, rand);
                 Population.Chromosomes.Add(chromosome);
             }
-            Console.WriteLine($"{Population.Chromosomes.Count} chromomsomes in population after adding the random chromosomes.");
             // Add new chromosomes.
             var fitnessArray = this.GetFitnessArray();
             System.Threading.Tasks.Parallel.For(Population.Chromosomes.Count, Population.MaximumSize, index =>
