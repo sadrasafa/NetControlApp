@@ -128,8 +128,12 @@ function Main(e){
     var dictstring = JSON.stringify(json_obj);
     console.log(dictstring);
     var xhr = new XMLHttpRequest();
-    xhr.open(form.method, form.action, true);
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    var url = "url";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(dictstring);
+    var data = JSON.stringify({ "email": "hey@mail.com", "password": "101010" });
+    xhr.send(data);
     //fs.writeFile('file.json', dictstring, function (err) {
     //    if (err) return console.log(err);
     //    console.log('It worked > file.json');
