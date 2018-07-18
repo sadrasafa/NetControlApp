@@ -10,8 +10,8 @@ using NetControlApp.Data;
 namespace NetControlApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180718081917_RunsDatabase")]
-    partial class RunsDatabase
+    [Migration("20180718132739_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -188,47 +188,35 @@ namespace NetControlApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AlgorithmParams")
-                        .IsRequired();
+                    b.Property<string>("AlgorithmParams");
 
-                    b.Property<string>("AlgorithmType")
-                        .IsRequired();
+                    b.Property<string>("AlgorithmType");
 
-                    b.Property<string>("BestResult")
-                        .IsRequired();
+                    b.Property<string>("BestResult");
 
-                    b.Property<bool>("DoContanct");
+                    b.Property<bool?>("DoContact");
 
-                    b.Property<string>("DrugTarget")
-                        .IsRequired();
+                    b.Property<string>("DrugTarget");
 
-                    b.Property<bool>("IsCompleted");
+                    b.Property<bool?>("IsCompleted");
 
-                    b.Property<string>("NetNodes")
-                        .IsRequired();
+                    b.Property<string>("NetNodes");
 
-                    b.Property<string>("NetType")
-                        .IsRequired();
+                    b.Property<string>("NetType");
 
-                    b.Property<string>("Network")
-                        .IsRequired();
+                    b.Property<string>("Network");
 
-                    b.Property<double>("Progress");
+                    b.Property<double?>("Progress");
 
-                    b.Property<string>("RunName")
-                        .IsRequired();
+                    b.Property<string>("RunName");
 
-                    b.Property<string>("Target")
-                        .IsRequired();
+                    b.Property<string>("Target");
 
-                    b.Property<DateTime>("Time");
+                    b.Property<DateTime?>("Time");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<string>("UserId");
 
                     b.HasKey("RunId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Runs");
                 });
@@ -273,14 +261,6 @@ namespace NetControlApp.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.HasOne("NetControlApp.Models.ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("NetControlApp.Models.RunModel", b =>
-                {
-                    b.HasOne("NetControlApp.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
