@@ -15,11 +15,20 @@ namespace NetControlApp.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult ViewRecent()
         {
             return View();
         }
+
+        [Authorize]
         public IActionResult NewAnalysis()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult TestAlgorithmRun()
         {
             return View();
         }

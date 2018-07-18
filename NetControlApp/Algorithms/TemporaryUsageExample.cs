@@ -8,11 +8,11 @@ namespace NetControlApp.Algorithms
     /// <summary>
     /// Usage example for running the genetic algorithm with a given graph.
     /// </summary>
-    public class TemporaryUsageExample
+   public class TemporaryUsageExample
     {
-        public static void UsageGeneticNoSeed()
+        public static List<List<String>> UsageGeneticNoSeed()
         {
-            var separators = new string[] { "\t", "\n", "\r" };
+            var separators = new string[] { "\t", "\n", "\r", ";" };
 
             //
             // User input starts here.
@@ -20,10 +20,10 @@ namespace NetControlApp.Algorithms
 
             // The graph text given in the JSON file.
             var isSeed = false;
-            var graphText = "1;2\n1;3\n1;4\n3;4";
+            var graphText = "1;4\n1;5\n2;5\n2;6\n3;7\n4;11\n5;4\n5;9\n5;10\n6;8\n7;8\n9;8\n9;15\n10;14\n11;12\n11;13\n12;13\n13;16\n14;5\n17;16";
 
             // The target text given in the JSON file.
-            var targetText = "3;4";
+            var targetText = "11;8;10;13;17";
 
             // The drug target text given in the JSON file (optional)
             var drugTargetText = "";
@@ -101,12 +101,14 @@ namespace NetControlApp.Algorithms
             var rand = new Random(randomSeed);
             var bestFitness = 0.0;
             var generationsSinceLastImprovement = 0;
+            var currentGeneration = 0;
             var p = new Population(populationSize);
             p.Initialize(powers, list, maximumRandom, rand);
 
             // Running for the given number of generations.
             for (int i = 0; i < numberOfGenerations; i++)
             {
+                currentGeneration = i;
                 p = p.nextPopulation(elitismPercentage, randomPercentage, mutationProbability, powers, list, maximumRandom, rand, nodes);
                 var fitness = p.getBestFitness();
                 if (fitness > bestFitness)
@@ -130,6 +132,25 @@ namespace NetControlApp.Algorithms
             //
             // The genetic algorithm ends here.
             //
+
+            // Getting the results in a returnable form.
+            var results = new List<List<String>>(bestChromosomes.Count);
+
+            foreach (var item in bestChromosomes)
+            {
+                var temporaryList = new List<String>();
+                foreach (var gene in item.Genes.Distinct())
+                {
+                    temporaryList.Add(nodes[gene]);
+                }
+                foreach (var gene in singleNodes)
+                {
+                    temporaryList.Add(gene);
+                }
+                results.Add(temporaryList);
+            }
+
+            return results;
         }
 
         /// <summary>
