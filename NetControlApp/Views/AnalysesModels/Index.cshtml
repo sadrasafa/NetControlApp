@@ -1,0 +1,113 @@
+﻿@model IEnumerable<NetControlApp.Models.AnalysesModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AnalysisName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NetType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NetNodes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Target)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DrugTarget)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlgorithmType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlgorithmParams)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoContact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Network)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Progress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BestResult)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCompleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScheduledToStop)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnalysisName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NetType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NetNodes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Target)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrugTarget)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AlgorithmType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AlgorithmParams)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DoContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Network)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Progress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BestResult)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCompleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ScheduledToStop)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RunId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.RunId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RunId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

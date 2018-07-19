@@ -10,8 +10,8 @@ using NetControlApp.Data;
 namespace NetControlApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180719074213_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20180719113717_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,6 +129,55 @@ namespace NetControlApp.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("NetControlApp.Models.AnalysesModel", b =>
+                {
+                    b.Property<int>("RunId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AlgorithmParams")
+                        .IsRequired();
+
+                    b.Property<string>("AlgorithmType")
+                        .IsRequired();
+
+                    b.Property<string>("AnalysisName")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("BestResult");
+
+                    b.Property<bool>("DoContact");
+
+                    b.Property<string>("DrugTarget");
+
+                    b.Property<bool?>("IsCompleted");
+
+                    b.Property<string>("NetNodes")
+                        .IsRequired();
+
+                    b.Property<bool>("NetType");
+
+                    b.Property<string>("Network");
+
+                    b.Property<double?>("Progress");
+
+                    b.Property<bool?>("ScheduledToStop");
+
+                    b.Property<string>("Target")
+                        .IsRequired();
+
+                    b.Property<DateTime>("Time");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("RunId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AnalysesModel");
                 });
 
             modelBuilder.Entity("NetControlApp.Models.ApplicationUser", b =>
@@ -266,6 +315,13 @@ namespace NetControlApp.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NetControlApp.Models.AnalysesModel", b =>
+                {
+                    b.HasOne("NetControlApp.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("NetControlApp.Models.RunModel", b =>

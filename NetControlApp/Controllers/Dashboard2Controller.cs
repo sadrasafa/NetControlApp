@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NetControlApp.Models.Dashboard2ViewModels;
 
 namespace NetControlApp.Controllers
 {
@@ -29,20 +28,7 @@ namespace NetControlApp.Controllers
         [HttpGet]
         public async Task<IActionResult> NewAnalysis()
         {
-            var model = new NewAnalysisViewModel { };
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewAnalysis(NewAnalysisViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            return RedirectToAction(nameof(NewAnalysis));
+            return View();
         }
     }
 }

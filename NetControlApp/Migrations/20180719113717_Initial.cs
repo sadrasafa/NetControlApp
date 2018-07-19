@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NetControlApp.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -66,6 +66,39 @@ namespace NetControlApp.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AnalysesModel",
+                columns: table => new
+                {
+                    RunId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
+                    AnalysisName = table.Column<string>(maxLength: 100, nullable: false),
+                    Time = table.Column<DateTime>(nullable: false),
+                    NetType = table.Column<bool>(nullable: false),
+                    NetNodes = table.Column<string>(nullable: false),
+                    Target = table.Column<string>(nullable: false),
+                    DrugTarget = table.Column<string>(nullable: true),
+                    AlgorithmType = table.Column<string>(nullable: false),
+                    AlgorithmParams = table.Column<string>(nullable: false),
+                    DoContact = table.Column<bool>(nullable: false),
+                    Network = table.Column<string>(nullable: true),
+                    Progress = table.Column<double>(nullable: true),
+                    BestResult = table.Column<string>(nullable: true),
+                    IsCompleted = table.Column<bool>(nullable: true),
+                    ScheduledToStop = table.Column<bool>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnalysesModel", x => x.RunId);
+                    table.ForeignKey(
+                        name: "FK_AnalysesModel_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,6 +219,11 @@ namespace NetControlApp.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AnalysesModel_UserId",
+                table: "AnalysesModel",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -232,6 +270,9 @@ namespace NetControlApp.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AnalysesModel");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

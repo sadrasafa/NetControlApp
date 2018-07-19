@@ -1,0 +1,100 @@
+﻿@model NetControlApp.Models.AnalysesModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>AnalysesModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RunId" />
+            <div class="form-group">
+                <label asp-for="AnalysisName" class="control-label"></label>
+                <input asp-for="AnalysisName" class="form-control" />
+                <span asp-validation-for="AnalysisName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Time" class="control-label"></label>
+                <input asp-for="Time" class="form-control" />
+                <span asp-validation-for="Time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="NetType" /> @Html.DisplayNameFor(model => model.NetType)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="NetNodes" class="control-label"></label>
+                <input asp-for="NetNodes" class="form-control" />
+                <span asp-validation-for="NetNodes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Target" class="control-label"></label>
+                <input asp-for="Target" class="form-control" />
+                <span asp-validation-for="Target" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DrugTarget" class="control-label"></label>
+                <input asp-for="DrugTarget" class="form-control" />
+                <span asp-validation-for="DrugTarget" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AlgorithmType" class="control-label"></label>
+                <input asp-for="AlgorithmType" class="form-control" />
+                <span asp-validation-for="AlgorithmType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AlgorithmParams" class="control-label"></label>
+                <input asp-for="AlgorithmParams" class="form-control" />
+                <span asp-validation-for="AlgorithmParams" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="DoContact" /> @Html.DisplayNameFor(model => model.DoContact)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Network" class="control-label"></label>
+                <input asp-for="Network" class="form-control" />
+                <span asp-validation-for="Network" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Progress" class="control-label"></label>
+                <input asp-for="Progress" class="form-control" />
+                <span asp-validation-for="Progress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BestResult" class="control-label"></label>
+                <input asp-for="BestResult" class="form-control" />
+                <span asp-validation-for="BestResult" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsCompleted" class="control-label"></label>
+                <input asp-for="IsCompleted" class="form-control" />
+                <span asp-validation-for="IsCompleted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScheduledToStop" class="control-label"></label>
+                <input asp-for="ScheduledToStop" class="form-control" />
+                <span asp-validation-for="ScheduledToStop" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
