@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Dashboard\NewAnalysis2.cshtml">
+    <Content Update="Views\Dashboard2\NewAnalysis.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

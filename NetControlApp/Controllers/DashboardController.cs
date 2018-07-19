@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NetControlApp.Models.DashboardViewModels;
 using NetControlApp.Data;
 using NetControlApp.Models;
 using Microsoft.AspNetCore.Identity;
@@ -15,11 +14,13 @@ namespace NetControlApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+
         public DashboardController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
+
         [Authorize]
         public IActionResult Dashboard()
         {
@@ -44,25 +45,6 @@ namespace NetControlApp.Controllers
         public IActionResult TestAlgorithmRun()
         {
             return View();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> NewAnalysis2()
-        {
-            var model = new NewAnalysis2ViewModel { };
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewAnalysis2(NewAnalysis2ViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            return RedirectToAction(nameof(NewAnalysis2));
         }
 
     }
