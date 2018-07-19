@@ -1,4 +1,5 @@
-﻿<link rel="stylesheet" href="~/assets/css/styles.min.css" />
+﻿@model IEnumerable<NetControlApp.Models.AnalysesModel>
+<link rel="stylesheet" href="~/assets/css/styles.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 @{
@@ -12,7 +13,7 @@
     <div class="row justify-content-center features" id="content">
         <div class="col-lg-1 col-md-1"></div>
         <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5 item">
-            <a asp-area="" asp-controller="Dashboard" asp-action="ViewRecent">
+            <a asp-area="" asp-controller="AnalysesModels" asp-action="Index">
                 <div class="box" style="background-color:rgb(61,67,208);height:209px;padding:39px;">
                     <div class="row">
                         <div class="col" style="height:90px;"><i class="fa fa-list-ul icon" style="color:rgb(255,255,255);margin-bottom:0px;max-height:60px;min-height:60px;margin-top:15px;"></i></div>
@@ -24,7 +25,7 @@
         </div>
 
         <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5 item">
-            <a asp-area="" asp-controller="Dashboard" asp-action="NewAnalysis">
+            <a asp-area="" asp-controller="AnalysesModels" asp-action="Create">
                 <div class="box" style="height:209px;padding:39px;background-color:rgb(61,208,85);">
                     <div class="row">
                         <div class="col"><i class="icon ion-android-checkmark-circle icon" style="height:60px;width:60px;padding:0px;margin-top:0px;color:rgb(255,255,255);padding-bottom:0px;margin-bottom:0px;"></i></div>
@@ -38,8 +39,6 @@
     </div>
 </div>
 
-<h3>For testing purposes, you can launch a <a asp-controller="Dashboard" asp-action="TestAlgorithmRun">predefined run of the genetic algorithm.</a></h3>
-<h3>Or click here for <a asp-controller="Dashboard2" asp-action="Index">Dashboard2.</a></h3>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>

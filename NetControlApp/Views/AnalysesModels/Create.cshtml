@@ -8,65 +8,89 @@
 
 <h4>AnalysesModel</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="AnalysisName" class="control-label"></label>
-                <input asp-for="AnalysisName" class="form-control" />
-                <span asp-validation-for="AnalysisName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="NetType" /> @Html.DisplayNameFor(model => model.NetType)
-                    </label>
+<div class="container">
+    <div class="col">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="AnalysisName" class="control-label"></label>
+                    <input asp-for="AnalysisName" class="form-control" />
+                    <span asp-validation-for="AnalysisName" class="text-danger"></span>
                 </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="NetNodes" class="control-label"></label>
-                <input asp-for="NetNodes" class="form-control" />
-                <span asp-validation-for="NetNodes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Target" class="control-label"></label>
-                <input asp-for="Target" class="form-control" />
-                <span asp-validation-for="Target" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DrugTarget" class="control-label"></label>
-                <input asp-for="DrugTarget" class="form-control" />
-                <span asp-validation-for="DrugTarget" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AlgorithmType" class="control-label"></label>
-                <select asp-for="AlgorithmType" class="form-control">
-                    <option value="genetic">Genetic algorithm</option>
-                    <option value="greedy">Greedy algorithm</option>
-                </select>
-                <span asp-validation-for="AlgorithmType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AlgorithmParams" class="control-label"></label>
-                <input asp-for="AlgorithmParams" class="form-control" />
-                <span asp-validation-for="AlgorithmParams" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="DoContact" /> @Html.DisplayNameFor(model => model.DoContact)
-                    </label>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="NetType" /> @Html.DisplayNameFor(model => model.NetType)
+                        </label>
+                    </div>
                 </div>
+                <div class="form-group">
+                    <label asp-for="NetNodes" class="control-label"></label>
+                    <input asp-for="NetNodes" class="form-control" />
+                    <span asp-validation-for="NetNodes" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Target" class="control-label"></label>
+                    <input asp-for="Target" class="form-control" />
+                    <span asp-validation-for="Target" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DrugTarget" class="control-label"></label>
+                    <input asp-for="DrugTarget" class="form-control" />
+                    <span asp-validation-for="DrugTarget" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AlgorithmType" class="control-label"></label>
+                    <select asp-for="AlgorithmType" class="form-control" id="selectAlgo">
+                        <option value="genetic">Genetic algorithm</option>
+                        <option value="greedy">Greedy algorithm</option>
+                    </select>
+                    <span asp-validation-for="AlgorithmType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AlgorithmParams" class="control-label"></label>
+                    <input asp-for="AlgorithmParams" class="form-control" />
+                    <span asp-validation-for="AlgorithmParams" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="DoContact" /> @Html.DisplayNameFor(model => model.DoContact)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </form>
+            <div>
+                <a asp-action="Index">Back to List</a>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
+    </div>
+    <div class="col">
+        <div id="collapseDiv1" class="collapse" style="margin-top:10px; margin-left:20px;">
+            <div class="display-flex"><label class="d-inline-block" for="param1">Random seed</label><input class="form-control param d-inline-block" type="number" id="param1" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="-2147483647 -> 2147483647 (any C# accepted Int32 value)"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param2">Maximum number of iterations</label><input class="form-control param d-inline-block" type="number" id="param2" value="10000" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="1 -> 20000"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param3">Maximum number of iterations with no improvement</label><input class="form-control param d-inline-block" type="number" id="param3" value="1000" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="1 -> 2000"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param4">Population size</label><input class="form-control param d-inline-block" type="number" id="param4" value="80" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="4 -> 200"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param5">Maximum path length</label><input class="form-control param d-inline-block" type="number" id="param5" value="5" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="0 -> 25"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param6">Random elements per step</label><input class="form-control param d-inline-block" type="number" id="param6" value="15" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="1 -> 1000"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param7">Percentage of random chromosomes</label><input class="form-control param d-inline-block" type="number" id="param7" value="0.25" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="0 -> 1 (floating point)"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param8">Percentage of elite chromosomes</label><input class="form-control param d-inline-block" type="number" id="param8" value="0.25" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="0 -> 1 (floating point)"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param9">Probability of mutation</label><input class="form-control param d-inline-block" type="number" id="param9" value="0.001" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="0 -> 1 (floating point)"></i></div>
+        </div>
+        <div id="collapseDiv2" class="collapse" style="margin-top:0px;">
+            <div class="display-flex"><label class="d-inline-block" for="param1">Maximum number of iterations</label><input class="form-control param d-inline-block" type="number" id="gparam1" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="-2147483647 -> 2147483647 (any C# accepted Int32 value)"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param2">Maximum number of iterations</label><input class="form-control param d-inline-block" type="number" id="gparam2" value="10000" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="1 -> 20000"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param3">Maximum number of iterations</label><input class="form-control param d-inline-block" type="number" id="gparam3" value="1000" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="1 -> 2000"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param4">Maximum number of iterations</label><input class="form-control param d-inline-block" type="number" id="gparam4" value="5" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="0 -> 25"></i></div>
+            <div class="display-flex"><label class="d-inline-block" for="param5">Maximum number of iterations</label><input class="form-control param d-inline-block" type="text" id="gparam5" value="t" style="width:40%;margin-left:5px;padding-left:5px;"><i class="fa fa-question-circle-o" data-toggle="tooltip" title="Yet to be decided"></i></div>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="~/assets/js/JavaScript.js"></script>
 

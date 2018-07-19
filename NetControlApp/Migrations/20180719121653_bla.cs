@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NetControlApp.Migrations
 {
-    public partial class Initial : Migration
+    public partial class bla : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

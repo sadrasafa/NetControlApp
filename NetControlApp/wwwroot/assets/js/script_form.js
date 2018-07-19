@@ -79,67 +79,70 @@ function readFile(){
         document.getElementById("copy").innerText=$("#user_input").val().split("\n").length+' lines';
     };
     fileReader.readAsText(selectedFile);
-}
+    }
+
+    function Main(e) {
+        /*readFile();*/
+        e.preventDefault();
+
+        seeds = readTextArea($("#user_input"));
+        targetProteins = readTextArea($("#target_proteins"));
+        var drugTargets = readTextArea($('#drug_target'));
+        var formName = readTextArea($('#form_name'));
+        var doContact = $('#formCheck').is(":checked");
+        var string = seeds + targetProteins;
+        var param = [];
+        var algoType;
+        if (gen === true) {
+            algoType = "gen";
+            var el;
+            for (var i = 0; i < 9; i++) {
+                el = document.getElementById('param' + (i + 1)).value;
+                param[i] = el;
+            }
+        } else {
+            var el;
+            for (var i = 0; i < 5; i++) {
+                el = document.getElementById('gparam' + (i + 1)).value;
+                param[i] = el;
+            }
+            algoType = "greedy";
+        }
+        var stringParam = param.join();
+        var json_obj = {
+            "runName": formName,
+            "network": {
+                "type": whatType,
+                "nodes": seeds,
+            },
+            "targets": targetProteins,
+            "drug_targets": drugTargets,
+            "userID": null,
+            "do_contact": doContact,
+            "algorithm": {
+                "type": algoType,
+                "param": stringParam,
+            }
+        };
+        var dictstring = JSON.stringify(json_obj);
+        console.log(dictstring);
+        var xhr = new XMLHttpRequest();
+        var url = "/api";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(dictstring);
+        //fs.writeFile('file.json', dictstring, function (err) {
+        //    if (err) return console.log(err);
+        //    console.log('It worked > file.json');
+        //});
+        //console.log(json_obj);
+
+    }
+
 //Main Function
 $('form').on('submit', Main);
 
-function Main(e){
-    /*readFile();*/
-    e.preventDefault();
 
-    seeds = readTextArea($("#user_input"));
-    targetProteins = readTextArea($("#target_proteins"));
-    var drugTargets = readTextArea($('#drug_target'));
-    var formName = readTextArea($('#form_name'));
-    var doContact = $('#formCheck').is(":checked");
-    var string= seeds+targetProteins;
-    var param=[];
-    var algoType;
-    if(gen===true){
-        algoType="gen";
-        var el;
-        for(var i=0; i<9; i++){
-            el=document.getElementById('param'+(i+1)).value;
-            param[i]=el;
-        }
-    }else{
-        var el;
-        for(var i=0; i<5; i++){
-            el=document.getElementById('gparam'+(i+1)).value;
-            param[i]=el;
-        }
-        algoType="greedy";
-    }
-    var stringParam = param.join();
-    var json_obj = {
-        "runName" : formName,
-        "network" : {
-            "type" : whatType,
-            "nodes" : seeds,
-        },
-        "targets" : targetProteins,
-        "drug_targets" : drugTargets,
-        "userID": null ,
-        "do_contact" : doContact,
-        "algorithm" : {
-            "type": algoType,
-            "param": stringParam,
-        }
-    };
-    var dictstring = JSON.stringify(json_obj);
-    console.log(dictstring);
-    var xhr = new XMLHttpRequest();
-    var url = "/api";
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(dictstring);
-    //fs.writeFile('file.json', dictstring, function (err) {
-    //    if (err) return console.log(err);
-    //    console.log('It worked > file.json');
-    //});
-    //console.log(json_obj);
-
-    }
 });
 
 

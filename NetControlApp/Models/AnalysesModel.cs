@@ -16,7 +16,7 @@ namespace NetControlApp.Models
         [Required]
         [StringLength(100, ErrorMessage = "You must name your analysis", MinimumLength = 3)]
         [DataType(DataType.Text)]
-        [Display(Name = "Name of the analysis")]
+        [Display(Name = "Analysis Name")]
         public string AnalysisName { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -65,7 +65,7 @@ namespace NetControlApp.Models
         [DataType(DataType.Text)]
         public string BestResult { get; set; }
 
-        [Display(Name = "Completed")]
+        [Display(Name = "Status")]
         public bool? IsCompleted { get; set; }
 
         [Display(Name = "Scheduled to stop?")]
