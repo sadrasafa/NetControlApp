@@ -10,8 +10,8 @@ using NetControlApp.Data;
 namespace NetControlApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180719121653_bla")]
-    partial class bla
+    [Migration("20180719202604_asd")]
+    partial class asd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

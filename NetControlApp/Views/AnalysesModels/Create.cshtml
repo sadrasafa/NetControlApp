@@ -1,4 +1,5 @@
-﻿@model NetControlApp.Models.AnalysesModel
+﻿
+@model NetControlApp.Models.AnalysesModel
 
 @{
     ViewData["Title"] = "Create";
@@ -43,14 +44,15 @@
                 <div class="form-group">
                     <label asp-for="AlgorithmType" class="control-label"></label>
                     <select asp-for="AlgorithmType" class="form-control" id="selectAlgo">
+                        <option value="def">Default (genetic)</option>
                         <option value="genetic">Genetic algorithm</option>
                         <option value="greedy">Greedy algorithm</option>
                     </select>
                     <span asp-validation-for="AlgorithmType" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div hidden class="form-group">
                     <label asp-for="AlgorithmParams" class="control-label"></label>
-                    <input asp-for="AlgorithmParams" class="form-control" />
+                    <input id="algoParams" asp-for="AlgorithmParams" class="form-control" />
                     <span asp-validation-for="AlgorithmParams" class="text-danger"></span>
                 </div>
                 <div class="form-group">
