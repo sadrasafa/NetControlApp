@@ -21,7 +21,7 @@ namespace NetControlApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ViewAnalysis()
+        public async Task<IActionResult> ViewRecent()
         {
             return View();
         }

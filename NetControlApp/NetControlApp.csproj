@@ -24,10 +24,4 @@
     <Folder Include="Algorithms\Greedy\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="Views\Dashboard2\NewAnalysis.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-  </ItemGroup>
-
 </Project>
