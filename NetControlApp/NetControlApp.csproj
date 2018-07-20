@@ -24,4 +24,10 @@
     <Folder Include="Algorithms\Greedy\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Dash\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

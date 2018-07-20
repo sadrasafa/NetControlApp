@@ -1,0 +1,145 @@
+﻿@model NetControlApp.Models.AnalysisModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>AnalysisModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RunId" />
+            <div class="form-group">
+                <label asp-for="AnalysisName" class="control-label"></label>
+                <input asp-for="AnalysisName" class="form-control" />
+                <span asp-validation-for="AnalysisName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Time" class="control-label"></label>
+                <input asp-for="Time" class="form-control" />
+                <span asp-validation-for="Time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="NetType" /> @Html.DisplayNameFor(model => model.NetType)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="NetNodes" class="control-label"></label>
+                <input asp-for="NetNodes" class="form-control" />
+                <span asp-validation-for="NetNodes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Target" class="control-label"></label>
+                <input asp-for="Target" class="form-control" />
+                <span asp-validation-for="Target" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DrugTarget" class="control-label"></label>
+                <input asp-for="DrugTarget" class="form-control" />
+                <span asp-validation-for="DrugTarget" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AlgorithmType" class="control-label"></label>
+                <input asp-for="AlgorithmType" class="form-control" />
+                <span asp-validation-for="AlgorithmType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="DoContact" /> @Html.DisplayNameFor(model => model.DoContact)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Network" class="control-label"></label>
+                <input asp-for="Network" class="form-control" />
+                <span asp-validation-for="Network" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Progress" class="control-label"></label>
+                <input asp-for="Progress" class="form-control" />
+                <span asp-validation-for="Progress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BestResult" class="control-label"></label>
+                <input asp-for="BestResult" class="form-control" />
+                <span asp-validation-for="BestResult" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsCompleted" class="control-label"></label>
+                <input asp-for="IsCompleted" class="form-control" />
+                <span asp-validation-for="IsCompleted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScheduledToStop" class="control-label"></label>
+                <input asp-for="ScheduledToStop" class="form-control" />
+                <span asp-validation-for="ScheduledToStop" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RandomSeed" class="control-label"></label>
+                <input asp-for="RandomSeed" class="form-control" />
+                <span asp-validation-for="RandomSeed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxIteration" class="control-label"></label>
+                <input asp-for="MaxIteration" class="form-control" />
+                <span asp-validation-for="MaxIteration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxIterationNoImprovement" class="control-label"></label>
+                <input asp-for="MaxIterationNoImprovement" class="form-control" />
+                <span asp-validation-for="MaxIterationNoImprovement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxPathLength" class="control-label"></label>
+                <input asp-for="MaxPathLength" class="form-control" />
+                <span asp-validation-for="MaxPathLength" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GeneticPopulationSize" class="control-label"></label>
+                <input asp-for="GeneticPopulationSize" class="form-control" />
+                <span asp-validation-for="GeneticPopulationSize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GeneticElementsRandom" class="control-label"></label>
+                <input asp-for="GeneticElementsRandom" class="form-control" />
+                <span asp-validation-for="GeneticElementsRandom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GeneticPercentageRandom" class="control-label"></label>
+                <input asp-for="GeneticPercentageRandom" class="form-control" />
+                <span asp-validation-for="GeneticPercentageRandom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GeneticPercentageElite" class="control-label"></label>
+                <input asp-for="GeneticPercentageElite" class="form-control" />
+                <span asp-validation-for="GeneticPercentageElite" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GeneticProbabilityMutation" class="control-label"></label>
+                <input asp-for="GeneticProbabilityMutation" class="form-control" />
+                <span asp-validation-for="GeneticProbabilityMutation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GreedyHeuristics" class="control-label"></label>
+                <input asp-for="GreedyHeuristics" class="form-control" />
+                <span asp-validation-for="GreedyHeuristics" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

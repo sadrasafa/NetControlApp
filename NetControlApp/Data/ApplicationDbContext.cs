@@ -26,5 +26,7 @@ namespace NetControlApp.Data
         }
 
         public DbSet<NetControlApp.Models.AnalysesModel> AnalysesModel { get; set; }
+
+        public DbSet<NetControlApp.Models.AnalysisModel> AnalysisModel { get; set; }
     }
 }
