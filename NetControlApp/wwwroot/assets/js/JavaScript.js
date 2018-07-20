@@ -2,7 +2,7 @@
     console.log("asd");
     var isFormChanged;
     var gen = true;
-    
+
     //window.setInterval(function () {
     //    repeat();
     //}, 1000);
@@ -24,7 +24,7 @@
         var fileReader = new FileReader();
         fileReader.onload = function (e) {
             fileValues = e.target.result;
-            $("#"+textArea).val(fileValues);
+            $("#" + textArea).val(fileValues);
             //document.getElementById("copy").innerText = $("#user_input").val().split("\n").length + ' lines';
         };
         fileReader.readAsText(selectedFile);
@@ -37,7 +37,7 @@
             //console.log("Gen");
             gen = true;
             isFormChanged = true;
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
             //console.log(gen);
             $('#collapseDiv1').collapse("show");
             $('#collapseDiv2').collapse("hide");
@@ -53,7 +53,7 @@
             $("#algoParams").trigger("change");
         } else if (value === "def") {
             gen = true;
-            
+
             $('#collapseDiv1').collapse("hide");
             $('#collapseDiv2').collapse("hide");
             $("#algoParams").trigger("change");
@@ -62,7 +62,7 @@
     $("input").change(function () {
         console.log($(this).attr('name'));
         isFormChanged = true;
-        
+
         var param = [];
         if (isFormChanged === true && gen === true) {
             var el;
