@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using NetControlApp.Data;
 using NetControlApp.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace NetControlApp.Controllers
 {
@@ -21,55 +22,150 @@ namespace NetControlApp.Controllers
             _userManager = userManager;
         }
 
-        [Authorize]
+        // GET: Dash
         public IActionResult Index()
         {
             return View();
         }
 
-        [Authorize]
-        public async Task<IActionResult> ViewRecent()
+        // GET: Dash
+        public async Task<IActionResult> ViewAll()
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
-            var runs = _context.AnalysesModel.Where(run => run.User == user).OrderByDescending(run => run.Time);
+            var runs = _context.AnalysisModel.Where(run => run.User == user).OrderByDescending(run => run.Time);
             return View(runs);
         }
 
-        [Authorize]
-        public IActionResult NewAnalysis()
+        // GET: Dash/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var analysisModel = await _context.AnalysisModel
+                .FirstOrDefaultAsync(m => m.RunId == id);
+            if (analysisModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(analysisModel);
+        }
+
+        // GET: Dash/Create
+        public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Dashboard/NewAnalysis
+        // POST: Dash/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NewAnalysis([Bind("RunId,AnalysisName,NetType,NetNodes,Target,DrugTarget,AlgorithmType,AlgorithmParams,DoContact")] AnalysesModel analysesModel)
+        public async Task<IActionResult> Create([Bind("RunId,AnalysisName,NetType,NetNodes,Target,DrugTarget,AlgorithmType,DoContact,RandomSeed,MaxIteration,MaxIterationNoImprovement,MaxPathLength,GeneticPopulationSize,GeneticElementsRandom,GeneticPercentageRandom,GeneticPercentageElite,GeneticProbabilityMutation,GreedyHeuristics")] AnalysisModel analysisModel)
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
 
-            analysesModel.User = user;
-            analysesModel.Time = DateTime.Now;
-            analysesModel.IsCompleted = false;
-            analysesModel.ScheduledToStop = false;
+            analysisModel.User = user;
+            analysisModel.Time = DateTime.Now;
+            analysisModel.IsCompleted = false;
+            analysisModel.ScheduledToStop = false;
 
             if (ModelState.IsValid && user != null)
             {
-                _context.Add(analysesModel);
+                _context.Add(analysisModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(analysesModel);
+            return View(analysisModel);
         }
 
-        [Authorize]
-        public IActionResult TestAlgorithmRun()
+        // GET: Dash/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var analysisModel = await _context.AnalysisModel.FindAsync(id);
+            if (analysisModel == null)
+            {
+                return NotFound();
+            }
+            return View(analysisModel);
         }
 
+        // POST: Dash/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("RunId,AnalysisName,Time,NetType,NetNodes,Target,DrugTarget,AlgorithmType,DoContact,Network,Progress,BestResult,IsCompleted,ScheduledToStop,RandomSeed,MaxIteration,MaxIterationNoImprovement,MaxPathLength,GeneticPopulationSize,GeneticElementsRandom,GeneticPercentageRandom,GeneticPercentageElite,GeneticProbabilityMutation,GreedyHeuristics")] AnalysisModel analysisModel)
+        {
+            if (id != analysisModel.RunId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(analysisModel);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AnalysisModelExists(analysisModel.RunId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(analysisModel);
+        }
+
+        // GET: Dash/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var analysisModel = await _context.AnalysisModel
+                .FirstOrDefaultAsync(m => m.RunId == id);
+            if (analysisModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(analysisModel);
+        }
+
+        // POST: Dash/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var analysisModel = await _context.AnalysisModel.FindAsync(id);
+            _context.AnalysisModel.Remove(analysisModel);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool AnalysisModelExists(int id)
+        {
+            return _context.AnalysisModel.Any(e => e.RunId == id);
+        }
     }
 }
