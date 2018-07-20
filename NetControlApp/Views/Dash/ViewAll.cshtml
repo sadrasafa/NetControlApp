@@ -28,26 +28,52 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AnalysisName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AlgorithmType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Progress)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RunId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RunId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RunId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            @if (item.IsCompleted == true)
+            {
+                <tr style="background-color:lightgreen">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AnalysisName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AlgorithmType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Progress)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.RunId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.RunId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.RunId">Delete</a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr style="background-color:lightblue">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AnalysisName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AlgorithmType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Progress)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.RunId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.RunId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.RunId">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
