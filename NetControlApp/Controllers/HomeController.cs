@@ -15,7 +15,7 @@ namespace NetControlApp.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Dashboard", "Dashboard");
+                return RedirectToAction("Index", "Dashboard");
             }
             else
             {
