@@ -19,17 +19,17 @@
     $(function () {
         var value = $('#selectAlgorithm').val();
         if (value === "genetic") {
-            $('.genetic-parameters').collapse("show");
-            $('.greedy-parameters').collapse("hide");
-            $('.genetic-greedy-parameters').collapse("show");
+            $('.genetic-parameters-form').collapse("show");
+            $('.greedy-parameters-form').collapse("hide");
+            $('.genetic-greedy-parameters-form').collapse("show");
         } else if (value === "greedy") {
-            $('.genetic-parameters').collapse("hide");
-            $('.greedy-parameters').collapse("show");
-            $('.genetic-greedy-parameters').collapse("show");
+            $('.genetic-parameters-form').collapse("hide");
+            $('.greedy-parameters-form').collapse("show");
+            $('.genetic-greedy-parameters-form').collapse("show");
         } else {
-            $('.genetic-parameters').collapse("hide");
-            $('.greedy-parameters').collapse("hide");
-            $('.genetic-greedy-parameters').collapse("hide");
+            $('.genetic-parameters-form').collapse("hide");
+            $('.greedy-parameters-form').collapse("hide");
+            $('.genetic-greedy-parameters-form').collapse("hide");
         }
     });
 
@@ -37,17 +37,32 @@
     $("#selectAlgorithm").on('change', function () {
         var value = $('#selectAlgorithm').val();
         if (value === "genetic") {
-            $('.genetic-parameters').collapse("show");
-            $('.greedy-parameters').collapse("hide");
-            $('.genetic-greedy-parameters').collapse("show");
+            $('.genetic-parameters-form').collapse("show");
+            $('.greedy-parameters-form').collapse("hide");
+            $('.genetic-greedy-parameters-form').collapse("show");
         } else if (value === "greedy") {
-            $('.genetic-parameters').collapse("hide");
-            $('.greedy-parameters').collapse("show");
-            $('.genetic-greedy-parameters').collapse("show");
+            $('.genetic-parameters-form').collapse("hide");
+            $('.greedy-parameters-form').collapse("show");
+            $('.genetic-greedy-parameters-form').collapse("show");
         } else {
-            $('.genetic-parameters').collapse("hide");
-            $('.greedy-parameters').collapse("hide");
-            $('.genetic-greedy-parameters').collapse("hide");
+            $('.genetic-parameters-form').collapse("hide");
+            $('.greedy-parameters-form').collapse("hide");
+            $('.genetic-greedy-parameters-form').collapse("hide");
+        }
+    });
+
+    // Makes all the parameters of the unselected algorithm null.
+    $("#createNew").on("click", function () {
+        var value = $('#selectAlgorithm').val();
+        if (value === "genetic") {
+            $('.greedy-parameters').val("");
+        }
+        else if (value === "greedy") {
+            $('.genetic-parameters').val("");
+        }
+        else {
+            $('.genetic-parameters').val("");
+            $('.greedy-parameters').val("");
         }
     });
 });

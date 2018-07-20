@@ -20,7 +20,7 @@ namespace NetControlApp.Models
         public string AnalysisName { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime Time { get; set; }
+        public DateTime Time { get; set; } = DateTime.Now;
 
         [Required]
         [Display(Name = "Is the network provided as seed nodes?")]
@@ -44,7 +44,7 @@ namespace NetControlApp.Models
         [DataType(DataType.Text)]
         [Display(Name = "Algorithm type")]
         public string AlgorithmType { get; set; }
-        
+
         [Required]
         [Display(Name = "Send an e-mail?")]
         public bool DoContact { get; set; }
@@ -54,17 +54,17 @@ namespace NetControlApp.Models
         public string Network { get; set; }
 
         [Display(Name = "Progress (%)")]
-        public double? Progress { get; set; }
+        public double? Progress { get; set; } = 0.0;
 
         [Display(Name = "Best result")]
         [DataType(DataType.Text)]
         public string BestResult { get; set; }
 
         [Display(Name = "Status")]
-        public bool? IsCompleted { get; set; }
+        public bool? IsCompleted { get; set; } = false;
 
         [Display(Name = "Scheduled to stop?")]
-        public bool? ScheduledToStop { get; set; }
+        public bool? ScheduledToStop { get; set; } = false;
 
         [Range(Int32.MinValue, Int32.MaxValue)]
         [Display(Name = "Random seed")]
