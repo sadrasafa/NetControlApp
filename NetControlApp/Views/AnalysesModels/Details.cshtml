@@ -1,102 +1,87 @@
 ﻿@model NetControlApp.Models.AnalysesModel
-
+<link rel="stylesheet" href="~/assets/css/details.css" />
 @{
     ViewData["Title"] = "Details";
 }
 
 <h2>Details</h2>
+<hr />
+<div class="datagrid">
+    <table>
+        <thead>
+            <tr>
+                <th colspan="2">@Html.DisplayFor(model => model.AnalysisName)</th>
 
-<div>
-    <h4>AnalysesModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.AnalysisName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AnalysisName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Time)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Time)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetNodes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetNodes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Target)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Target)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DrugTarget)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DrugTarget)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AlgorithmType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AlgorithmType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AlgorithmParams)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AlgorithmParams)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DoContact)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DoContact)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Network)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Network)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Progress)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Progress)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.BestResult)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.BestResult)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IsCompleted)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsCompleted)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ScheduledToStop)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ScheduledToStop)
-        </dd>
-    </dl>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.AnalysisName)</td>
+                <td>@Html.DisplayFor(model => model.AnalysisName)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Time)</td>
+                <td>@Html.DisplayFor(model => model.Time)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.NetType)</td>
+                <td>@Html.DisplayFor(model => model.NetType)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.NetNodes)</td>
+                <td>@Html.DisplayFor(model => model.NetNodes)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Target)</td>
+                <td>@Html.DisplayFor(model => model.Target)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.DrugTarget)</td>
+                <td>@Html.DisplayFor(model => model.DrugTarget)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.AlgorithmType)</td>
+                <td>@Html.DisplayFor(model => model.AlgorithmType)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.AlgorithmParams)</td>
+                <td>@Html.DisplayFor(model => model.AlgorithmParams)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.DoContact)</td>
+                <td>@Html.DisplayFor(model => model.DoContact)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Network)</td>
+                <td>@Html.DisplayFor(model => model.Network)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Progress)</td>
+                <td>@Html.DisplayFor(model => model.Progress)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.BestResult)</td>
+                <td>@Html.DisplayFor(model => model.BestResult)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.IsCompleted)</td>
+                <td>@Html.DisplayFor(model => model.IsCompleted)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.ScheduledToStop)</td>
+                <td>@Html.DisplayFor(model => model.ScheduledToStop)</td>
+            </tr>
+
+
+        </tbody>
+    </table>
+
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.RunId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+

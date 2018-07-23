@@ -1,52 +1,32 @@
-﻿
-.datagrid table {
-    border-collapse: collapse;
-    text-align: left;
-    width: 100%;
-    text-align:center;
+﻿.contentView {
+    text-align: center;
+    align-content: center;
+    padding-left: 22%;
+    background-color: #fcfcfc;
+    padding-top:4%;
+    padding-bottom:2%;
+}
+.row {
+   
+    width: 65%;
+    padding: 0.5rem;
+    margin-right:20%;
+    margin-bottom:2rem;
+    color: black;
+    border-radius: 40px;
+    box-shadow: inset 0 0 0 2px rgba(185, 181, 181, 0.69);
 }
 
-.datagrid {
-    font: normal 12px/150% Arial, Helvetica, sans-serif;
-    background: #fff;
-    overflow: hidden;
-    border: 1px solid #1456DB;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+.col-lg-12.col-md-12.col-sm-12.col-xs-12.itemm {
+    padding: 1%;
+    align-content: center;
+    text-align: center;
+    font-size: 180%;
 }
 
-    .datagrid table td, .datagrid table th {
-        padding: 8px 7px;
-    }
-
-    .datagrid table thead th {
-        background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #6726FF), color-stop(1, #3C0F4D) );
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6726FF', endColorstr='#3C0F4D');
-        background-color: #6726FF;
-        color: #FFFFFF;
-        font-size: 13px;
-        font-weight: bold;
-        border-left: 0px solid #0070A8;
-        text-align:center;
-    }
-
-        .datagrid table thead th:first-child {
-            border: none;
-        }
-
-    .datagrid table tbody td {
-        color: azure;
-        border-left: 1px solid #FFFFFF;
-        font-size: 13px;
-        border-bottom: 1px solid #FFFFFF;
-        font-weight: normal;
-    }
-
-        .datagrid table tbody td:first-child {
-            border-left: none;
-        }
-
-    .datagrid table tbody tr:last-child td {
-        border-bottom: none;
-    }
+.col-lg-6.col-md-6.col-sm-6.col-xs-6.itemm{
+    padding: 1%;
+    align-content: center;
+    text-align: center;
+    font-size:180%;
+}
