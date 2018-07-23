@@ -2,6 +2,9 @@
 @using System.Linq
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/assets/fonts/typicons.min.css">
 @model LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
@@ -71,7 +74,19 @@
                             <p>
                                 @foreach (var provider in loginProviders)
                                 {
-                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+                                    if (provider.Name == "Google")
+                                    {
+                                        
+                                        <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fa fa-google" style="font-size:150%"></i> @provider.Name</button>
+
+                                    }
+                                    if (provider.Name == "Microsoft")
+                                    {
+                                        
+                                        <button  type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="typcn typcn-vendor-microsoft" style="font-size:118%"></i> @provider.Name</button>
+
+                                    }
+
                                 }
                             </p>
                         </div>
