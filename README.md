@@ -57,4 +57,4 @@ Team 3:
 
 •	Is it optimal to have 1 object per edge and can it scale with large graphs??
 
-
+• It should work on a cluster or at least many threads. Check the environment available and then adapt to the resources.
