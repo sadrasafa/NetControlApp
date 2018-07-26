@@ -21,11 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Algorithms\Greedy\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="Views\Dashboard\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dash\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>
