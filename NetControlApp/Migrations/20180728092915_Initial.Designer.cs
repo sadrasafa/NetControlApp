@@ -10,8 +10,8 @@ using NetControlApp.Data;
 namespace NetControlApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180720125509_AddedParamsToDatabase")]
-    partial class AddedParamsToDatabase
+    [Migration("20180728092915_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -131,78 +131,29 @@ namespace NetControlApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("NetControlApp.Models.AnalysesModel", b =>
-                {
-                    b.Property<int>("RunId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AlgorithmParams")
-                        .IsRequired();
-
-                    b.Property<string>("AlgorithmType")
-                        .IsRequired();
-
-                    b.Property<string>("AnalysisName")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<string>("BestResult");
-
-                    b.Property<bool>("DoContact");
-
-                    b.Property<string>("DrugTarget");
-
-                    b.Property<bool?>("IsCompleted");
-
-                    b.Property<string>("NetNodes")
-                        .IsRequired();
-
-                    b.Property<bool>("NetType");
-
-                    b.Property<string>("Network");
-
-                    b.Property<double?>("Progress");
-
-                    b.Property<bool?>("ScheduledToStop");
-
-                    b.Property<string>("Target")
-                        .IsRequired();
-
-                    b.Property<DateTime>("Time");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("RunId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AnalysesModel");
-                });
-
             modelBuilder.Entity("NetControlApp.Models.AnalysisModel", b =>
                 {
-                    b.Property<int>("RunId")
+                    b.Property<int>("AnalysisId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AlgorithmParams")
-                        .IsRequired();
 
                     b.Property<string>("AlgorithmType")
                         .IsRequired();
 
                     b.Property<string>("AnalysisName")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<string>("BestResult");
+                        .IsRequired();
 
                     b.Property<bool>("DoContact");
 
-                    b.Property<string>("DrugTarget");
+                    b.Property<DateTime?>("EndTime");
 
                     b.Property<int?>("GeneticElementsRandom");
+
+                    b.Property<int?>("GeneticMaxIteration");
+
+                    b.Property<int?>("GeneticMaxIterationNoImprovement");
+
+                    b.Property<int?>("GeneticMaxPathLength");
 
                     b.Property<double?>("GeneticPercentageElite");
 
@@ -212,37 +163,63 @@ namespace NetControlApp.Migrations
 
                     b.Property<double?>("GeneticProbabilityMutation");
 
+                    b.Property<int?>("GeneticRandomSeed");
+
+                    b.Property<bool?>("GreedyCutNonBranching");
+
+                    b.Property<bool?>("GreedyCutToDriven");
+
                     b.Property<string>("GreedyHeuristics");
 
-                    b.Property<bool?>("IsCompleted");
+                    b.Property<int?>("GreedyMaxIteration");
 
-                    b.Property<int?>("MaxIteration");
+                    b.Property<int?>("GreedyMaxIterationNoImprovement");
 
-                    b.Property<int?>("MaxIterationNoImprovement");
+                    b.Property<int?>("GreedyMaxPathLength");
 
-                    b.Property<int?>("MaxPathLength");
+                    b.Property<int?>("GreedyRandomSeed");
 
-                    b.Property<string>("NetNodes")
-                        .IsRequired();
+                    b.Property<int?>("NetworkBestResultCount");
 
-                    b.Property<bool>("NetType");
+                    b.Property<string>("NetworkBestResultNodes");
 
-                    b.Property<string>("Network");
+                    b.Property<int?>("NetworkDrugTargetCount");
 
-                    b.Property<double?>("Progress");
+                    b.Property<string>("NetworkDrugTargets");
 
-                    b.Property<int?>("RandomSeed");
+                    b.Property<int?>("NetworkEdgeCount");
+
+                    b.Property<string>("NetworkEdges");
+
+                    b.Property<int?>("NetworkNodeCount");
+
+                    b.Property<string>("NetworkNodes");
+
+                    b.Property<int?>("NetworkTargetCount");
+
+                    b.Property<string>("NetworkTargets");
 
                     b.Property<bool?>("ScheduledToStop");
 
-                    b.Property<string>("Target")
+                    b.Property<DateTime>("StartTime");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("UserGivenDrugTarget");
+
+                    b.Property<string>("UserGivenNetworkGeneration");
+
+                    b.Property<bool>("UserGivenNetworkType");
+
+                    b.Property<string>("UserGivenNodes")
                         .IsRequired();
 
-                    b.Property<DateTime>("Time");
+                    b.Property<string>("UserGivenTarget")
+                        .IsRequired();
 
                     b.Property<string>("UserId");
 
-                    b.HasKey("RunId");
+                    b.HasKey("AnalysisId");
 
                     b.HasIndex("UserId");
 
@@ -300,47 +277,6 @@ namespace NetControlApp.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("NetControlApp.Models.RunModel", b =>
-                {
-                    b.Property<int>("RunId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AlgorithmParams");
-
-                    b.Property<string>("AlgorithmType");
-
-                    b.Property<string>("BestResult");
-
-                    b.Property<bool?>("DoContact");
-
-                    b.Property<string>("DrugTarget");
-
-                    b.Property<bool?>("IsCompleted");
-
-                    b.Property<string>("NetNodes");
-
-                    b.Property<string>("NetType");
-
-                    b.Property<string>("Network");
-
-                    b.Property<double?>("Progress");
-
-                    b.Property<string>("RunName");
-
-                    b.Property<string>("Target");
-
-                    b.Property<DateTime?>("Time");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("RunId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Runs");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -386,21 +322,7 @@ namespace NetControlApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("NetControlApp.Models.AnalysesModel", b =>
-                {
-                    b.HasOne("NetControlApp.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("NetControlApp.Models.AnalysisModel", b =>
-                {
-                    b.HasOne("NetControlApp.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("NetControlApp.Models.RunModel", b =>
                 {
                     b.HasOne("NetControlApp.Models.ApplicationUser", "User")
                         .WithMany()

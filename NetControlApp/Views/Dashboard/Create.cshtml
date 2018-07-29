@@ -6,12 +6,18 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<h4>AnalysisModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (Model != null)
+            {
+                if (Model.Status != null)
+                {
+                    <div class="text-danger">@Model.Status</div>
+                }
+            }
             <div class="form-group">
                 <label asp-for="AnalysisName" class="control-label"></label>
                 <input asp-for="AnalysisName" class="form-control" />
@@ -20,27 +26,38 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="NetType" /> @Html.DisplayNameFor(model => model.NetType)
+                        <input id="isSeed" asp-for="UserGivenNetworkType" /> @Html.DisplayNameFor(model => model.UserGivenNetworkType)
                     </label>
                 </div>
             </div>
+            <div id="generationType" class="collapse form-group">
+                <label asp-for="UserGivenNetworkGeneration" class="control-label"></label>
+                <select asp-for="UserGivenNetworkGeneration" class="form-control">
+                    <option value="neighbors">All interactions contaning the seed nodes</option>
+                    <option value="gap0">Interactions only between the seed nodes</option>
+                    <option value="gap1">Interactions between seed nodes with one intermediary node</option>
+                    <option value="gap2">Interactions between seed nodes with two intermediary node</option>
+                    <option value="gap3">Interactions between seed nodes with three intermediary node</option>
+                </select>
+                <span asp-validation-for="UserGivenNetworkGeneration" class="text-danger"></span>
+            </div>
             <div class="form-group">
-                <label asp-for="NetNodes" class="control-label"></label>
-                <textarea id="nodesTextArea" asp-for="NetNodes" class="form-control" rows="5"></textarea>
+                <label asp-for="UserGivenNodes" class="control-label"></label>
+                <textarea id="nodesTextArea" asp-for="UserGivenNodes" class="form-control" rows="5"></textarea>
                 <input id="nodesFile" type="file" />
-                <span asp-validation-for="NetNodes" class="text-danger"></span>
+                <span asp-validation-for="UserGivenNodes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Target" class="control-label"></label>
-                <textarea id="targetsTextArea" asp-for="Target" class="form-control" rows="5"></textarea>
+                <label asp-for="UserGivenTarget" class="control-label"></label>
+                <textarea id="targetsTextArea" asp-for="UserGivenTarget" class="form-control" rows="5"></textarea>
                 <input id="targetsFile" type="file" />
-                <span asp-validation-for="Target" class="text-danger"></span>
+                <span asp-validation-for="UserGivenTarget" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DrugTarget" class="control-label"></label>
-                <textarea id="drugtargetsTextArea" asp-for="DrugTarget" class="form-control" rows="5"></textarea>
+                <label asp-for="UserGivenDrugTarget" class="control-label"></label>
+                <textarea id="drugtargetsTextArea" asp-for="UserGivenDrugTarget" class="form-control" rows="5"></textarea>
                 <input id="drugtargetsFile" type="file" />
-                <span asp-validation-for="DrugTarget" class="text-danger"></span>
+                <span asp-validation-for="UserGivenDrugTarget" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AlgorithmType" class="control-label"></label>
@@ -51,25 +68,25 @@
                 </select>
                 <span asp-validation-for="AlgorithmType" class="text-danger"></span>
             </div>
-            <div class="collapse genetic-greedy-parameters-form form-group">
-                <label asp-for="RandomSeed" class="control-label"></label>
-                <input asp-for="RandomSeed" class="form-control" />
-                <span asp-validation-for="RandomSeed" class="text-danger"></span>
+            <div class="collapse genetic-parameters-form form-group">
+                <label asp-for="GeneticRandomSeed" class="control-label"></label>
+                <input asp-for="GeneticRandomSeed" class="form-control genetic-parameters" />
+                <span asp-validation-for="GeneticRandomSeed" class="text-danger"></span>
             </div>
-            <div class="collapse genetic-greedy-parameters-form form-group">
-                <label asp-for="MaxIteration" class="control-label"></label>
-                <input value="10000" asp-for="MaxIteration" class="form-control" />
-                <span asp-validation-for="MaxIteration" class="text-danger"></span>
+            <div class="collapse genetic-parameters-form form-group">
+                <label asp-for="GeneticMaxIteration" class="control-label"></label>
+                <input value="10000" asp-for="GeneticMaxIteration" class="form-control genetic-parameters" />
+                <span asp-validation-for="GeneticMaxIteration" class="text-danger"></span>
             </div>
-            <div class="collapse genetic-greedy-parameters-form form-group">
-                <label asp-for="MaxIterationNoImprovement" class="control-label"></label>
-                <input value="1000" asp-for="MaxIterationNoImprovement" class="form-control" />
-                <span asp-validation-for="MaxIterationNoImprovement" class="text-danger"></span>
+            <div class="collapse genetic-parameters-form form-group">
+                <label asp-for="GeneticMaxIterationNoImprovement" class="control-label"></label>
+                <input value="1000" asp-for="GeneticMaxIterationNoImprovement" class="form-control genetic-parameters" />
+                <span asp-validation-for="GeneticMaxIterationNoImprovement" class="text-danger"></span>
             </div>
-            <div class="collapse genetic-greedy-parameters-form form-group">
-                <label asp-for="MaxPathLength" class="control-label"></label>
-                <input value="5" asp-for="MaxPathLength" class="form-control" />
-                <span asp-validation-for="MaxPathLength" class="text-danger"></span>
+            <div class="collapse genetic-parameters-form form-group">
+                <label asp-for="GeneticMaxPathLength" class="control-label"></label>
+                <input value="5" asp-for="GeneticMaxPathLength" class="form-control genetic-parameters" />
+                <span asp-validation-for="GeneticMaxPathLength" class="text-danger"></span>
             </div>
             <div class="collapse genetic-parameters-form form-group">
                 <label asp-for="GeneticPopulationSize" class="control-label"></label>
@@ -97,8 +114,44 @@
                 <span asp-validation-for="GeneticProbabilityMutation" class="text-danger"></span>
             </div>
             <div class="collapse greedy-parameters-form form-group">
+                <label asp-for="GreedyRandomSeed" class="control-label"></label>
+                <input asp-for="GreedyRandomSeed" class="form-control greedy-parameters" />
+                <span asp-validation-for="GreedyRandomSeed" class="text-danger"></span>
+            </div>
+            <div class="collapse greedy-parameters-form form-group">
+                <label asp-for="GreedyMaxIteration" class="control-label"></label>
+                <input value="10000" asp-for="GreedyMaxIteration" class="form-control greedy-parameters" />
+                <span asp-validation-for="GreedyMaxIteration" class="text-danger"></span>
+            </div>
+            <div class="collapse greedy-parameters-form form-group">
+                <label asp-for="GreedyMaxIterationNoImprovement" class="control-label"></label>
+                <input value="1000" asp-for="GreedyMaxIterationNoImprovement" class="form-control greedy-parameters" />
+                <span asp-validation-for="GreedyMaxIterationNoImprovement" class="text-danger"></span>
+            </div>
+            <div class="collapse greedy-parameters-form form-group">
+                <label asp-for="GreedyMaxPathLength" class="control-label"></label>
+                <input value="5" asp-for="GreedyMaxPathLength" class="form-control greedy-parameters" />
+                <span asp-validation-for="GreedyMaxPathLength" class="text-danger"></span>
+            </div>
+            <div class="collapse greedy-parameters-form form-group">
+                <label asp-for="GreedyCutToDriven" class="control-label"></label>
+                <select asp-for="GreedyCutToDriven" class="form-control greedy-parameters">
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+                <span asp-validation-for="GreedyCutToDriven" class="text-danger"></span>
+            </div>
+            <div class="collapse greedy-parameters-form form-group">
+                <label asp-for="GreedyCutNonBranching" class="control-label"></label>
+                <select asp-for="GreedyCutNonBranching" class="form-control greedy-parameters">
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+                <span asp-validation-for="GreedyCutNonBranching" class="text-danger"></span>
+            </div>
+            <div class="collapse greedy-parameters-form form-group">
                 <label asp-for="GreedyHeuristics" class="control-label"></label>
-                <input value="T F 1 (->@@CA)(->@@PA)(->D)(->CA)(->PA)(->N)(->T)" asp-for="GreedyHeuristics" class="form-control greedy-parameters" />
+                <input value="(->@@CA)(->@@PA)(->D)(->CA)(->PA)(->N)(->T)" asp-for="GreedyHeuristics" class="form-control greedy-parameters" />
                 <span asp-validation-for="GreedyHeuristics" class="text-danger greedy-parameters"></span>
             </div>
             <div class="form-group">
@@ -120,4 +173,4 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="~/js/victor.js"></script>
+<script src="~/js/site.js"></script>

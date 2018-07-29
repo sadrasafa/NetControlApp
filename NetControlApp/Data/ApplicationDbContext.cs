@@ -15,8 +15,6 @@ namespace NetControlApp.Data
         {
         }
 
-        public DbSet<RunModel> Runs { get; set; }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -24,8 +22,6 @@ namespace NetControlApp.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-
-        public DbSet<NetControlApp.Models.AnalysesModel> AnalysesModel { get; set; }
 
         public DbSet<NetControlApp.Models.AnalysisModel> AnalysisModel { get; set; }
     }

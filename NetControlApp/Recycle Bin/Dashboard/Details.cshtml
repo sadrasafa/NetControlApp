@@ -1,0 +1,162 @@
+﻿@model NetControlApp.RecycleBin.AnalysisModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AnalysisModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AnalysisName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AnalysisName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Time)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Time)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NetType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NetType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NetNodes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NetNodes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Target)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Target)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DrugTarget)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DrugTarget)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AlgorithmType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AlgorithmType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DoContact)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DoContact)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Network)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Network)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Progress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Progress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BestResult)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BestResult)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsCompleted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ScheduledToStop)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ScheduledToStop)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RandomSeed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RandomSeed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxIteration)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MaxIteration)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxIterationNoImprovement)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MaxIterationNoImprovement)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxPathLength)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MaxPathLength)
+        </dd>
+        @if (Model.AlgorithmType == "genetic")
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticPopulationSize)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticPopulationSize)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticElementsRandom)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticElementsRandom)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticPercentageRandom)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticPercentageRandom)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticPercentageElite)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticPercentageElite)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticProbabilityMutation)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticProbabilityMutation)
+            </dd>
+        }
+        else if (Model.AlgorithmType == "greedy")
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.GreedyHeuristics)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GreedyHeuristics)
+            </dd>
+        }
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.RunId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

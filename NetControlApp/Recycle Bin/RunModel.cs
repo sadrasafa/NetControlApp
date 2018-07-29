@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using NetControlApp.Models;
 
-namespace NetControlApp.Models
+namespace NetControlApp.RecycleBin
 {
     public class RunModel
     {

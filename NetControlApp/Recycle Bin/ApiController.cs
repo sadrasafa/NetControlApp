@@ -62,7 +62,7 @@ namespace NetControlApp.Controllers
         public async Task<DataJSON> PostAsync([FromBody] DataJSON value)
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
-            var run = new RunModel
+            var run = new RecycleBin.RunModel
             {
                 RunName = value.runName,
                 User = user,

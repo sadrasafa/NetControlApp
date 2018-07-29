@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NetControlApp.Migrations
 {
-    public partial class blabla : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -69,32 +69,56 @@ namespace NetControlApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AnalysesModel",
+                name: "AnalysisModel",
                 columns: table => new
                 {
-                    RunId = table.Column<int>(nullable: false)
+                    AnalysisId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: true),
-                    AnalysisName = table.Column<string>(maxLength: 100, nullable: false),
-                    Time = table.Column<DateTime>(nullable: false),
-                    NetType = table.Column<bool>(nullable: false),
-                    NetNodes = table.Column<string>(nullable: false),
-                    Target = table.Column<string>(nullable: false),
-                    DrugTarget = table.Column<string>(nullable: true),
-                    AlgorithmType = table.Column<string>(nullable: false),
-                    AlgorithmParams = table.Column<string>(nullable: false),
+                    StartTime = table.Column<DateTime>(nullable: false),
+                    EndTime = table.Column<DateTime>(nullable: true),
+                    AnalysisName = table.Column<string>(nullable: false),
+                    UserGivenNetworkType = table.Column<bool>(nullable: false),
+                    UserGivenNetworkGeneration = table.Column<string>(nullable: true),
+                    UserGivenNodes = table.Column<string>(nullable: false),
+                    UserGivenTarget = table.Column<string>(nullable: false),
+                    UserGivenDrugTarget = table.Column<string>(nullable: true),
+                    NetworkNodeCount = table.Column<int>(nullable: true),
+                    NetworkNodes = table.Column<string>(nullable: true),
+                    NetworkEdgeCount = table.Column<int>(nullable: true),
+                    NetworkEdges = table.Column<string>(nullable: true),
+                    NetworkTargetCount = table.Column<int>(nullable: true),
+                    NetworkTargets = table.Column<string>(nullable: true),
+                    NetworkDrugTargetCount = table.Column<int>(nullable: true),
+                    NetworkDrugTargets = table.Column<string>(nullable: true),
+                    NetworkBestResultCount = table.Column<int>(nullable: true),
+                    NetworkBestResultNodes = table.Column<string>(nullable: true),
                     DoContact = table.Column<bool>(nullable: false),
-                    Network = table.Column<string>(nullable: true),
-                    Progress = table.Column<double>(nullable: true),
-                    BestResult = table.Column<string>(nullable: true),
-                    IsCompleted = table.Column<bool>(nullable: true),
-                    ScheduledToStop = table.Column<bool>(nullable: true)
+                    Status = table.Column<string>(nullable: true),
+                    ScheduledToStop = table.Column<bool>(nullable: true),
+                    AlgorithmType = table.Column<string>(nullable: false),
+                    GeneticRandomSeed = table.Column<int>(nullable: true),
+                    GeneticMaxIteration = table.Column<int>(nullable: true),
+                    GeneticMaxIterationNoImprovement = table.Column<int>(nullable: true),
+                    GeneticMaxPathLength = table.Column<int>(nullable: true),
+                    GeneticPopulationSize = table.Column<int>(nullable: true),
+                    GeneticElementsRandom = table.Column<int>(nullable: true),
+                    GeneticPercentageRandom = table.Column<double>(nullable: true),
+                    GeneticPercentageElite = table.Column<double>(nullable: true),
+                    GeneticProbabilityMutation = table.Column<double>(nullable: true),
+                    GreedyRandomSeed = table.Column<int>(nullable: true),
+                    GreedyMaxIteration = table.Column<int>(nullable: true),
+                    GreedyMaxIterationNoImprovement = table.Column<int>(nullable: true),
+                    GreedyMaxPathLength = table.Column<int>(nullable: true),
+                    GreedyCutToDriven = table.Column<bool>(nullable: true),
+                    GreedyCutNonBranching = table.Column<bool>(nullable: true),
+                    GreedyHeuristics = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AnalysesModel", x => x.RunId);
+                    table.PrimaryKey("PK_AnalysisModel", x => x.AnalysisId);
                     table.ForeignKey(
-                        name: "FK_AnalysesModel_AspNetUsers_UserId",
+                        name: "FK_AnalysisModel_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -186,41 +210,9 @@ namespace NetControlApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Runs",
-                columns: table => new
-                {
-                    RunId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: true),
-                    RunName = table.Column<string>(nullable: true),
-                    Time = table.Column<DateTime>(nullable: true),
-                    NetType = table.Column<string>(nullable: true),
-                    NetNodes = table.Column<string>(nullable: true),
-                    DoContact = table.Column<bool>(nullable: true),
-                    Network = table.Column<string>(nullable: true),
-                    Target = table.Column<string>(nullable: true),
-                    DrugTarget = table.Column<string>(nullable: true),
-                    AlgorithmType = table.Column<string>(nullable: true),
-                    AlgorithmParams = table.Column<string>(nullable: true),
-                    Progress = table.Column<double>(nullable: true),
-                    BestResult = table.Column<string>(nullable: true),
-                    IsCompleted = table.Column<bool>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Runs", x => x.RunId);
-                    table.ForeignKey(
-                        name: "FK_Runs_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_AnalysesModel_UserId",
-                table: "AnalysesModel",
+                name: "IX_AnalysisModel_UserId",
+                table: "AnalysisModel",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -261,17 +253,12 @@ namespace NetControlApp.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Runs_UserId",
-                table: "Runs",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AnalysesModel");
+                name: "AnalysisModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -287,9 +274,6 @@ namespace NetControlApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "Runs");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

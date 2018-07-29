@@ -30,6 +30,15 @@
         }
     });
 
+    $("#isSeed").on('change', function () {
+        if (document.getElementById('isSeed').checked) {
+            $('#generationType').collapse("show");
+        } else {
+            $('#generationType').collapse("hide");
+        }
+
+    });
+
     // If a new type of algorithm is selected, then show the corresponding fields.
     $("#selectAlgorithm").on('change', function () {
         var value = $('#selectAlgorithm').val();

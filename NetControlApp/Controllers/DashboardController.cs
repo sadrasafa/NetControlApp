@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NetControlApp.Data;
 using NetControlApp.Models;
+using NetControlApp.Algorithms;
 
 namespace NetControlApp.Controllers
 {
@@ -32,8 +33,8 @@ namespace NetControlApp.Controllers
         public async Task<IActionResult> ViewAll()
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
-            var runs = _context.AnalysisModel.Where(run => run.User == user).OrderByDescending(run => run.Time);
-            return View(runs);
+            var analyses = _context.AnalysisModel.Where(a => a.User == user).OrderByDescending(a => a.StartTime);
+            return View(analyses);
         }
 
         // GET: Dash/Details/5
@@ -45,7 +46,7 @@ namespace NetControlApp.Controllers
             }
 
             var analysisModel = await _context.AnalysisModel
-                .FirstOrDefaultAsync(m => m.RunId == id);
+                .FirstOrDefaultAsync(m => m.AnalysisId == id);
             if (analysisModel == null)
             {
                 return NotFound();
@@ -65,63 +66,24 @@ namespace NetControlApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RunId,AnalysisName,NetType,NetNodes,Target,DrugTarget,AlgorithmType,DoContact,RandomSeed,MaxIteration,MaxIterationNoImprovement,MaxPathLength,GeneticPopulationSize,GeneticElementsRandom,GeneticPercentageRandom,GeneticPercentageElite,GeneticProbabilityMutation,GreedyHeuristics")] AnalysisModel analysisModel)
+        public async Task<IActionResult> Create([Bind("AnalysisName,UserGivenNetworkType,UserGivenNetworkGeneration,UserGivenNodes,UserGivenTarget,UserGivenDrugTarget,DoContact,AlgorithmType,GeneticRandomSeed,GeneticMaxIteration,GeneticMaxIterationNoImprovement,GeneticMaxPathLength,GeneticPopulationSize,GeneticElementsRandom,GeneticPercentageRandom,GeneticPercentageElite,GeneticProbabilityMutation,GreedyRandomSeed,GreedyMaxIteration,GreedyMaxIterationNoImprovement,GreedyMaxPathLength,GreedyCutToDriven,GreedyCutNonBranching,GreedyHeuristics")] AnalysisModel analysisModel)
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
             analysisModel.User = user;
 
             if (ModelState.IsValid && user != null)
             {
-                // Remove from the model the parameters of the unused algorithm type.
-                if (analysisModel.RandomSeed == null)
+                Algorithms.Algorithms.UpdateParameters(analysisModel);
+                if (Algorithms.Algorithms.GenNetwork(analysisModel))
                 {
-                    analysisModel.RandomSeed = (new Random()).Next();
-                }
-                if (analysisModel.MaxIteration == null)
-                {
-                    analysisModel.MaxIteration = 10000;
-                }
-                if (analysisModel.MaxIterationNoImprovement == null)
-                {
-                    analysisModel.MaxIterationNoImprovement = null;
-                }
-                if (analysisModel.MaxPathLength == null)
-                {
-                    analysisModel.MaxPathLength = 5;
-                }
-                if (analysisModel.AlgorithmType == "greedy")
-                {
-                    if (analysisModel.GreedyHeuristics == null)
-                    {
-                        analysisModel.GreedyHeuristics = "T F 1 (->@CA)(->@PA)(->D)(->CA)(->PA)(->N)(->T)";
-                    }
+                    _context.Add(analysisModel);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    if (analysisModel.GeneticPopulationSize == null)
-                    {
-                        analysisModel.GeneticPopulationSize = 80;
-                    }
-                    if (analysisModel.GeneticElementsRandom == null)
-                    {
-                        analysisModel.GeneticElementsRandom = 15;
-                    }
-                    if (analysisModel.GeneticPercentageRandom == null)
-                    {
-                        analysisModel.GeneticPercentageRandom = 0.25;
-                    }
-                    if (analysisModel.GeneticPercentageElite == null)
-                    {
-                        analysisModel.GeneticPercentageElite = 0.25;
-                    }
-                    if (analysisModel.GeneticProbabilityMutation == null)
-                    {
-                        analysisModel.GeneticProbabilityMutation = 0.001;
-                    }
+                    return View(analysisModel);
                 }
-                _context.Add(analysisModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
             return View(analysisModel);
         }
@@ -147,9 +109,9 @@ namespace NetControlApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RunId,AnalysisName,Time,NetType,NetNodes,Target,DrugTarget,AlgorithmType,DoContact,Network,Progress,BestResult,IsCompleted,ScheduledToStop,RandomSeed,MaxIteration,MaxIterationNoImprovement,MaxPathLength,GeneticPopulationSize,GeneticElementsRandom,GeneticPercentageRandom,GeneticPercentageElite,GeneticProbabilityMutation,GreedyHeuristics")] AnalysisModel analysisModel)
+        public async Task<IActionResult> Edit(int id, [Bind("AnalysisId,StartTime,EndTime,AnalysisName,UserGivenNetworkType,UserGivenNodes,UserGivenTarget,UserGivenDrugTarget,NetworkNodeCount,NetworkNodes,NetworkEdgeCount,NetworkEdges,NetworkTargetCount,NetworkTargets,NetworkDrugTargetCount,NetworkDrugTargets,NetworkBestResultCount,NetworkBestResultNodes,DoContact,Status,ScheduledToStop,AlgorithmType,GeneticRandomSeed,GeneticMaxIteration,GeneticIterationNoImprovement,GeneticMaxPathLength,GeneticPopulationSize,GeneticElementsRandom,GeneticPercentageRandom,GeneticPercentageElite,GeneticProbabilityMutation,GreedyRandomSeed,GreedyMaxIteration,GreedyMaxIterationNoImprovement,GreedyMaxPathLength,GreedyHeuristics")] AnalysisModel analysisModel)
         {
-            if (id != analysisModel.RunId)
+            if (id != analysisModel.AnalysisId)
             {
                 return NotFound();
             }
@@ -163,7 +125,7 @@ namespace NetControlApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AnalysisModelExists(analysisModel.RunId))
+                    if (!AnalysisModelExists(analysisModel.AnalysisId))
                     {
                         return NotFound();
                     }
@@ -186,7 +148,7 @@ namespace NetControlApp.Controllers
             }
 
             var analysisModel = await _context.AnalysisModel
-                .FirstOrDefaultAsync(m => m.RunId == id);
+                .FirstOrDefaultAsync(m => m.AnalysisId == id);
             if (analysisModel == null)
             {
                 return NotFound();
@@ -208,7 +170,7 @@ namespace NetControlApp.Controllers
 
         private bool AnalysisModelExists(int id)
         {
-            return _context.AnalysisModel.Any(e => e.RunId == id);
+            return _context.AnalysisModel.Any(e => e.AnalysisId == id);
         }
     }
 }
