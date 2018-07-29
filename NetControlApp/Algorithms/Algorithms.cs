@@ -13,185 +13,29 @@ namespace NetControlApp.Algorithms
    public class Algorithms
     {
         /// <summary>
-        /// Reads the user provided network file and writes it to the database.
+        /// Reads the user provided fields, and generates the network based on them.
         /// </summary>
-        /// <param name="AnalysisId">The unique analysis id in the database.</param>
-        /// <param name="_context">The database context.</param>
-        /// <returns>True if the given fields have no conflicts, false otherwise.</returns>
-        public static async Task WriteToDatabase(int AnalysisId, ApplicationDbContext  _context)
-        {
-            // The separators, which might be also provided as a parameter to the function.
-            var separators = new string[] { ";", "\t", "\n", "\r"};
-            // Read the model and updates the status.
-            var analysisModel = await _context.AnalysisModel.FindAsync(AnalysisId);
-            _context.Update(analysisModel);
-            analysisModel.Status = "Generating and saving the networks to the database.";
-            await _context.SaveChangesAsync();
-            // Save the status change in the database.
-            _context.Update(analysisModel);
-            // Check if the network was given as seed nodes.
-            if (analysisModel.UserGivenNetworkType)
-            {
-                analysisModel.NetworkEdges = "seed";
-            }
-            else
-            {
-                // Parse the edges from the text.
-                var edges = analysisModel.UserGivenNodes.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                // If there is an odd number of nodes in the "edges" field, return an error.
-                var limit = edges.Count();
-                if (edges.Count() % 2 == 0)
-                {
-                    // Remove the duplicate edges from the list.
-                    var uniqueEdges = new List<String>(edges.Count());
-                    for (int i = 0; i < edges.Count(); i = i + 2)
-                    {
-                        bool exists = false;
-                        for (int j = 0; j < uniqueEdges.Count(); j = j + 2)
-                        {
-                            if (edges[i] == uniqueEdges[j] && edges[i + 1] == uniqueEdges[j + 1])
-                            {
-                                exists = true;
-                                break;
-                            }
-                        }
-                        if (!exists)
-                        {
-                            uniqueEdges.Add(edges[i]);
-                            uniqueEdges.Add(edges[i + 1]);
-                        }
-                    }
-                    var nodes = edges.Distinct();
-                    var targetNodes = analysisModel.UserGivenTarget.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                    analysisModel.NetworkEdgeCount = uniqueEdges.Count() / 2;
-                    analysisModel.NetworkNodeCount = nodes.Count();
-                    analysisModel.NetworkTargetCount = targetNodes.Count();
-                    analysisModel.NetworkEdges = "";
-                    analysisModel.NetworkNodes = "";
-                    analysisModel.NetworkTargets = "";
-                    foreach (var edge in uniqueEdges)
-                    {
-                        analysisModel.NetworkEdges += edge + ";";
-                    }
-                    foreach (var node in nodes)
-                    {
-                        analysisModel.NetworkNodes += node + ";";
-                    }
-                    foreach (var target in targetNodes)
-                    {
-                        analysisModel.NetworkTargets += target + ";";
-                    }
-                    if (analysisModel.UserGivenDrugTarget != null)
-                    {
-                        var drugTargetNodes = analysisModel.UserGivenDrugTarget.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                        analysisModel.NetworkDrugTargetCount = drugTargetNodes.Count();
-                        analysisModel.NetworkDrugTargets = "";
-                        foreach (var target in targetNodes)
-                        {
-                            analysisModel.NetworkTargets += target + ";";
-                        }
-                    }
-                    else
-                    {
-                        analysisModel.NetworkDrugTargetCount = 0;
-                        analysisModel.NetworkDrugTargets = "";
-                    }
-                    if (analysisModel.NetworkTargetCount == 0)
-                    {
-                        analysisModel.Status = "No target nodes were found in the database. Analysis stopped.";
-                        analysisModel.ScheduledToStop = true;
-                    }
-                    else
-                    {
-                        analysisModel.Status = "Network generated and saved into the database.";
-                    }
-                }
-                else
-                {
-                    analysisModel.Status = "The given network edges have an odd number of nodes. Analysis stopped.";
-                    analysisModel.ScheduledToStop = true;
-                }
-                
-            }
-            await _context.SaveChangesAsync();
-        }
-
-        public static bool GenNetwork(AnalysisModel analysisModel)
+        /// <param name="analysisModel">The analysis model to parse.</param>
+        /// <returns>True if the network could be generate with no issues, false otherwise.</returns>
+        public static bool GenerateNetwork(AnalysisModel analysisModel)
         {
             // The separators, which might be also provided as a parameter to the function.
             var toReturn = false;
             var separators = new string[] { ";", "\t", "\n", "\r" };
             if (analysisModel.UserGivenNetworkType)
             {
-                // Seed nodes.
+                // If the network is given as seed nodes.
             }
             else
             {
+                // If the network is given as edges - pairs of nodes.
                 var edges = Functions.GetEdges(analysisModel.UserGivenNodes, separators);
-                var nodes = Functions.GetNodes(edges);
-                var targets = Functions.GetTargets(analysisModel.UserGivenTarget, nodes, separators);
-                if (targets.Count() == 0)
+                // If there is an uneven number of nodes, return an error.
+                if (edges.Count() % 2 != 0)
                 {
-                    analysisModel.Status = "No targets found.";
-                    toReturn = false;
+                    analysisModel.Status = "An odd number of nodes is given as the network edges.";
                 }
                 else
-                {
-                    if (analysisModel.UserGivenDrugTarget != null)
-                    {
-                        var drugTargets = Functions.GetDrugTargets(analysisModel.UserGivenDrugTarget, nodes, separators);
-                        analysisModel.NetworkDrugTargetCount = drugTargets.Count();
-                        analysisModel.NetworkDrugTargets = "";
-                        foreach (var node in drugTargets)
-                        {
-                            analysisModel.NetworkDrugTargets += node + ";";
-                        }
-                    }
-                    else
-                    {
-                        analysisModel.NetworkDrugTargets = null;
-                        analysisModel.NetworkDrugTargetCount = 0;
-                    }
-                    analysisModel.NetworkEdgeCount = edges.Count() / 2;
-                    analysisModel.NetworkEdges = "";
-                    foreach (var node in edges)
-                    {
-                        analysisModel.NetworkEdges += node + ";";
-                    }
-                    analysisModel.NetworkNodeCount = nodes.Count();
-                    analysisModel.NetworkNodes = "";
-                    foreach (var node in nodes)
-                    {
-                        analysisModel.NetworkNodes += node + ";";
-                    }
-                    analysisModel.NetworkTargetCount = targets.Count();
-                    analysisModel.NetworkTargets = "";
-                    foreach (var node in targets)
-                    {
-                        analysisModel.NetworkTargets += node + ";";
-                    }
-                    analysisModel.Status = "Everything saved correctly.";
-                    toReturn = true;
-                }
-            }
-            return toReturn;
-        }
-
-        public static void GenerateNetwork(AnalysisModel analysisModel)
-        {
-            // The separators, which might be also provided as a parameter to the function.
-            var separators = new string[] { ";", "\t", "\n", "\r" };
-            // Check if the network was given as seed nodes.
-            if (analysisModel.UserGivenNetworkType)
-            {
-                analysisModel.NetworkEdges = "seed";
-            }
-            else
-            {
-                // Parse the edges from the text.
-                var edges = analysisModel.UserGivenNodes.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                // If there is an odd number of nodes in the "edges" field, return an error.
-                if (edges.Count() % 2 == 0)
                 {
                     // Remove the duplicate edges from the list.
                     var uniqueEdges = new List<String>(edges.Count());
@@ -212,58 +56,55 @@ namespace NetControlApp.Algorithms
                             uniqueEdges.Add(edges[i + 1]);
                         }
                     }
-                    var nodes = edges.Distinct();
-                    var targetNodes = nodes.Intersect(analysisModel.UserGivenTarget.Split(separators, StringSplitOptions.RemoveEmptyEntries)).Distinct();
-                    analysisModel.NetworkEdgeCount = uniqueEdges.Count() / 2;
-                    analysisModel.NetworkNodeCount = nodes.Count();
-                    analysisModel.NetworkTargetCount = targetNodes.Count();
-                    analysisModel.NetworkEdges = "";
-                    analysisModel.NetworkNodes = "";
-                    analysisModel.NetworkTargets = "";
-                    foreach (var edge in uniqueEdges)
+                    var nodes = Functions.GetNodes(uniqueEdges.ToArray());
+                    var targets = Functions.GetTargets(analysisModel.UserGivenTarget, nodes, separators);
+                    // If none of the target nodes could be found in the network, return an error.
+                    if (targets.Count() == 0)
                     {
-                        analysisModel.NetworkEdges += edge + ";";
+                        analysisModel.Status = "None of the given target nodes could be found in the network.";
+                        toReturn = false;
                     }
-                    foreach (var node in nodes)
+                    else
                     {
-                        analysisModel.NetworkNodes += node + ";";
-                    }
-                    foreach (var target in targetNodes)
-                    {
-                        analysisModel.NetworkTargets += target + ";";
-                    }
-                    if (analysisModel.UserGivenDrugTarget != null)
-                    {
-                        var drugTargetNodes = analysisModel.UserGivenDrugTarget.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                        analysisModel.NetworkDrugTargetCount = drugTargetNodes.Count();
-                        analysisModel.NetworkDrugTargets = "";
-                        foreach (var target in targetNodes)
+                        analysisModel.NetworkEdgeCount = uniqueEdges.Count() / 2;
+                        analysisModel.NetworkEdges = "";
+                        foreach (var node in uniqueEdges)
                         {
-                            analysisModel.NetworkTargets += target + ";";
+                            analysisModel.NetworkEdges += node + ";";
                         }
-                    }
-                    else
-                    {
-                        analysisModel.NetworkDrugTargetCount = 0;
-                        analysisModel.NetworkDrugTargets = "";
-                    }
-                    if (analysisModel.NetworkTargetCount == 0)
-                    {
-                        analysisModel.Status = "No target nodes were found in the database. Can't create analysis.";
-                        analysisModel.ScheduledToStop = true;
-                    }
-                    else
-                    {
-                        analysisModel.Status = "Network generated and saved into the database.";
+                        analysisModel.NetworkNodeCount = nodes.Count();
+                        analysisModel.NetworkNodes = "";
+                        foreach (var node in nodes)
+                        {
+                            analysisModel.NetworkNodes += node + ";";
+                        }
+                        analysisModel.NetworkTargetCount = targets.Count();
+                        analysisModel.NetworkTargets = "";
+                        foreach (var node in targets)
+                        {
+                            analysisModel.NetworkTargets += node + ";";
+                        }
+                        if (analysisModel.UserGivenDrugTarget != null)
+                        {
+                            var drugTargets = Functions.GetDrugTargets(analysisModel.UserGivenDrugTarget, nodes, separators);
+                            analysisModel.NetworkDrugTargetCount = drugTargets.Count();
+                            analysisModel.NetworkDrugTargets = "";
+                            foreach (var node in drugTargets)
+                            {
+                                analysisModel.NetworkDrugTargets += node + ";";
+                            }
+                        }
+                        else
+                        {
+                            analysisModel.NetworkDrugTargetCount = 0;
+                            analysisModel.NetworkDrugTargets = null;
+                        }
+                        analysisModel.Status = "Networks generated and saved into the database.";
+                        toReturn = true;
                     }
                 }
-                else
-                {
-                    analysisModel.Status = "The given network edges have an odd number of nodes. Can't create analysis.";
-                    analysisModel.ScheduledToStop = true;
-                }
-
             }
+            return toReturn;
         }
 
         public static void UpdateParameters(AnalysisModel analysisModel)
