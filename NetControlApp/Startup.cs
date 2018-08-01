@@ -40,7 +40,7 @@ namespace NetControlApp
             
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
-                config.SignIn.RequireConfirmedEmail = false;
+                config.SignIn.RequireConfirmedEmail = true;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -55,6 +55,11 @@ namespace NetControlApp
                 {
                     microsoftOptions.ClientId = Configuration["Authentication:Microsoft:ApplicationId"];
                     microsoftOptions.ClientSecret = Configuration["Authentication:Microsoft:Password"];
+                })
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
                 });
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

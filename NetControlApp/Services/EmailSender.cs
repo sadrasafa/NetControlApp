@@ -29,7 +29,7 @@ namespace NetControlApp.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("NetControlApp@combio.com", "Net Control App"),
+                From = new EmailAddress("netcontrol.combio@gmail.com", "Net Control App"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

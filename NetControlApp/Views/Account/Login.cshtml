@@ -76,14 +76,20 @@
                                 {
                                     if (provider.Name == "Google")
                                     {
-                                        
+
                                         <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fa fa-google" style="font-size:150%"></i> @provider.Name</button>
 
                                     }
                                     if (provider.Name == "Microsoft")
                                     {
-                                        
-                                        <button  type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="typcn typcn-vendor-microsoft" style="font-size:118%"></i> @provider.Name</button>
+
+                                        <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="typcn typcn-vendor-microsoft" style="font-size:118%"></i> @provider.Name</button>
+
+                                    }
+                                    if (provider.Name == "Facebook")
+                                    {
+
+                                        <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="typcn typcn-vendor-microsoft" style="font-size:118%"></i> @provider.Name</button>
 
                                     }
 

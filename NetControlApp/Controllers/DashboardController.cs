@@ -74,16 +74,16 @@ namespace NetControlApp.Controllers
             if (ModelState.IsValid && user != null)
             {
                 Algorithms.Algorithms.UpdateParameters(analysisModel);
-                if (Algorithms.Algorithms.GenNetwork(analysisModel))
-                {
-                    _context.Add(analysisModel);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    return View(analysisModel);
-                }
+               //if (Algorithms.Algorithms.GenNetwork(analysisModel))
+               // {
+               //     _context.Add(analysisModel);
+               //     await _context.SaveChangesAsync();
+               //     return RedirectToAction(nameof(Index));
+               // }
+               // else
+               // {
+               //     return View(analysisModel);
+               // }
             }
             return View(analysisModel);
         }
