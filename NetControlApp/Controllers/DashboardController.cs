@@ -74,7 +74,7 @@ namespace NetControlApp.Controllers
             if (ModelState.IsValid && user != null)
             {
                 Algorithms.Algorithms.UpdateParameters(analysisModel);
-                if (Algorithms.Algorithms.GenNetwork(analysisModel))
+                if (Algorithms.Algorithms.GenerateNetwork(analysisModel))
                 {
                     _context.Add(analysisModel);
                     await _context.SaveChangesAsync();
