@@ -1,32 +1,34 @@
-﻿*{
-    box-sizing:border-box;
-    
+﻿* {
+    box-sizing: border-box;
 }
+
 .contentView {
     text-align: center;
     align-content: center;
-    padding-left:10rem;
+    padding-left: 10rem;
     background-color: #fcfcfc;
     padding-top: 4%;
     padding-bottom: 2%;
-   
 }
+
 .row.inside {
-   
-    width:75%;
+    width: 65%;
     padding: 0.5rem;
-  
     margin-bottom: 2rem;
     color: black;
     border-radius: 20px;
-    box-shadow: inset 0 0 0 2px rgba(185, 181, 181, 0.69);
-  
-   
+    color: black;
+    display: inline-block;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 5px #fff;
 }
-    .row.inside:hover {
-        box-shadow: inset 0 0 0 5px #fff;
-    
-    }
+.row.going:hover {
+    box-shadow: inset 0 0 0 2px rgba(20, 53, 236, 0.86);
+}
+.row.cmpl:hover {
+    box-shadow: inset 0 0 0 2px rgba(27, 92, 27, 0.81);
+}
+ 
 
 .col-lg-12.col-md-12.col-sm-12.col-xs-12.itemm {
     padding: 1%;
@@ -40,5 +42,13 @@
     align-content: center;
     text-align: center;
     font-size: 100%;
-    
+}
+
+p.head {
+    height: 3rem;
+   
+}
+p.ll{
+    height:2.5rem;
+    font-size: 105%;
 }
