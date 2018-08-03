@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<NetControlApp.Models.AnalysisModel>
+<link rel="stylesheet" href="~/assets/css/viewAll.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 @{
     ViewData["Title"] = "Index";
@@ -9,237 +12,110 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AnalysisName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserGivenNetworkType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserGivenNetworkGeneration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserGivenNodes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserGivenTarget)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserGivenDrugTarget)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetworkNodeCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetworkNodes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetworkEdgeCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetworkEdges)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetworkTargetCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetworkTargets)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetworkDrugTargetCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetworkDrugTargets)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetworkBestResultCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetworkBestResultNodes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DoContact)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ScheduledToStop)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AlgorithmType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GeneticRandomSeed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GeneticMaxIteration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GeneticMaxIterationNoImprovement)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GeneticMaxPathLength)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GeneticPopulationSize)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GeneticElementsRandom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GeneticPercentageRandom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GeneticPercentageElite)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GeneticProbabilityMutation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GreedyRandomSeed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GreedyMaxIteration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GreedyMaxIterationNoImprovement)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GreedyMaxPathLength)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GreedyHeuristics)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AnalysisName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserGivenNetworkType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserGivenNetworkGeneration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserGivenNodes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserGivenTarget)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserGivenDrugTarget)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetworkNodeCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetworkNodes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetworkEdgeCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetworkEdges)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetworkTargetCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetworkTargets)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetworkDrugTargetCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetworkDrugTargets)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetworkBestResultCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetworkBestResultNodes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DoContact)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ScheduledToStop)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AlgorithmType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GeneticRandomSeed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GeneticMaxIteration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GeneticMaxIterationNoImprovement)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GeneticMaxPathLength)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GeneticPopulationSize)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GeneticElementsRandom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GeneticPercentageRandom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GeneticPercentageElite)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GeneticProbabilityMutation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GreedyRandomSeed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GreedyMaxIteration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GreedyMaxIterationNoImprovement)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GreedyMaxPathLength)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GreedyHeuristics)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AnalysisId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AnalysisId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AnalysisId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="contentView">
+    @foreach (var item in Model)
+    {
+        @if (item.Status == "Completed")
+        {
+            <div class="row asd">
+
+                <section class="row inside col-lg-12 col-md-12 col-sm-12 col-xs-12" style=" background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #10cc1ede), color-stop(1, #1e4fae33) );
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#10cc1ede', endColorstr='#1e4fae33')">
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style=" color:black;border-bottom:solid 1px rgba(223,235,213,0.35)">
+                        <b>@Html.DisplayFor(modelItem => item.AnalysisName)</b>
+                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 " style="display:inline-block;float:right">
+                        <i class="fa fa-check icon" style="font-size:100%"></i>
+                    </p>
+                    <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12 itemm" style="color:black;">
+                        Algorithm type: @Html.DisplayFor(modelItem => item.AlgorithmType)
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkNodeCount) Nodes
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkEdgeCount) Edges
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkTargetCount) Targets
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkDrugTargets) Drug Targets
+                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.StartTime.Month)/@Html.DisplayFor(modelItem => item.StartTime.Day)/@Html.DisplayFor(modelItem => item.StartTime.Year)
+                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </p>
+                    <p class="col-lg-6 col-md-6 cold-sm-6 col-xs-6" style="align-content:center; text-align:right; font-size:120%; ">
+                        <a asp-action="Details" asp-route-id="@item.AnalysisId">Details </a><i class="fa fa-level-down" style="font-size:100%"></i> |
+                        <a asp-action="Delete" asp-route-id="@item.AnalysisId">Delete </a><i class="fa fa-close" style="font-size:100%"></i>
+                    </p>
+                </section>
+
+            </div>
+
+        }
+        else
+        {
+            <div class="row asd">
+
+                <section class="row inside col-lg-12 col-md-12 col-sm-12 col-xs-12" style="color:black; display:inline-block; background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #243ad7de), color-stop(1, #1e4fae33) );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#243ad7de', endColorstr='#1e4fae33')">
+     
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style=" color:black">
+                       <b>@Html.DisplayFor(modelItem => item.AnalysisName)</b>
+                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 " style="display:inline-block;float:right">
+                       <a asp-action="ViewAll"> <i class="fa fa-refresh icon" style=" padding:1rem;font-size:150%; color:black;display:inline-block;float:right"></i></a>
+                    </p>
+                
+
+                    <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12 itemm" style="color:black;">
+                        Algorithm type: @Html.DisplayFor(modelItem => item.AlgorithmType)
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkNodeCount) Nodes
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkEdgeCount) Edges
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkTargetCount) Targets
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkDrugTargets) Drug Targets
+                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.StartTime.Month)/@Html.DisplayFor(modelItem => item.StartTime.Day)/@Html.DisplayFor(modelItem => item.StartTime.Year)
+                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
+                        --/--/----
+                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </p>
+                    <p class="col-lg-6 col-md-6 cold-sm-6 col-xs-6" style="align-content:center; text-align:right; font-size:120%; ">
+                        <a asp-action="Details" asp-route-id="@item.AnalysisId">Details </a><i class="fa fa-level-down" style="font-size:100%"></i> |
+                        <a asp-action="Stop" asp-route-id="@item.AnalysisId">Stop </a><i class="fa fa-close" style="font-size:100%"></i>
+                    </p>
+                </section>
+
+            </div>
+
+
+        }
+    }
+
+</div>
+
+
+<div>
+    <a asp-action="Index">Back to Dashboard</a>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="~/assets/js/details.js"></script>

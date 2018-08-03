@@ -1,31 +1,27 @@
-﻿*{
-    box-sizing:border-box;
-    
+﻿* {
+    box-sizing: border-box;
 }
+
 .contentView {
     text-align: center;
     align-content: center;
-    padding-left:10rem;
+    padding-left: 10rem;
     background-color: #fcfcfc;
     padding-top: 4%;
     padding-bottom: 2%;
-   
 }
+
 .row.inside {
-   
-    width:75%;
+    width: 75%;
     padding: 0.5rem;
-  
     margin-bottom: 2rem;
     color: black;
     border-radius: 20px;
     box-shadow: inset 0 0 0 2px rgba(185, 181, 181, 0.69);
-  
-   
 }
+
     .row.inside:hover {
         box-shadow: inset 0 0 0 5px #fff;
-    
     }
 
 .col-lg-12.col-md-12.col-sm-12.col-xs-12.itemm {
@@ -40,5 +36,4 @@
     align-content: center;
     text-align: center;
     font-size: 100%;
-    
 }
