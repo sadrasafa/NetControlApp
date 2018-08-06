@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<NetControlApp.Models.AnalysisModel>
-<link rel="stylesheet" href="~/assets/css/index.css"/>
+<link rel="stylesheet" href="~/assets/css/viewAll.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/assets/fonts/typicons.min.css">
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>My Analyses</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -19,7 +20,7 @@
         {
             <div class="row asd">
 
-                <section class="row inside col-lg-12 col-md-12 col-sm-12 col-xs-12 cmpl" >
+                <section class="row inside col-lg-12 col-md-12 col-sm-12 col-xs-12 cmpl">
 
                     <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm head" style=" color:rgb(27,92,27); font-size:120%">
                         <b>@Html.DisplayFor(modelItem => item.AnalysisName)</b>
@@ -46,10 +47,10 @@
                     </p><br />
                     <hr style="border-width:2px">
                     <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black; height:2.5rem">
-                        @Html.DisplayFor(modelItem => item.StartTime)
+                        <b>Start Time:</b> @Html.DisplayFor(modelItem => item.StartTime)
                     </p>
                     <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;height:2.5rem">
-                        @Html.DisplayFor(modelItem => item.EndTime)
+                        <b>End Time:</b> @Html.DisplayFor(modelItem => item.EndTime)
                     </p><br />
                     <hr style="border-width:2px">
                     <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
@@ -57,7 +58,7 @@
                     </p>
                     <p class="col-lg-6 col-md-6 cold-sm-6 col-xs-6" style="align-content:center; text-align:right; font-size:120%; ">
                         <a asp-action="Details" asp-route-id="@item.AnalysisId">Details </a><i class="fa fa-level-down" style="font-size:100%"></i> |
-                        <a asp-action="Stop" asp-route-id="@item.AnalysisId">Delete </a><i class="fa fa-close" style="font-size:100%"></i>
+                        <a asp-action="Stop" asp-route-id="@item.AnalysisId">Stop </a><i class="fa fa-close" style="font-size:100%"></i>
                     </p>
                 </section>
 
@@ -68,35 +69,39 @@
         {
             <div class="row asd">
 
-                <section class="row inside col-lg-12 col-md-12 col-sm-12 col-xs-12" style=" background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #10cc1ede), color-stop(1, #1e4fae33) );
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#10cc1ede', endColorstr='#1e4fae33')">
-                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style=" color:black;border-bottom:solid 1px rgba(223,235,213,0.35)">
+                <section class="row inside col-lg-12 col-md-12 col-sm-12 col-xs-12 stp">
+
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm head" style=" color:rgba(139, 0, 0, 0.97); font-size:120%">
                         <b>@Html.DisplayFor(modelItem => item.AnalysisName)</b>
                     </p>
-                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 " style="display:inline-block;float:right">
-                        <i class="fa fa-check icon" style="font-size:100%"></i>
-                    </p>
-                    <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12 itemm" style="color:black; height:2.5rem">
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 head" style="display:inline-block;float:right">
+                        <i class="fa fa-stop" style=" text-decoration:none;padding:0.7rem;font-size:125%; color:darkred;display:inline-block;float:right"></i>
+                    </p><br />
+                    <hr style="border-width:2px">
+                    <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12 itemm" style="color:black; height:2.5rem; font-size:120%">
                         <b>Algorithm type:</b>  @Html.DisplayFor(modelItem => item.AlgorithmType)
-                    </p>
-                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm ll" style="color:black;">
+                    </p><br />
+                    <hr style="border-width:2px">
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
                         @Html.DisplayFor(modelItem => item.NetworkNodeCount) Nodes
                     </p>
-                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm ll" style="color:black;">
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
                         @Html.DisplayFor(modelItem => item.NetworkEdgeCount) Edges
                     </p>
-                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm ll" style="color:black;">
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
                         @Html.DisplayFor(modelItem => item.NetworkTargetCount) Targets
                     </p>
-                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm ll" style="color:black;">
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
                         @Html.DisplayFor(modelItem => item.NetworkDrugTargetCount) Drug Targets
+                    </p><br />
+                    <hr style="border-width:2px">
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black; height:2.5rem">
+                        <b>Start Time:</b> @Html.DisplayFor(modelItem => item.StartTime)
                     </p>
-                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
-                        @Html.DisplayFor(modelItem => item.StartTime.Month)/@Html.DisplayFor(modelItem => item.StartTime.Day)/@Html.DisplayFor(modelItem => item.StartTime.Year)
-                    </p>
-                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
-                        @Html.DisplayFor(modelItem => item.EndTime)
-                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;height:2.5rem">
+                        <b>Stop time:</b> @Html.DisplayFor(modelItem => item.EndTime)
+                    </p><br />
+                    <hr style="border-width:2px">
                     <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
                         @Html.DisplayFor(modelItem => item.Status)
                     </p>
@@ -109,11 +114,60 @@
             </div>
 
         }
+        else if (item.Status == "Scheduled to stop")
+        {
+            <div class="row asd">
+
+                <section class="row inside col-lg-12 col-md-12 col-sm-12 col-xs-12 sch">
+
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm head" style=" color:rgba(220, 120, 14, 0.94); font-size:120%">
+                        <b>@Html.DisplayFor(modelItem => item.AnalysisName)</b>
+                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 head" style="display:inline-block;float:right">
+                        <i class="fa fa-stop" style=" text-decoration:none;padding:0.7rem;font-size:125%; color:rgb(220,120,14);display:inline-block;float:right"></i>
+                    </p><br />
+                    <hr style="border-width:2px">
+                    <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12 itemm" style="color:black; height:2.5rem; font-size:120%">
+                        <b>Algorithm type:</b>  @Html.DisplayFor(modelItem => item.AlgorithmType)
+                    </p><br />
+                    <hr style="border-width:2px">
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkNodeCount) Nodes
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkEdgeCount) Edges
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkTargetCount) Targets
+                    </p>
+                    <p class="col-lg-3 col-md-3 col-sm-3 col-xs-3 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.NetworkDrugTargetCount) Drug Targets
+                    </p><br />
+                    <hr style="border-width:2px">
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black; height:2.5rem">
+                        <b>Start Time:</b> @Html.DisplayFor(modelItem => item.StartTime)
+                    </p>
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;height:2.5rem">
+                        <b>Stop time:</b> @Html.DisplayFor(modelItem => item.EndTime)
+                    </p><br />
+                    <hr style="border-width:2px">
+                    <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </p>
+                    <p class="col-lg-6 col-md-6 cold-sm-6 col-xs-6" style="align-content:center; text-align:right; font-size:120%; ">
+                        <a asp-action="Details" asp-route-id="@item.AnalysisId">Details </a><i class="fa fa-level-down" style="font-size:100%"></i> 
+                        @*<a asp-action="Delete" asp-route-id="@item.AnalysisId">Delete </a><i class="fa fa-close" style="font-size:100%"></i>*@
+                    </p>
+                </section>
+
+            </div>
+
+        }
         else
         {
             <div class="row asd">
 
-                <section class="row inside col-lg-12 col-md-12 col-sm-12 col-xs-12 going" >
+                <section class="row inside col-lg-12 col-md-12 col-sm-12 col-xs-12 going">
 
                     <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm head" style=" color:rgb(20, 53, 236); font-size:120%">
                         <b>@Html.DisplayFor(modelItem => item.AnalysisName)</b>
@@ -140,7 +194,7 @@
                     </p><br />
                     <hr style="border-width:2px">
                     <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black; height:2.5rem">
-                        @Html.DisplayFor(modelItem => item.StartTime)
+                        <b>Start Time:</b> @Html.DisplayFor(modelItem => item.StartTime)
                     </p>
                     <p class="col-lg-6 col-md-6 col-sm-6 col-xs-6 itemm" style="color:black;height:2.5rem">
                         --/--/----
@@ -165,7 +219,7 @@
 
 
 <div>
-    <a asp-action="Index">Back to Dashboard</a>
+    <a asp-action="Index"><i class="typcn typcn-arrow-back" style="font-size:200%; color:black"></i> Back to Dashboard</a>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="~/assets/js/details.js"></script>

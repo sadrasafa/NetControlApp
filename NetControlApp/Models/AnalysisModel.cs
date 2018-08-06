@@ -14,9 +14,12 @@ namespace NetControlApp.Models
         public ApplicationUser User { get; set; }
 
         [DataType(DataType.DateTime)]
+        [Display(Name = "Start Time")]
         public DateTime StartTime { get; set; } = DateTime.Now;
 
+       
         [DataType(DataType.DateTime)]
+        [Display(Name = "End Time")]
         public DateTime? EndTime { get; set; }
 
         [Required]

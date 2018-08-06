@@ -1,5 +1,8 @@
-﻿@model NetControlApp.Models.AnalysisModel
+﻿
+@model NetControlApp.Models.AnalysisModel
 
+<link rel="stylesheet" href="~/assets/css/details.css" />
+<link rel="stylesheet" href="~/assets/fonts/typicons.min.css">
 @{
     ViewData["Title"] = "Details";
 }
@@ -7,7 +10,7 @@
 <h2>Details</h2>
 
 <div>
-    <h4>AnalysesModel</h4>
+    <h3> @Html.DisplayFor(model => model.AnalysisName) </h3>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -16,24 +19,48 @@
         <dd>
             @Html.DisplayFor(model => model.StartTime)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
+        @if (Model.Status.Equals("Stopped") || Model.Status.Equals("Scheduled to stop"))
+        {
+            <dt>
+                Stop Time
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EndTime)
+            </dd>
+
+        }
+        else
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EndTime)
+            </dd>
+        }
         <dt>
             @Html.DisplayNameFor(model => model.AnalysisName)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.AnalysisName)
         </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.UserGivenNetworkType)
         </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserGivenNetworkType)
-        </dd>
+        @if (Model.UserGivenNetworkType == true)
+        {
+            <dd>
+                Yes
+            </dd>
+        }
+        else
+        {
+            <dd>
+                No
+            </dd>
+        }
+
         <dt>
             @Html.DisplayNameFor(model => model.UserGivenNodes)
         </dt>
@@ -127,9 +154,21 @@
         <dt>
             @Html.DisplayNameFor(model => model.ScheduledToStop)
         </dt>
-        <dd>
+        @if (Model.ScheduledToStop == true)
+        {
+            <dd>
+                Yes
+            </dd>
+        }
+        else
+        {
+            <dd>
+                No
+            </dd>
+        }
+        @*<dd>
             @Html.DisplayFor(model => model.ScheduledToStop)
-        </dd>
+        </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.AlgorithmType)
         </dt>
@@ -223,6 +262,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.AnalysisId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @*<a asp-action="Edit" asp-route-id="@Model.AnalysisId">Edit</a><br />*@
+    <a asp-action="Index"><i class="typcn typcn-arrow-back" style="font-size:200%; color:black"></i> Back to List</a>
 </div>

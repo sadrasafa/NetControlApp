@@ -28,7 +28,9 @@
 .row.cmpl:hover {
     box-shadow: inset 0 0 0 2px rgba(27, 92, 27, 0.81);
 }
- 
+.row.stp:hover {
+    box-shadow: inset 0 0 0 2px rgba(139, 0, 0, 0.97);
+}
 
 .col-lg-12.col-md-12.col-sm-12.col-xs-12.itemm {
     padding: 1%;
