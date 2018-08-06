@@ -188,8 +188,9 @@ namespace NetControlApp.Algorithms
             }
         }
 
-        public static List<List<String>> UsageGeneticNoSeed()
+        public static List<List<String>> UsageGeneticNoSeed(ApplicationDbContext context, int AnalysisId)
         {
+            var analysisModel = context.AnalysisModel.First(a => a.AnalysisId == AnalysisId);
             var separators = new string[] { "\t", "\n", "\r", ";" };
 
             //
@@ -213,7 +214,7 @@ namespace NetControlApp.Algorithms
             var elitismPercentage = 0.25;
             var randomPercentage = 0.25;
             var mutationProbability = 0.001;
-            var maximumPower = 5;
+            var maximumPower = analysisModel.GeneticMaxPathLength ?? 5;
             var maximumRandom = 15;
             var populationSize = 80;
             var numberOfGenerations = 10000;
