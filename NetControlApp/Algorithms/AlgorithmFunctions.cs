@@ -3,6 +3,7 @@ using NetControlApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NetControlApp.Algorithms
@@ -10,7 +11,7 @@ namespace NetControlApp.Algorithms
     /// <summary>
     /// Usage example for running the genetic algorithm with a given graph.
     /// </summary>
-   public class Algorithms
+   public class AlgorithmFunctions
     {
         /// <summary>
         /// Reads the user provided fields, and generates the network based on them.
@@ -22,10 +23,10 @@ namespace NetControlApp.Algorithms
             // The separators, which might be also provided as a parameter to the function.
             var toReturn = false;
             var separators = new string[] { ";", "\t", "\n", "\r" };
-
+            // Checks if the network is provided as seed nodes.
             if (analysisModel.UserIsNetworkSeed)
             {
-                // If the network is given as seed nodes.
+                analysisModel.Status = "The seed nodes part of the program is not yet implemented.";
                 // Remember to update the parameters.
             }
             else
@@ -189,6 +190,11 @@ namespace NetControlApp.Algorithms
                     analysisModel.GreedyHeuristics = "(->@CA)(->@PA)(->D)(->CA)(->PA)(->N)(->T)";
                 }
             }
+        }
+
+        public static void LongLastingJob(int i)
+        {
+            Thread.Sleep(i);
         }
 
         public static List<List<String>> UsageGeneticNoSeed(ApplicationDbContext context, int AnalysisId)

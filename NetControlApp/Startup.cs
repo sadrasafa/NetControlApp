@@ -13,6 +13,7 @@ using NetControlApp.Models;
 using NetControlApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Hangfire;
 
 namespace NetControlApp
 {
@@ -37,7 +38,9 @@ namespace NetControlApp
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+
+            services.AddHangfire(options => options.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
                 config.SignIn.RequireConfirmedEmail = false;
@@ -88,6 +91,9 @@ namespace NetControlApp
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
 
             app.UseMvc(routes =>
             {

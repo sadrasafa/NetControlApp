@@ -30,6 +30,7 @@
         }
     });
 
+    // If the network is provided as seed, show the field asking how to generate the network.
     $("#isSeed").on('change', function () {
         if (document.getElementById('isSeed').checked) {
             $('#generationType').collapse("show");

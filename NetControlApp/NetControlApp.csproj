@@ -9,6 +9,7 @@
     <PackageReference Include="bootstrap-tag" Version="1.0.0" />
     <PackageReference Include="BootstrapMvc.Bootstrap4" Version="1.2.0" />
     <PackageReference Include="CloudflareCacheTagMiddleware" Version="1.0.1" />
+    <PackageReference Include="Hangfire" Version="1.6.20" />
     <PackageReference Include="MaterialDesignLite.TagHelpers" Version="1.0.0" />
     <PackageReference Include="MathNet.Numerics" Version="4.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2" />

@@ -8,7 +8,6 @@
 
     <h2>@ViewData["Title"]</h2>
 
-    <hr />
     <div class="row">
         <div class="col-md-4">
             <form asp-action="Create">
@@ -157,7 +156,7 @@
                     <span asp-validation-for="GreedyHeuristics" class="text-danger greedy-parameters"></span>
                 </div>
                 <div class="form-group">
-                    <input id="createNew" type="submit" value="Create" class="btn btn-default" />
+                    <input id="createNew" type="submit" value="Create" class="btn btn-default" data-toggle="modal" data-target="#generationInProgress"/>
                 </div>
             </form>
         </div>
@@ -165,6 +164,16 @@
 
     <div>
         <a asp-action="Index"><i class="typcn typcn-arrow-back" style="font-size:200%; color:black"></i> Back to Dashboard</a>
+    </div>
+
+    <div class="modal fade" role="alertdialog" id="generationInProgress" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Network generation in progress. Please don't close the current window.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

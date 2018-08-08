@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using NetControlApp.Data;
 using NetControlApp.Models;
 using NetControlApp.Algorithms;
+using Hangfire;
 
 namespace NetControlApp.Controllers
 {
@@ -71,9 +72,12 @@ namespace NetControlApp.Controllers
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
             analysisModel.User = user;
 
+            // If the model is valid and the user is logged in.
             if (ModelState.IsValid && user != null)
             {
-                if (Algorithms.Algorithms.GenerateNetwork(analysisModel))
+                AlgorithmFunctions.LongLastingJob(2000);
+                // If the network is generated successfully.
+                if (AlgorithmFunctions.GenerateNetwork(analysisModel))
                 {
                     _context.Add(analysisModel);
                     await _context.SaveChangesAsync();
