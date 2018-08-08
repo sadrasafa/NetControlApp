@@ -17,7 +17,6 @@ namespace NetControlApp.Models
         [Display(Name = "Start Time")]
         public DateTime StartTime { get; set; } = DateTime.Now;
 
-       
         [DataType(DataType.DateTime)]
         [Display(Name = "End Time")]
         public DateTime? EndTime { get; set; }
@@ -29,7 +28,7 @@ namespace NetControlApp.Models
 
         [Required]
         [Display(Name = "Is the network provided as seed nodes?")]
-        public bool UserGivenNetworkType { get; set; }
+        public bool UserIsNetworkSeed { get; set; }
 
         [Display(Name = "How to generate the network?")]
         public string UserGivenNetworkGeneration { get; set; }
@@ -83,10 +82,6 @@ namespace NetControlApp.Models
         [DataType(DataType.Text)]
         [Display(Name = "Best result")]
         public string NetworkBestResultNodes { get; set; }
-
-        [Required]
-        [Display(Name = "Send an e-mail?")]
-        public bool DoContact { get; set; }
         
         [Display(Name = "Current status")]
         public string Status { get; set; }

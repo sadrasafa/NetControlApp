@@ -22,9 +22,11 @@ namespace NetControlApp.Algorithms
             // The separators, which might be also provided as a parameter to the function.
             var toReturn = false;
             var separators = new string[] { ";", "\t", "\n", "\r" };
-            if (analysisModel.UserGivenNetworkType)
+
+            if (analysisModel.UserIsNetworkSeed)
             {
                 // If the network is given as seed nodes.
+                // Remember to update the parameters.
             }
             else
             {
@@ -99,6 +101,7 @@ namespace NetControlApp.Algorithms
                             analysisModel.NetworkDrugTargetCount = 0;
                             analysisModel.NetworkDrugTargets = null;
                         }
+                        UpdateParameters(analysisModel);
                         analysisModel.Status = "Networks generated and saved into the database.";
                         toReturn = true;
                     }
@@ -111,7 +114,7 @@ namespace NetControlApp.Algorithms
         {
             // Remove the parameters of the unused algorithm, and set the empty
             // parameters of the used algorithm to the default values.
-            if (analysisModel.UserGivenNetworkType == false)
+            if (analysisModel.UserIsNetworkSeed == false)
             {
                 analysisModel.UserGivenNetworkGeneration = null;
             }

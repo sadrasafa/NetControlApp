@@ -31,7 +31,7 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="UserGivenNetworkType" /> @Html.DisplayNameFor(model => model.UserGivenNetworkType)
+                        <input asp-for="UserIsNetworkSeed" /> @Html.DisplayNameFor(model => model.UserIsNetworkSeed)
                     </label>
                 </div>
             </div>
@@ -99,13 +99,6 @@
                 <label asp-for="NetworkBestResultNodes" class="control-label"></label>
                 <input asp-for="NetworkBestResultNodes" class="form-control" />
                 <span asp-validation-for="NetworkBestResultNodes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="DoContact" /> @Html.DisplayNameFor(model => model.DoContact)
-                    </label>
-                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>

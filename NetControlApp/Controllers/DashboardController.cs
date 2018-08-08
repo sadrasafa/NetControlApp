@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using NetControlApp.Data;
 using NetControlApp.Models;
 using NetControlApp.Algorithms;
-using Hangfire;
+
 namespace NetControlApp.Controllers
 {
     public class DashboardController : Controller
@@ -73,19 +73,10 @@ namespace NetControlApp.Controllers
 
             if (ModelState.IsValid && user != null)
             {
-                Algorithms.Algorithms.UpdateParameters(analysisModel);
                 if (Algorithms.Algorithms.GenerateNetwork(analysisModel))
                 {
                     _context.Add(analysisModel);
                     await _context.SaveChangesAsync();
-
-                    // functie 
-
-                    GenerateData Task = new GenerateData(_context, _userManager, analysisModel.AnalysisId);
-                    var jobId = BackgroundJob.Enqueue(
-                        () => Task.Generate());
-
-
                     return RedirectToAction(nameof(Index));
                 }
                 else

@@ -141,8 +141,6 @@ namespace NetControlApp.Migrations
                     b.Property<string>("AnalysisName")
                         .IsRequired();
 
-                    b.Property<bool>("DoContact");
-
                     b.Property<DateTime?>("EndTime");
 
                     b.Property<int?>("GeneticElementsRandom");
@@ -207,8 +205,6 @@ namespace NetControlApp.Migrations
 
                     b.Property<string>("UserGivenNetworkGeneration");
 
-                    b.Property<bool>("UserGivenNetworkType");
-
                     b.Property<string>("UserGivenNodes")
                         .IsRequired();
 
@@ -216,6 +212,8 @@ namespace NetControlApp.Migrations
                         .IsRequired();
 
                     b.Property<string>("UserId");
+
+                    b.Property<bool>("UserIsNetworkSeed");
 
                     b.HasKey("AnalysisId");
 

@@ -46,9 +46,9 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.UserGivenNetworkType)
+            @Html.DisplayNameFor(model => model.UserIsNetworkSeed)
         </dt>
-        @if (Model.UserGivenNetworkType == true)
+        @if (Model.UserIsNetworkSeed == true)
         {
             <dd>
                 Yes
@@ -138,12 +138,6 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.NetworkBestResultNodes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DoContact)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DoContact)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Status)
