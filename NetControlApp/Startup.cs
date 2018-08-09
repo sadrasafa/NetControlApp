@@ -14,6 +14,7 @@ using NetControlApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Hangfire;
+using NetControlApp.Algorithms;
 
 namespace NetControlApp
 {
@@ -36,8 +37,7 @@ namespace NetControlApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddHangfire(options => options.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -68,9 +68,16 @@ namespace NetControlApp
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddTransient<IAnalysisRun, AnalysisRun>();
+
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.Configure<MvcJsonOptions>(config =>
+            {
+                config.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,6 +10,7 @@ using NetControlApp.Data;
 using NetControlApp.Models;
 using NetControlApp.Algorithms;
 using Hangfire;
+using NetControlApp.Services;
 
 namespace NetControlApp.Controllers
 {
@@ -67,7 +68,7 @@ namespace NetControlApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AnalysisName,UserGivenNetworkType,UserGivenNetworkGeneration,UserGivenNodes,UserGivenTarget,UserGivenDrugTarget,DoContact,AlgorithmType,GeneticRandomSeed,GeneticMaxIteration,GeneticMaxIterationNoImprovement,GeneticMaxPathLength,GeneticPopulationSize,GeneticElementsRandom,GeneticPercentageRandom,GeneticPercentageElite,GeneticProbabilityMutation,GreedyRandomSeed,GreedyMaxIteration,GreedyMaxIterationNoImprovement,GreedyMaxPathLength,GreedyCutToDriven,GreedyCutNonBranching,GreedyHeuristics")] AnalysisModel analysisModel)
+        public async Task<IActionResult> Create([Bind("AnalysisName,UserIsNetworkSeed,UserGivenNetworkGeneration,UserGivenNodes,UserGivenTarget,UserGivenDrugTarget,AlgorithmType,GeneticRandomSeed,GeneticMaxIteration,GeneticMaxIterationNoImprovement,GeneticMaxPathLength,GeneticPopulationSize,GeneticElementsRandom,GeneticPercentageRandom,GeneticPercentageElite,GeneticProbabilityMutation,GreedyRandomSeed,GreedyMaxIteration,GreedyMaxIterationNoImprovement,GreedyMaxPathLength,GreedyCutToDriven,GreedyCutNonBranching,GreedyHeuristics")] AnalysisModel analysisModel)
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
             analysisModel.User = user;
@@ -75,12 +76,21 @@ namespace NetControlApp.Controllers
             // If the model is valid and the user is logged in.
             if (ModelState.IsValid && user != null)
             {
-                AlgorithmFunctions.LongLastingJob(2000);
                 // If the network is generated successfully.
                 if (AlgorithmFunctions.GenerateNetwork(analysisModel))
                 {
+                    // Save the new analysis to the database.
                     _context.Add(analysisModel);
                     await _context.SaveChangesAsync();
+
+                    // Calling on a Hangfire background task the analysis run.
+                    var analysisRun = new AnalysisRun(_context);
+                    BackgroundJob.Enqueue(() => analysisRun.RunAnalysis(analysisModel.AnalysisId));
+
+                    // This also seems to be working. The only problem is that it's not implmeneted on a background task.
+                    // await AlgorithmFunctions.RunAnalysis(_context, analysisModel);
+
+                    // Return to Dashboard.
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -104,6 +114,7 @@ namespace NetControlApp.Controllers
             {
                 return NotFound();
             }
+
             return View(analysisModel);
         }
 
