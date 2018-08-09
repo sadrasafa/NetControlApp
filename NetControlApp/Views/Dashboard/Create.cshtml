@@ -135,20 +135,12 @@
                     <span asp-validation-for="GreedyMaxPathLength" class="text-danger"></span>
                 </div>
                 <div class="collapse greedy-parameters-form form-group">
-                    <label asp-for="GreedyCutToDriven" class="control-label"></label>
-                    <select asp-for="GreedyCutToDriven" class="form-control greedy-parameters">
+                    <label asp-for="GreedyRepeats" class="control-label"></label>
+                    <select asp-for="GreedyRepeats" class="form-control greedy-parameters">
                         <option value="true">True</option>
                         <option value="false">False</option>
                     </select>
-                    <span asp-validation-for="GreedyCutToDriven" class="text-danger"></span>
-                </div>
-                <div class="collapse greedy-parameters-form form-group">
-                    <label asp-for="GreedyCutNonBranching" class="control-label"></label>
-                    <select asp-for="GreedyCutNonBranching" class="form-control greedy-parameters">
-                        <option value="true">True</option>
-                        <option value="false">False</option>
-                    </select>
-                    <span asp-validation-for="GreedyCutNonBranching" class="text-danger"></span>
+                    <span asp-validation-for="GreedyRepeats" class="text-danger"></span>
                 </div>
                 <div class="collapse greedy-parameters-form form-group">
                     <label asp-for="GreedyHeuristics" class="control-label"></label>

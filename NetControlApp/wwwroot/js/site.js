@@ -71,8 +71,6 @@
     });
 });
 
-$()
-
 function readFile(fileInput, textArea) {
     var selectedFile = document.getElementById(fileInput).files[0];
     var fileReader = new FileReader();

@@ -114,8 +114,7 @@ namespace NetControlApp.Algorithms
 
         public static void UpdateParameters(AnalysisModel analysisModel)
         {
-            // Remove the parameters of the unused algorithm, and set the empty
-            // parameters of the used algorithm to the default values.
+            // Set the empty parameters of the used algorithm to the default values and remove the parameters of the unused algorithm.
             if (analysisModel.UserIsNetworkSeed == false)
             {
                 analysisModel.UserGivenNetworkGeneration = null;
@@ -159,7 +158,6 @@ namespace NetControlApp.Algorithms
                     analysisModel.GeneticProbabilityMutation = 0.001;
                 }
             }
-            // Remove from the model the parameters of the unused algorithm type.
             else if (analysisModel.AlgorithmType == "greedy")
             {
                 if (analysisModel.GreedyRandomSeed == null)
@@ -178,13 +176,9 @@ namespace NetControlApp.Algorithms
                 {
                     analysisModel.GreedyMaxPathLength = 0;
                 }
-                if (analysisModel.GreedyCutToDriven == null)
+                if (analysisModel.GreedyRepeats == null)
                 {
-                    analysisModel.GreedyCutToDriven = true;
-                }
-                if (analysisModel.GreedyCutNonBranching == null)
-                {
-                    analysisModel.GreedyCutNonBranching = false;
+                    analysisModel.GreedyRepeats = 1;
                 }
                 if (analysisModel.GreedyHeuristics == null)
                 {

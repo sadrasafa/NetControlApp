@@ -68,7 +68,7 @@ namespace NetControlApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AnalysisName,UserIsNetworkSeed,UserGivenNetworkGeneration,UserGivenNodes,UserGivenTarget,UserGivenDrugTarget,AlgorithmType,GeneticRandomSeed,GeneticMaxIteration,GeneticMaxIterationNoImprovement,GeneticMaxPathLength,GeneticPopulationSize,GeneticElementsRandom,GeneticPercentageRandom,GeneticPercentageElite,GeneticProbabilityMutation,GreedyRandomSeed,GreedyMaxIteration,GreedyMaxIterationNoImprovement,GreedyMaxPathLength,GreedyCutToDriven,GreedyCutNonBranching,GreedyHeuristics")] AnalysisModel analysisModel)
+        public async Task<IActionResult> Create([Bind("AnalysisName,UserIsNetworkSeed,UserGivenNetworkGeneration,UserGivenNodes,UserGivenTarget,UserGivenDrugTarget,AlgorithmType,GeneticRandomSeed,GeneticMaxIteration,GeneticMaxIterationNoImprovement,GeneticMaxPathLength,GeneticPopulationSize,GeneticElementsRandom,GeneticPercentageRandom,GeneticPercentageElite,GeneticProbabilityMutation,GreedyRandomSeed,GreedyMaxIteration,GreedyMaxIterationNoImprovement,GreedyMaxPathLength,GreedyRepeats,GreedyHeuristics")] AnalysisModel analysisModel)
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
             analysisModel.User = user;

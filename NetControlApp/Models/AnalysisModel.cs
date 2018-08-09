@@ -146,11 +146,9 @@ namespace NetControlApp.Models
         [Display(Name = "Greedy maximum path length")]
         public int? GreedyMaxPathLength { get; set; }
 
-        [Display(Name = "Greedy cut the paths to driven nodes")]
-        public bool? GreedyCutToDriven { get; set; }
-
-        [Display(Name = "Greedy cut the non branching paths")]
-        public bool? GreedyCutNonBranching { get; set; }
+        [Range(1, 5)]
+        [Display(Name = "Greedy number of repeating times")]
+        public int? GreedyRepeats { get; set; }
 
         [DataType(DataType.Text)]
         [Display(Name = "Greedy search heuristics")]
