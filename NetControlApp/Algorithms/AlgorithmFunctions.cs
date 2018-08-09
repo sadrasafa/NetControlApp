@@ -22,9 +22,16 @@ namespace NetControlApp.Algorithms
         /// <returns>True if the network could be generate with no issues, false otherwise.</returns>
         public static bool GenerateNetwork(AnalysisModel analysisModel)
         {
+            // Fill in the fields which do not depend on the user input.
+            analysisModel.StartTime = DateTime.Now;
+            analysisModel.AlgorithmCurrentIteration = 0;
+            analysisModel.AlgorithmCurrentIterationNoImprovement = 0;
+            analysisModel.ScheduledToStop = false;
+
             // The separators, which might be also provided as a parameter to the function.
             var toReturn = false;
             var separators = new string[] { ";", "\t", "\n", "\r" };
+
             // Checks if the network is provided as seed nodes.
             if (analysisModel.UserIsNetworkSeed)
             {
@@ -103,7 +110,7 @@ namespace NetControlApp.Algorithms
                             analysisModel.NetworkDrugTargetCount = 0;
                             analysisModel.NetworkDrugTargets = null;
                         }
-                        UpdateParameters(analysisModel);
+                        UpdateAlgorithmParameters(analysisModel);
                         analysisModel.Status = "Networks generated and saved into the database.";
                         toReturn = true;
                     }
@@ -112,7 +119,7 @@ namespace NetControlApp.Algorithms
             return toReturn;
         }
 
-        public static void UpdateParameters(AnalysisModel analysisModel)
+        public static void UpdateAlgorithmParameters(AnalysisModel analysisModel)
         {
             // Set the empty parameters of the used algorithm to the default values and remove the parameters of the unused algorithm.
             if (analysisModel.UserIsNetworkSeed == false)

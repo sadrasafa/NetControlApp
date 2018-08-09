@@ -15,7 +15,7 @@ namespace NetControlApp.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Start Time")]
-        public DateTime StartTime { get; set; } = DateTime.Now;
+        public DateTime StartTime { get; set; }
 
         [DataType(DataType.DateTime)]
         [Display(Name = "End Time")]
@@ -87,12 +87,18 @@ namespace NetControlApp.Models
         public string Status { get; set; }
 
         [Display(Name = "Scheduled to stop?")]
-        public bool? ScheduledToStop { get; set; } = false;
+        public bool? ScheduledToStop { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Algorithm type")]
         public string AlgorithmType { get; set; }
+
+        [Display(Name = "Algorithm current iteration")]
+        public int? AlgorithmCurrentIteration { get; set; }
+
+        [Display(Name = "Algorithm current iteration with no improvement")]
+        public int? AlgorithmCurrentIterationNoImprovement { get; set; }
 
         [Range(Int32.MinValue, Int32.MaxValue)]
         [Display(Name = "Genetic random seed")]

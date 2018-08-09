@@ -71,63 +71,49 @@ namespace NetControlApp.Services
             // Initialization of the first population.
             var rand = new Random(analysisModel.GeneticRandomSeed.Value);
             var bestFitness = 0.0;
-            var generationsSinceLastImprovement = 0;
-            var currentGeneration = 0;
             var p = new Population(analysisModel.GeneticPopulationSize.Value);
             p.Initialize(powers, list, analysisModel.GeneticElementsRandom.Value, rand);
 
-            // Running for the given number of generations.
-            for (int i = 0; i < analysisModel.GeneticMaxIteration; i++)
+            // Running for the given number of iterations.
+            while (analysisModel.AlgorithmCurrentIteration < analysisModel.GeneticMaxIteration && analysisModel.AlgorithmCurrentIterationNoImprovement < analysisModel.GeneticMaxIterationNoImprovement && !analysisModel.ScheduledToStop.Value)
             {
-                currentGeneration = i;
+                // Move on to the next population.
                 p = p.nextPopulation(analysisModel.GeneticPercentageElite.Value, analysisModel.GeneticPercentageRandom.Value,
                     analysisModel.GeneticProbabilityMutation.Value, powers, list, analysisModel.GeneticElementsRandom.Value, rand, nodes);
+                // Get the best fitness of the current population.
                 var fitness = p.getBestFitness();
-                if (fitness > bestFitness)
+                // If the fitness is better than the current best one.
+                if (bestFitness <= fitness)
                 {
-                    bestFitness = fitness;
-                    generationsSinceLastImprovement = 0;
-                    // Get the better results.
+                    if (bestFitness < fitness)
+                    {
+                        // Update the current best fitness.
+                        bestFitness = fitness;
+                        analysisModel.AlgorithmCurrentIterationNoImprovement = -1;
+                    }
+                    // Get the best results.
                     var bestChromosomes = p.GetBestChromosomes();
-                    var results = new List<List<String>>(bestChromosomes.Count);
-                    var resultString = "";
-                    foreach (var item in bestChromosomes)
+                    var result = "";
+                    foreach (var chromosome in bestChromosomes)
                     {
-                        var temporaryList = new List<String>();
-                        foreach (var gene in item.Genes.Distinct())
+                        foreach (var gene in chromosome.Genes.Distinct())
                         {
-                            temporaryList.Add(nodes[gene]);
+                            result += nodes[gene] + ";";
                         }
-                        foreach (var gene in singleNodes)
-                        {
-                            temporaryList.Add(gene);
-                        }
-                        results.Add(temporaryList);
+                        result += "\n";
                     }
-
-                    foreach (var result in results)
-                    {
-                        foreach (var node in result)
-                        {
-                            resultString += node + ";";
-                        }
-                        resultString += "\n";
-                    }
-
                     analysisModel.NetworkBestResultCount = bestChromosomes.First().Genes.Distinct().Count();
-                    analysisModel.NetworkBestResultNodes = resultString;
-                    _context.Update(analysisModel);
+                    analysisModel.NetworkBestResultNodes = result;
+                    analysisModel.AlgorithmCurrentIterationNoImprovement++;
                 }
                 else
                 {
-                    generationsSinceLastImprovement++;
+                    analysisModel.AlgorithmCurrentIterationNoImprovement++;
                 }
-                analysisModel.Status = $"Completed generation {i} / {analysisModel.GeneticMaxIteration}. {generationsSinceLastImprovement} / {analysisModel.GeneticMaxIterationNoImprovement} since last improvement.";
+                analysisModel.AlgorithmCurrentIteration++;
+                analysisModel.Status = $"Analysis ongoing ({analysisModel.AlgorithmCurrentIteration} / {analysisModel.GeneticMaxIteration}, " +
+                    $"{analysisModel.AlgorithmCurrentIterationNoImprovement} / {analysisModel.GeneticMaxIterationNoImprovement}).";
                 await _context.SaveChangesAsync();
-                if (generationsSinceLastImprovement == analysisModel.GeneticMaxIterationNoImprovement)
-                {
-                    break;
-                }
             }
             analysisModel.Status = "Completed";
             analysisModel.EndTime = DateTime.Now;

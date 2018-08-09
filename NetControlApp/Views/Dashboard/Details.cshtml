@@ -27,7 +27,6 @@
             <dd>
                 @Html.DisplayFor(model => model.EndTime)
             </dd>
-
         }
         else
         {
@@ -65,6 +64,7 @@
             @Html.DisplayNameFor(model => model.UserGivenNodes)
         </dt>
         <dd>
+            <!-- Click to view the nodes. -->
             @Html.DisplayFor(model => model.UserGivenNodes)
         </dd>
         <dt>
@@ -168,6 +168,18 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.AlgorithmType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AlgorithmCurrentIteration)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AlgorithmCurrentIteration)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AlgorithmCurrentIterationNoImprovement)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AlgorithmCurrentIterationNoImprovement)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.GeneticRandomSeed)
