@@ -17,23 +17,15 @@ namespace NetControlApp.Services
             _context = context;
         }
 
-        public async Task TestJob(int id)
-        {
-            var analysisModel = _context.AnalysisModel.First(a => a.AnalysisId == id);
-            analysisModel.Status = "Updated again.";
-            _context.Update(analysisModel);
-            await _context.SaveChangesAsync();
-        }
-
         /// <summary>
-        /// Runs the selected algorithm on the given analysis.
+        /// Runs the selected algorithm on the analysis with the given ID.
         /// </summary>
-        /// <param name="analysisModel">The database entry on which to run the algorithm.</param>
-        public async Task RunAnalysis(int id)
+        /// <param name="analysisId">The unique database ID of the analysis on which to run the algorithm.</param>
+        public async Task RunAnalysis(int analysisId)
         {
             // The given separators for the texts.
             var separators = new String[] { ";", "\t", "\r", "\n" };
-            var analysisModel = _context.AnalysisModel.First(a => a.AnalysisId == id);
+            var analysisModel = _context.AnalysisModel.First(a => a.AnalysisId == analysisId);
 
             // Checks the type of the algorithm and selects the corresponding function.
             if (analysisModel.AlgorithmType == "greedy")
@@ -46,6 +38,12 @@ namespace NetControlApp.Services
             }
         }
 
+        /// <summary>
+        /// Runs the genetic algorithm on the given analysis.
+        /// </summary>
+        /// <param name="analysisModel">The analysis upon which to run the algorithm.</param>
+        /// <param name="separators">The separators which are used to split the entries in the database strings.</param>
+        /// <returns></returns>
         private async Task RunGeneticAlgorithm(AnalysisModel analysisModel, String[] separators)
         {
             // Get the initial list of nodes and edges from the generated network.
@@ -136,6 +134,12 @@ namespace NetControlApp.Services
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Runs the greedy algorithm on the given analysis.
+        /// </summary>
+        /// <param name="analysisModel">The analysis upon which to run the algorithm.</param>
+        /// <param name="separators">The separators which are used to split the entries in the database strings.</param>
+        /// <returns></returns>
         private async Task RunGreedyAlgorithm(AnalysisModel analysisModel, String[] separators)
         {
             throw new NotImplementedException();

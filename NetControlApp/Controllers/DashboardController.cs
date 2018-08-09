@@ -25,13 +25,13 @@ namespace NetControlApp.Controllers
             _userManager = userManager;
         }
 
-        // GET: Dash
+        // GET: Dashboard
         public IActionResult Index()
         {
             return View();
         }
 
-        // GET: Dash
+        // GET: Dashboard/ViewAll
         public async Task<IActionResult> ViewAll()
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
@@ -39,7 +39,7 @@ namespace NetControlApp.Controllers
             return View(analyses);
         }
 
-        // GET: Dash/Details/5
+        // GET: Dashboard/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -57,13 +57,13 @@ namespace NetControlApp.Controllers
             return View(analysisModel);
         }
 
-        // GET: Dash/Create
+        // GET: Dashboard/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Dash/Create
+        // POST: Dashboard/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -101,7 +101,7 @@ namespace NetControlApp.Controllers
             return View(analysisModel);
         }
 
-        // GET: Dash/Edit/5
+        // GET: Dashboard/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -118,7 +118,7 @@ namespace NetControlApp.Controllers
             return View(analysisModel);
         }
 
-        // POST: Dash/Edit/5
+        // POST: Dashboard/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -153,7 +153,7 @@ namespace NetControlApp.Controllers
             return View(analysisModel);
         }
 
-        // GET: Dash/Delete/5
+        // GET: Dashboard/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -171,7 +171,7 @@ namespace NetControlApp.Controllers
             return View(analysisModel);
         }
 
-        // POST: Dash/Delete/5
+        // POST: Dashboard/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

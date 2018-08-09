@@ -7,6 +7,6 @@ namespace NetControlApp.Services
 {
     public interface IAnalysisRun
     {
-        Task RunAnalysis(int id);
+        Task RunAnalysis(int analysisId);
     }
 }
