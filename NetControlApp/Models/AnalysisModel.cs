@@ -35,16 +35,16 @@ namespace NetControlApp.Models
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "List of nodes")]
+        [Display(Name = "User given list of nodes")]
         public string UserGivenNodes { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "Target nodes")]
+        [Display(Name = "User given target nodes")]
         public string UserGivenTarget { get; set; }
 
         [DataType(DataType.Text)]
-        [Display(Name = "Drug target nodes")]
+        [Display(Name = "User given drug target nodes")]
         public string UserGivenDrugTarget { get; set; }
 
         [Display(Name = "Number of nodes in the network")]
