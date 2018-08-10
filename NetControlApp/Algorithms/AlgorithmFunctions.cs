@@ -30,66 +30,49 @@ namespace NetControlApp.Algorithms
 
             // The separators, which might be also provided as a parameter to the function.
             var toReturn = false;
-            var separators = new string[] { ";", "\t", "\n", "\r" };
+            var separators = new List<String>() { ";", "\t", "\n", "\r" };
 
             // Checks if the network is provided as seed nodes.
             if (analysisModel.UserIsNetworkSeed)
             {
                 analysisModel.Status = "The seed nodes part of the program is not yet implemented.";
+                toReturn = false;
             }
             else
             {
                 // If the network is given as edges - pairs of nodes.
-                var edges = Functions.GetEdges(analysisModel.UserGivenNodes, separators);
+                var edges = AlgorithmFunctions.GetEdges(analysisModel.UserGivenNodes, separators);
                 // If there is an uneven number of nodes, return an error.
-                if (edges.Count() % 2 != 0)
+                if (edges.Count == 0)
                 {
-                    analysisModel.Status = "An odd number of nodes is given as the network edges.";
+                    analysisModel.Status = "There is only one node given in the file.";
+                    toReturn = false;
                 }
                 else
                 {
-                    // Remove the duplicate edges from the list.
-                    var uniqueEdges = new List<String>(edges.Count());
-                    for (int i = 0; i < edges.Count(); i = i + 2)
-                    {
-                        bool exists = false;
-                        for (int j = 0; j < uniqueEdges.Count(); j = j + 2)
-                        {
-                            if (edges[i] == uniqueEdges[j] && edges[i + 1] == uniqueEdges[j + 1])
-                            {
-                                exists = true;
-                                break;
-                            }
-                        }
-                        if (!exists)
-                        {
-                            uniqueEdges.Add(edges[i]);
-                            uniqueEdges.Add(edges[i + 1]);
-                        }
-                    }
-                    var nodes = Functions.GetNodes(uniqueEdges.ToArray());
-                    var targets = Functions.GetTargets(analysisModel.UserGivenTarget, nodes, separators);
+                    var nodes = AlgorithmFunctions.GetNodes(analysisModel.UserGivenNodes, separators);
+                    var targets = AlgorithmFunctions.GetTargetNodes(analysisModel.UserGivenTarget, nodes, separators);
                     // If none of the target nodes could be found in the network, return an error.
-                    if (targets.Count() == 0)
+                    if (targets.Count == 0)
                     {
                         analysisModel.Status = "None of the given target nodes could be found in the network.";
                         toReturn = false;
                     }
                     else
                     {
-                        analysisModel.NetworkEdgeCount = uniqueEdges.Count() / 2;
+                        analysisModel.NetworkEdgeCount = edges.Count;
                         analysisModel.NetworkEdges = "";
-                        foreach (var node in uniqueEdges)
+                        foreach (var edge in edges)
                         {
-                            analysisModel.NetworkEdges += node + ";";
+                            analysisModel.NetworkEdges += edge.Item1 + ";" + edge.Item2 + ";";
                         }
-                        analysisModel.NetworkNodeCount = nodes.Count();
+                        analysisModel.NetworkNodeCount = nodes.Count;
                         analysisModel.NetworkNodes = "";
                         foreach (var node in nodes)
                         {
                             analysisModel.NetworkNodes += node + ";";
                         }
-                        analysisModel.NetworkTargetCount = targets.Count();
+                        analysisModel.NetworkTargetCount = targets.Count;
                         analysisModel.NetworkTargets = "";
                         foreach (var node in targets)
                         {
@@ -97,8 +80,8 @@ namespace NetControlApp.Algorithms
                         }
                         if (analysisModel.UserGivenDrugTarget != null)
                         {
-                            var drugTargets = Functions.GetDrugTargets(analysisModel.UserGivenDrugTarget, nodes, separators);
-                            analysisModel.NetworkDrugTargetCount = drugTargets.Count();
+                            var drugTargets = AlgorithmFunctions.GetTargetNodes(analysisModel.UserGivenDrugTarget, nodes, separators);
+                            analysisModel.NetworkDrugTargetCount = drugTargets.Count;
                             analysisModel.NetworkDrugTargets = "";
                             foreach (var node in drugTargets)
                             {
@@ -119,6 +102,10 @@ namespace NetControlApp.Algorithms
             return toReturn;
         }
 
+        /// <summary>
+        /// Updates the parameters in the database, based on the chosen type of algorithm.
+        /// </summary>
+        /// <param name="analysisModel"></param>
         public static void UpdateAlgorithmParameters(AnalysisModel analysisModel)
         {
             // Set the empty parameters of the used algorithm to the default values and remove the parameters of the unused algorithm.
@@ -192,6 +179,145 @@ namespace NetControlApp.Algorithms
                     analysisModel.GreedyHeuristics = "(->@CA)(->@PA)(->D)(->CA)(->PA)(->N)(->T)";
                 }
             }
+        }
+
+        /// <summary>
+        /// Parses the edges in the given text, separated by the provided separators.
+        /// </summary>
+        /// <param name="text">The text to parse. It can be read from a file or as a database entry.</param>
+        /// <param name="separators">A collection of strings that separate the nodes.</param>
+        /// <returns>The list of edges in the graph, as a string array. An edge goes from a node in an even positions in the array, to the following node.</returns>
+        public static List<(String, String)> GetEdges(String text, List<String> separators)
+        {
+            var nodes = text.Split(separators.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+            var edges = new List<(String, String)>();
+            // If there is an odd number of nodes given in the edges, we will simply ignore the last one.
+            for (int i = 0; i < nodes.Length - nodes.Length % 2; i = i + 2)
+            {
+                edges.Add((nodes[i], nodes[i + 1]));
+            }
+            return edges.Distinct().ToList();
+        }
+
+        /// <summary>
+        /// Parses the nodes in the graph, from the given list of edges.
+        /// </summary>
+        /// <param name="edges">The current list of edges, previously computed.</param>
+        /// <returns>The list of nodes in the graph.</returns>
+        public static List<String> GetNodes(String text, List<String> separators)
+        {
+            return text.Split(separators.ToArray(), StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
+        }
+
+        /// <summary>
+        /// Parses the target nodes in the given text, based on the given list of nodes. If any target nodes are not in the given list, they are ignored.
+        /// </summary>
+        /// <param name="text">The text to parse.</param>
+        /// <param name="nodes">The current list of nodes. The target nodes must be in this list.</param>
+        /// <param name="separators">A collection of strings that separates the nodes.</param>
+        /// <returns>The list of target nodes.</returns>
+        public static List<String> GetTargetNodes(String text, List<String> nodes, List<String> separators)
+        {
+            return nodes.Intersect(text.Split(separators.ToArray(), StringSplitOptions.RemoveEmptyEntries).Distinct()).ToList();
+        }
+
+        /// <summary>
+        /// Bulds the network around the seed nodes, taking the edges from the given full network.
+        /// </summary>
+        /// <param name="fullNetworkText"></param>
+        /// <param name="seedNodes"></param>
+        /// <returns></returns>
+        public static List<(String, String)> GetEdgesFromSeed(List<(String, String)> fullNetworkEdges, List<String> seedNodes, Int32 buildAlgorithm)
+        {
+            var edges = new List<(String, String)>();
+            // Build algorithm "gap" with the value of buildAlgorithm. For example, for buildAlgorithm = 1, we will build the network with gap 1.
+            if (buildAlgorithm >= 0)
+            {
+                var list = new List<List<(String, String)>>();
+                // For "buildAlgorithm" times, for all terminal nodes, add all possible edges.
+                for (int index = 0; index < buildAlgorithm + 1; index++)
+                {
+                    var temporaryList = new List<(String, String)>();
+                    var terminalNodes = new List<String>();
+                    // If it is the first iteration, then use the seed nodes as terminal nodes.
+                    if (index == 0)
+                    {
+                        terminalNodes = seedNodes;
+                    }
+                    // If it is not the first iteration, compute the terminal nodes.
+                    else
+                    {
+                        foreach (var edge in list[list.Count - 1])
+                        {
+                            terminalNodes.Add(edge.Item2);
+                        }
+                        terminalNodes = terminalNodes.Distinct().ToList();
+                    }
+                    // For all terminal nodes, add all possible edges starting in them.
+                    foreach (var fullNetworkEdge in fullNetworkEdges)
+                    {
+                        foreach (var node in terminalNodes)
+                        {
+                            if (node.Equals(fullNetworkEdge.Item1))
+                            {
+                                temporaryList.Add(fullNetworkEdge);
+                            }
+                        }
+                    }
+                    list.Add(temporaryList);
+                }
+                // Starting from the right, mark all terminal nodes that are not seed nodes for removal.
+                var initialNodes = new List<String>(seedNodes);
+                for (int index = buildAlgorithm; index >= 0; index--)
+                {
+                    var temporaryList = new List<String>();
+                    for (int i = 0; i < list[index].Count; i++)
+                    {
+                        if (!initialNodes.Contains(list[index][i].Item2))
+                        {
+                            list[index].RemoveAt(i);
+                            i--;
+                        }
+                        else
+                        {
+                            temporaryList.Add(list[index][i].Item1);
+                        }
+                    }
+                    temporaryList.AddRange(seedNodes);
+                    initialNodes = temporaryList.Distinct().ToList();
+                }
+                // And we finally add all the edges to the list.
+                foreach (var edgeList in list)
+                {
+                    foreach (var edge in edgeList)
+                    {
+                        edges.Add(edge);
+                    }
+                }
+            }
+            // Build algorithm "neighbours".
+            else if (buildAlgorithm == -1)
+            {
+                // For every edge in the full network,
+                foreach (var edge in fullNetworkEdges)
+                {
+                    // For every seed node,
+                    foreach (var item in seedNodes)
+                    {
+                        // If the edge starts from the node or ends in the node,
+                        if (item.Equals(edge.Item1) || item.Equals(edge.Item2))
+                        {
+                            // Add the edge to the new list.
+                            edges.Add(edge);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Wrong build index.
+            }
+            return edges.Distinct().ToList();
         }
     }
 }

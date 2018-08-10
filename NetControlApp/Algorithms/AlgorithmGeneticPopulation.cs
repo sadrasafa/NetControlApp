@@ -1,8 +1,7 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace NetControlApp.Algorithms
 {
@@ -68,9 +67,9 @@ namespace NetControlApp.Algorithms
         /// <param name="list"></param>
         /// <param name="maximumRandom"></param>
         /// <param name="rand"></param>
-        public void Initialize(Matrix<Double>[] matrixPowers, Int32[][] list, Int32 maximumRandom, Random rand)
+        public void Initialize(List<Matrix<Double>> matrixPowers, List<List<Int32>> list, Int32 maximumRandom, Random rand)
         {
-            var numberOfGroups = (int)Math.Ceiling((double)list.Length / maximumRandom);
+            var numberOfGroups = (int)Math.Ceiling((double)list.Count / maximumRandom);
             var elementsPerGroup = (int)Math.Ceiling((double)this.MaximumSize / numberOfGroups);
             var lowerLimit = 0;
             var upperLimit = maximumRandom;
@@ -78,7 +77,7 @@ namespace NetControlApp.Algorithms
             {
                 for (int index2 = 0; index2 < elementsPerGroup; index2++)
                 {
-                    Chromosome chromosome = new Chromosome(list.Length);
+                    Chromosome chromosome = new Chromosome(list.Count);
                     chromosome.Initialize(matrixPowers, list, lowerLimit, upperLimit, rand);
                     this.Chromosomes.Add(chromosome);
                 }
@@ -100,26 +99,21 @@ namespace NetControlApp.Algorithms
         /// <param name="nodes"></param>
         /// <returns></returns>
         public Population nextPopulation(Double elitismPercentage, Double randomPercentage, Double mutationProbability,
-            Matrix<Double>[] matrixPowers, Int32[][] list, Int32 maximumRandom, Random rand, String[] nodes)
+            List<Matrix<Double>> matrixPowers, List<List<Int32>> list, Int32 maximumRandom, Random rand)
         {
             var Population = new Population(this.MaximumSize);
             // Order the chromosomes in the descending order of their fitness.
             var orderedChromosomes = this.Chromosomes.OrderByDescending(c => c.Fitness).ToArray();
-            // Determine the number of elites to be added to the new population and adds them.
+            // Determine the number of elites to be added to the new population and add them.
             var maximumNumberOfElites = (int)Math.Floor(elitismPercentage * this.MaximumSize);
-            var elites = this.GetBestChromosomes();
-            while (elites.Count > maximumNumberOfElites)
-            {
-                elites.RemoveAt(rand.Next(elites.Count));
-            }
-            Population.Chromosomes.AddRange(elites);
-            // Determine the number of random individuals to be added to the population.
+            Population.Chromosomes.AddRange(orderedChromosomes.Take(maximumNumberOfElites));
+            // Determine the number of random individuals to be added to the population and add them.
             var numberOfRandoms = (int)Math.Floor(randomPercentage * this.MaximumSize);
             for (int i = 0; i < numberOfRandoms; i++)
             {
-                var lowerLimit = rand.Next(Math.Max(Math.Min(list.Length, list.Length - maximumRandom), 0));
-                var upperLimit = Math.Min(lowerLimit + maximumRandom, list.Length);
-                var chromosome = new Chromosome(list.Length);
+                var lowerLimit = rand.Next(Math.Max(Math.Min(list.Count, list.Count - maximumRandom), 0));
+                var upperLimit = Math.Min(lowerLimit + maximumRandom, list.Count);
+                var chromosome = new Chromosome(list.Count);
                 chromosome.Initialize(matrixPowers, list, lowerLimit, upperLimit, rand);
                 Population.Chromosomes.Add(chromosome);
             }
@@ -128,7 +122,7 @@ namespace NetControlApp.Algorithms
             System.Threading.Tasks.Parallel.For(Population.Chromosomes.Count, Population.MaximumSize, index =>
             {
                 var isValid = false;
-                var chromosome = new Chromosome(list.Length);
+                var chromosome = new Chromosome(list.Count);
                 while (!isValid)
                 {
                     var chromosome1 = this.Select(fitnessArray, rand);
@@ -144,7 +138,7 @@ namespace NetControlApp.Algorithms
                 for (int i = Population.Chromosomes.Count; i < Population.MaximumSize; i++)
                 {
                     var isValid = false;
-                    var chromosome = new Chromosome(list.Length);
+                    var chromosome = new Chromosome(list.Count);
                     while (!isValid)
                     {
                         var chromosome1 = this.Select(fitnessArray, rand);
@@ -168,6 +162,10 @@ namespace NetControlApp.Algorithms
             return this.Chromosomes.Max(c => c.Fitness);
         }
 
+        /// <summary>
+        /// Computes the best chromosomes in the population.
+        /// </summary>
+        /// <returns></returns>
         public List<Chromosome> GetBestChromosomes()
         {
             var bestFitness = this.getBestFitness();
@@ -198,7 +196,7 @@ namespace NetControlApp.Algorithms
         /// Displays the population in the console. For debug purposes only.
         /// </summary>
         /// <param name="nodes">The list of nodes in the graph.</param>
-        public void Display(String[] nodes)
+        public void Display(List<String> nodes)
         {
             Console.WriteLine($"Population (maximum size {this.MaximumSize})");
             foreach (var item in this.Chromosomes)
@@ -211,7 +209,7 @@ namespace NetControlApp.Algorithms
         /// Displays the best chromosomes in the population in the console. For debug purposes only.
         /// </summary>
         /// <param name="nodes">The list of nodes in the graph.</param>
-        public void DisplayBest(String[] nodes, String[] singleNodes, String[] drugTargetNodes = null)
+        public void DisplayBest(List<String> nodes, List<String> singleNodes, List<String> drugTargetNodes = null)
         {
             var bestChromosomes = this.GetBestChromosomes();
             Console.WriteLine($"Best chromosomes (a number of {bestChromosomes.Count}, with best fitness {bestChromosomes[0].Fitness})");
@@ -225,7 +223,7 @@ namespace NetControlApp.Algorithms
         /// Savethe best chromosomes in the population in the console. For debug purposes only.
         /// </summary>
         /// <param name="nodes">The list of nodes in the graph.</param>
-        public void WriteBest(String filename, String[] nodes, String[] singleNodes, String[] drugTargetNodes = null)
+        public void WriteBest(String filename, List<String> nodes, List<String> singleNodes, List<String> drugTargetNodes = null)
         {
             if (System.IO.File.Exists(filename))
             {

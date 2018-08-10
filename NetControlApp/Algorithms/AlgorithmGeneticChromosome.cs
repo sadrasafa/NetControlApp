@@ -1,8 +1,8 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace NetControlApp.Algorithms
 {
@@ -49,7 +49,7 @@ namespace NetControlApp.Algorithms
         /// <param name="nodes"></param>
         /// <param name="drugTargets"></param>
         /// <returns></returns>
-        public String[] ContainedDrugTargets(String[] nodes, String[] drugTargets)
+        public String[] ContainedDrugTargets(List<String> nodes, List<String> drugTargets)
         {
             var form = this.GetForm();
             var chromosomeNodes = new String[form.Length];
@@ -83,7 +83,7 @@ namespace NetControlApp.Algorithms
         /// </summary>
         /// <param name="matrixPowers">The array with the powers of the target-corresponding matrix C.</param>
         /// <returns>"true" if the chromosome is a solution to the problem, "false" otherwise.</returns>
-        public Boolean IsValid(Matrix<Double>[] matrixPowers)
+        public Boolean IsValid(List<Matrix<Double>> matrixPowers)
         {
             bool isValid = false;
             var form = this.GetForm();
@@ -99,7 +99,7 @@ namespace NetControlApp.Algorithms
             }
             else
             {
-                for (int i = 1; i < matrixPowers.Length; i++)
+                for (int i = 1; i < matrixPowers.Count; i++)
                 {
                     var M = Matrix<Double>.Build.DenseOfMatrix(matrixPowers[i]).Multiply(B);
                     R = R.Append(M);
@@ -121,12 +121,12 @@ namespace NetControlApp.Algorithms
         /// <param name="lowerLimit"></param>
         /// <param name="upperLimit"></param>
         /// <param name="rand"></param>
-        public void Initialize(Matrix<Double>[] matrixPowers, Int32[][] list, Int32 lowerLimit, Int32 upperLimit, Random rand)
+        public void Initialize(List<Matrix<Double>> matrixPowers, List<List<Int32>> list, Int32 lowerLimit, Int32 upperLimit, Random rand)
         {
             var isValid = false;
             var tries = upperLimit - lowerLimit;
             var available = new List<Int32>(upperLimit - lowerLimit);
-            for (int i = 0; i < list.Length; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 this.Genes[i] = list[i][0];
                 if (lowerLimit <= i && i < upperLimit)
@@ -138,7 +138,7 @@ namespace NetControlApp.Algorithms
             {
                 foreach (var item in available)
                 {
-                    this.Genes[item] = list[item][rand.Next(list[item].Length)];
+                    this.Genes[item] = list[item][rand.Next(list[item].Count)];
                 }
                 isValid = this.IsValid(matrixPowers);
                 if (!isValid && available.Count > 0 && tries == 0)
@@ -166,7 +166,7 @@ namespace NetControlApp.Algorithms
         /// <param name="maximumTries"></param>
         /// <param name="rand"></param>
         /// <param name="probability"></param>
-        public void Mutate(Matrix<Double>[] matrixPowers, Int32[][] list, Int32 maximumTries, Random rand, Double probability)
+        public void Mutate(List<Matrix<Double>> matrixPowers, List<List<Int32>> list, Int32 maximumTries, Random rand, Double probability)
         {
             var selectedGenes = new List<Int32>();
             var copyOfSelectedGenes = new List<Int32>();
@@ -184,7 +184,7 @@ namespace NetControlApp.Algorithms
             {
                 foreach (var item in selectedGenes)
                 {
-                    int index = rand.Next(list[item].Length);
+                    int index = rand.Next(list[item].Count);
                     this.Genes[item] = list[item][index];
                 }
                 count--;
@@ -216,7 +216,7 @@ namespace NetControlApp.Algorithms
         /// <param name="maximumTries"></param>
         /// <param name="rand"></param>
         /// <returns>The offspring chromosome.</returns>
-        public Chromosome Crossover(Matrix<Double>[] matrixPowers, Chromosome chromosome, Int32 maximumTries, Random rand)
+        public Chromosome Crossover(List<Matrix<Double>> matrixPowers, Chromosome chromosome, Int32 maximumTries, Random rand)
         {
             var offspring = new Chromosome(this.Genes.Length);
             var isValid = false;
@@ -290,7 +290,7 @@ namespace NetControlApp.Algorithms
         /// Displays the chromosome in the console. For debug purposes only.
         /// </summary>
         /// <param name="nodes">The array of nodes which maps from node ID to node name.</param>
-        public void Display(String[] nodes)
+        public void Display(List<String> nodes)
         {
             Console.WriteLine($"Chromosome (fitness {this.Fitness}, nodes {this.Genes.Distinct().Count()}):");
             foreach (var item in this.Genes)
@@ -306,9 +306,9 @@ namespace NetControlApp.Algorithms
         /// <param name="nodes">The current list of nodes.</param>
         /// <param name="singleNodes">The list of single nodes.</param>
         /// <param name="drugTargetNodes">(optional) The list of target nodes.</param>
-        public void Display(String[] nodes, String[] singleNodes, String[] drugTargetNodes = null)
+        public void Display(List<String> nodes, List<String> singleNodes, List<String> drugTargetNodes = null)
         {
-            Console.WriteLine($"Chromosome (fitness {this.Fitness}, nodes {this.Genes.Distinct().Count() + singleNodes.Length}):");
+            Console.WriteLine($"Chromosome (fitness {this.Fitness}, nodes {this.Genes.Distinct().Count() + singleNodes.Count}):");
             foreach (var item in this.Genes)
             {
                 Console.Write($"{nodes[item]} ");
@@ -337,7 +337,7 @@ namespace NetControlApp.Algorithms
         /// <param name="nodes">The current list of nodes.</param>
         /// <param name="singleNodes">The list of single nodes.</param>
         /// <param name="drugTargetNodes">(optional) The list of target nodes.</param>
-        public void SaveToFile(String filename, String[] nodes, String[] singleNodes, String[] drugTargetNodes = null)
+        public void SaveToFile(String filename, List<String> nodes, List<String> singleNodes, List<String> drugTargetNodes = null)
         {
             foreach (var item in this.Genes)
             {
@@ -360,4 +360,5 @@ namespace NetControlApp.Algorithms
             System.IO.File.AppendAllText(filename, $"\n");
         }
     }
+
 }

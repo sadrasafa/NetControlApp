@@ -24,7 +24,7 @@ namespace NetControlApp.Services
         public async Task RunAnalysis(int analysisId)
         {
             // The given separators for the texts.
-            var separators = new String[] { ";", "\t", "\r", "\n" };
+            var separators = new List<String>() { ";", "\t", "\r", "\n" };
             var analysisModel = _context.AnalysisModel.First(a => a.AnalysisId == analysisId);
 
             // Checks the type of the algorithm and selects the corresponding function.
@@ -44,29 +44,29 @@ namespace NetControlApp.Services
         /// <param name="analysisModel">The analysis upon which to run the algorithm.</param>
         /// <param name="separators">The separators which are used to split the entries in the database strings.</param>
         /// <returns></returns>
-        private async Task RunGeneticAlgorithm(AnalysisModel analysisModel, String[] separators)
+        private async Task RunGeneticAlgorithm(AnalysisModel analysisModel, List<String> separators)
         {
             // Get the initial list of nodes and edges from the generated network.
-            var oldEdges = Functions.GetEdges(analysisModel.NetworkEdges, separators);
-            var oldNodes = Functions.GetNodes(oldEdges);
-            var oldTargets = Functions.GetTargets(analysisModel.NetworkTargets, oldNodes, separators);
-            var oldTargetIndices = Functions.GetTargetIndices(oldNodes, oldTargets);
-            var oldA = Functions.GetAdjacencyMatrix(oldNodes, oldEdges);
-            var oldPowersA = Functions.GetAdjacencyMatrixPowers(oldA, analysisModel.GeneticMaxPathLength.Value);
-            var oldList = Functions.GetList(oldPowersA, oldTargetIndices);
+            var oldNodes = AlgorithmFunctions.GetNodes(analysisModel.NetworkEdges, separators);
+            var oldEdges = AlgorithmFunctions.GetEdges(analysisModel.NetworkEdges, separators);
+            var oldTargets = AlgorithmFunctions.GetTargetNodes(analysisModel.NetworkTargets, oldNodes, separators);
+            var oldTargetIndices = AlgorithmGeneticFunctions.GetTargetIndices(oldNodes, oldTargets);
+            var oldA = AlgorithmGeneticFunctions.GetAdjacencyMatrix(oldNodes, oldEdges);
+            var oldPowersA = AlgorithmGeneticFunctions.GetAdjacencyMatrixPowers(oldA, analysisModel.GeneticMaxPathLength.Value);
+            var oldList = AlgorithmGeneticFunctions.GetList(oldPowersA, oldTargetIndices);
 
             // Get the trimmed list of nodes and edges.
-            var edges = Functions.GetNewEdges(oldNodes, oldEdges, oldList);
-            var nodes = Functions.GetNodes(edges);
-            var singleNodes = Functions.GetSingleNodes(oldNodes, nodes, oldList);
-            var A = Functions.GetAdjacencyMatrix(nodes, edges);
-            var targets = Functions.GetNewTargets(oldTargets, singleNodes);
-            var drugTargets = analysisModel.NetworkDrugTargetCount.Value != 0 ? Functions.GetDrugTargets(analysisModel.NetworkDrugTargets, nodes, separators) : null;
-            var targetIndices = Functions.GetTargetIndices(nodes, targets);
-            var C = Functions.GetTargetMatrix(nodes, targetIndices);
-            var powersA = Functions.GetAdjacencyMatrixPowers(A, analysisModel.GeneticMaxPathLength.Value);
-            var powers = Functions.GetTargetMatrixPowers(C, powersA);
-            var list = Functions.GetList(powersA, targetIndices);
+            var nodes = AlgorithmGeneticFunctions.GetNewNodes(oldNodes, oldList);
+            var edges = AlgorithmGeneticFunctions.GetNewEdges(oldEdges, nodes);
+            var singleNodes = AlgorithmGeneticFunctions.GetSingleTargets(nodes, oldTargets);
+            var A = AlgorithmGeneticFunctions.GetAdjacencyMatrix(nodes, edges);
+            var targets = AlgorithmGeneticFunctions.GetNewTargets(nodes, oldTargets);
+            var drugTargets = analysisModel.NetworkDrugTargetCount.Value != 0 ? AlgorithmFunctions.GetTargetNodes(analysisModel.NetworkDrugTargets, nodes, separators) : null;
+            var targetIndices = AlgorithmGeneticFunctions.GetTargetIndices(nodes, targets);
+            var C = AlgorithmGeneticFunctions.GetTargetMatrix(nodes, targetIndices);
+            var powersA = AlgorithmGeneticFunctions.GetAdjacencyMatrixPowers(A, analysisModel.GeneticMaxPathLength.Value);
+            var powers = AlgorithmGeneticFunctions.GetTargetMatrixPowers(C, powersA);
+            var list = AlgorithmGeneticFunctions.GetList(powersA, targetIndices);
 
             // Initialization of the first population.
             var rand = new Random(analysisModel.GeneticRandomSeed.Value);
@@ -79,7 +79,7 @@ namespace NetControlApp.Services
             {
                 // Move on to the next population.
                 p = p.nextPopulation(analysisModel.GeneticPercentageElite.Value, analysisModel.GeneticPercentageRandom.Value,
-                    analysisModel.GeneticProbabilityMutation.Value, powers, list, analysisModel.GeneticElementsRandom.Value, rand, nodes);
+                    analysisModel.GeneticProbabilityMutation.Value, powers, list, analysisModel.GeneticElementsRandom.Value, rand);
                 // Get the best fitness of the current population.
                 var fitness = p.getBestFitness();
                 // If the fitness is better than the current best one.
@@ -126,7 +126,7 @@ namespace NetControlApp.Services
         /// <param name="analysisModel">The analysis upon which to run the algorithm.</param>
         /// <param name="separators">The separators which are used to split the entries in the database strings.</param>
         /// <returns></returns>
-        private async Task RunGreedyAlgorithm(AnalysisModel analysisModel, String[] separators)
+        private async Task RunGreedyAlgorithm(AnalysisModel analysisModel, List<String> separators)
         {
             throw new NotImplementedException();
         }
