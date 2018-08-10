@@ -19,7 +19,7 @@
         <dd>
             @Html.DisplayFor(model => model.StartTime)
         </dd>
-        @if (Model.Status.Equals("Stopped") || Model.Status.Equals("Scheduled to stop"))
+        @if (Model.ScheduledToStop == true)
         {
             <dt>
                 Stop Time
@@ -59,7 +59,7 @@
                 No
             </dd>
         }
-
+        <hr style="border-width:2px">
         <dt>
             @Html.DisplayNameFor(model => model.UserGivenNodes)
         </dt>
@@ -181,99 +181,109 @@
         <dd>
             @Html.DisplayFor(model => model.AlgorithmCurrentIterationNoImprovement)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticRandomSeed)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticRandomSeed)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticMaxIteration)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticMaxIteration)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticMaxIterationNoImprovement)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticMaxIterationNoImprovement)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticMaxPathLength)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticMaxPathLength)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticPopulationSize)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticPopulationSize)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticElementsRandom)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticElementsRandom)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticPercentageRandom)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticPercentageRandom)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticPercentageElite)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticPercentageElite)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticProbabilityMutation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticProbabilityMutation)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyRandomSeed)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyRandomSeed)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyMaxIteration)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyMaxIteration)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyMaxIterationNoImprovement)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyMaxIterationNoImprovement)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyMaxPathLength)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyMaxPathLength)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyRepeats)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyRepeats)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyHeuristics)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyHeuristics)
-        </dd>
+        @if (Model.AlgorithmType.Equals("genetic"))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticRandomSeed)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticRandomSeed)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticMaxIteration)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticMaxIteration)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticMaxIterationNoImprovement)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticMaxIterationNoImprovement)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticMaxPathLength)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticMaxPathLength)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticPopulationSize)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticPopulationSize)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticElementsRandom)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticElementsRandom)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticPercentageRandom)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticPercentageRandom)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticPercentageElite)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticPercentageElite)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GeneticProbabilityMutation)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GeneticProbabilityMutation)
+            </dd>
+
+        }
+        else
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.GreedyRandomSeed)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GreedyRandomSeed)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GreedyMaxIteration)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GreedyMaxIteration)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GreedyMaxIterationNoImprovement)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GreedyMaxIterationNoImprovement)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GreedyMaxPathLength)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GreedyMaxPathLength)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GreedyRepeats)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GreedyRepeats)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GreedyHeuristics)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GreedyHeuristics)
+            </dd>
+
+        }
+
+
     </dl>
 </div>
 <div>
     @*<a asp-action="Edit" asp-route-id="@Model.AnalysisId">Edit</a><br />*@
-    <a asp-action="Index"><i class="typcn typcn-arrow-back" style="font-size:200%; color:black"></i> Back to List</a>
+    <a asp-action="ViewAll"><i class="typcn typcn-arrow-back" style="font-size:200%; color:black"></i> Back to List</a>
 </div>

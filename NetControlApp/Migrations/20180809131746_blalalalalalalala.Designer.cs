@@ -10,8 +10,8 @@ using NetControlApp.Data;
 namespace NetControlApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180809103442_AddedCurrentIteration")]
-    partial class AddedCurrentIteration
+    [Migration("20180809131746_blalalalalalalala")]
+    partial class blalalalalalalala
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -138,6 +138,8 @@ namespace NetControlApp.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("AlgorithmCurrentIteration");
+
+                    b.Property<int?>("AlgorithmCurrentIterationNoImprovement");
 
                     b.Property<string>("AlgorithmType")
                         .IsRequired();
