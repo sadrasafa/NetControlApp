@@ -3,7 +3,12 @@
 
 Improvements:
 
-Add the possibility for more users to see an analysis.
+•	Add the possibility for more users to see an analysis.
+
+
+Known bugs:
+
+•	The nodes are not correctly loaded if the network is given as seed nodes.
 
 Team 3:
 
@@ -16,6 +21,7 @@ Team 3:
 •	Is it optimal to have 1 object per edge and can it scale with large graphs?? - edges can be strings and you take them 2 by 2
 
 • It should work on a cluster or at least many threads. Check the environment available and then adapt to the resources. 
+
 
 Team 1:
 
