@@ -1,60 +1,62 @@
-﻿* {
-    box-sizing: border-box;
-}
-
-.contentView {
-    text-align: center;
-    align-content: center;
-    padding-left: 10rem;
-    background-color: #fcfcfc;
-    padding-top: 4%;
-    padding-bottom: 2%;
-}
-
-.row.inside {
-    width: 65%;
-    padding: 0.5rem;
-    margin-bottom: 2rem;
-    color: black;
-    border-radius: 20px;
-    color: black;
-    display: inline-block;
-    background: #ffffff;
-    box-shadow: inset 0 0 0 5px #fff;
-}
-
-.row.going {
-    box-shadow: inset 0 0 0 2px rgba(20, 53, 236, 0.86);
-}
-.row.cmpl {
-    box-shadow: inset 0 0 0 2px rgba(27, 92, 27, 0.81);
-}
-.row.stp {
-    box-shadow: inset 0 0 0 2px rgba(139, 0, 0, 0.97);
-}
-.row.going:hover {
-    width: 67%;
-    box-shadow: inset 0 0 0 5px #000;
-}
-
-.row.cmpl:hover {
-    width: 67%;
-    box-shadow: inset 0 0 0 5px #000;
-}
-
-.row.stp:hover {
-    width: 67%;
-    box-shadow: inset 0 0 0 5px #000;
-}
-
-
-
-
-p.head {
-    height: 3rem;
-}
-
-p.ll {
+﻿.dl-horizontal dt {
+    text-align: left;
+    width: 35rem;
     height: 2.5rem;
-    font-size: 105%;
+}
+
+.web_dialog_overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    opacity: .15;
+    filter: alpha(opacity=15);
+    -moz-opacity: .15;
+    z-index: 101;
+    display: none;
+}
+
+.web_dialog {
+    display: none;
+    position: fixed;
+    width: 380px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    margin-left: -190px;
+    margin-top: -100px;
+    background-color: #ffffff;
+    border: 2px solid #336699;
+    padding: 0px;
+    z-index: 102;
+    font-family: Verdana;
+    font-size: 10pt;
+}
+.web_dialog_title {
+    border-bottom: solid 2px #336699;
+    background-color: #336699;
+    padding: 4px;
+    color: White;
+    font-weight: bold;
+}
+
+    .web_dialog_title a {
+        color: White;
+        text-decoration: none;
+    }
+
+.align_right {
+    text-align: right;
+}
+.p{
+    display:inline-block;
+}
+.modal-content.ui-resizeable{
+
 }

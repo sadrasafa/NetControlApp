@@ -1,18 +1,26 @@
 ﻿
 @model NetControlApp.Models.AnalysisModel
 
-<link rel="stylesheet" href="~/assets/css/details.css" />
 <link rel="stylesheet" href="~/assets/fonts/typicons.min.css">
+<link rel="stylesheet" href="~/assets/css/viewAll.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 @{
     ViewData["Title"] = "Details";
 }
 
 <h2>Details</h2>
-
 <div>
     <h3> @Html.DisplayFor(model => model.AnalysisName) </h3>
     <hr />
     <dl class="dl-horizontal">
+        <p style="font-size:140%">Overview:</p>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.StartTime)
         </dt>
@@ -43,126 +51,191 @@
         <dd>
             @Html.DisplayFor(model => model.AnalysisName)
         </dd>
+        @if (!Model.Status.Equals("Completed"))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ScheduledToStop)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserIsNetworkSeed)
-        </dt>
+            @if (Model.ScheduledToStop == true)
+            {
+                <dd>
+                    Yes
+                </dd>
+            }
+            else
+            {
+                <dd>
+                    No
+                </dd>
+            }
+
+        }
+
+
+    </dl>
+    <hr style="border-width:2px">
+    <div>
+        <p style="font-size:140%">User Input:</p>
+        <p style="font-size:110% ;display:inline-block; margin-right:5.5rem"><b>@Html.DisplayNameFor(model => model.UserIsNetworkSeed)</b></p>
         @if (Model.UserIsNetworkSeed == true)
         {
-            <dd>
-                Yes
-            </dd>
+            <p style="font-size:110%; display:inline-block">Yes</p>
         }
         else
         {
-            <dd>
-                No
-            </dd>
+            <p style="font-size:110%; display:inline-block">No</p>
         }
-        <hr style="border-width:2px">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserGivenNodes)
-        </dt>
-        <dd>
-            <!-- Click to view the nodes. -->
-            @Html.DisplayFor(model => model.UserGivenNodes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserGivenTarget)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserGivenTarget)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserGivenDrugTarget)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserGivenDrugTarget)
-        </dd>
+        <br />
+        <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal1">View @Html.DisplayNameFor(model => model.UserGivenNodes)</a></p> |
+        <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal2">View @Html.DisplayNameFor(model => model.UserGivenTarget)</a></p> |
+        <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal3">View @Html.DisplayNameFor(model => model.UserGivenDrugTarget)</a></p>
+    </div>
+    <div class="modal fade" id="modal1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">@Html.DisplayNameFor(model => model.UserGivenNodes)</h4>
+                </div>
+                <div class="modal-body">
+                    <p> @Html.DisplayFor(model => model.UserGivenNodes)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal2">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">@Html.DisplayNameFor(model => model.UserGivenTarget)</h4>
+                </div>
+                <div class="modal-body">
+                    <p> @Html.DisplayFor(model => model.UserGivenTarget)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal3">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"> @Html.DisplayNameFor(model => model.UserGivenDrugTarget)</h4>
+                </div>
+                <div class="modal-body">
+                    <p> @Html.DisplayFor(model => model.UserGivenDrugTarget)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr style="border-width:2px">
+
+    <dl class="dl-horizontal">
+        <p style="font-size:140%">Output:</p>
         <dt>
             @Html.DisplayNameFor(model => model.NetworkNodeCount)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.NetworkNodeCount)
+            @Html.DisplayFor(model => model.NetworkNodeCount)<a data-toggle="modal" href="#modal4"> more>></a>
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkNodes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkNodes)
-        </dd>
+        <div class="modal fade" id="modal4">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">@Html.DisplayNameFor(model => model.NetworkNodes)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> @Html.DisplayFor(model => model.NetworkNodes)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <dt>
             @Html.DisplayNameFor(model => model.NetworkEdgeCount)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.NetworkEdgeCount)
+            @Html.DisplayFor(model => model.NetworkEdgeCount)<a data-toggle="modal" href="#modal5"> more>></a>
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkEdges)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkEdges)
-        </dd>
+        <div class="modal fade" id="modal5">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">@Html.DisplayNameFor(model => model.NetworkEdges)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> @Html.DisplayFor(model => model.NetworkEdges)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <dt>
             @Html.DisplayNameFor(model => model.NetworkTargetCount)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.NetworkTargetCount)
+            @Html.DisplayFor(model => model.NetworkTargetCount)<a data-toggle="modal" href="#modal6"> more>></a>
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkTargets)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkTargets)
-        </dd>
+        <div class="modal fade" id="modal6">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">@Html.DisplayNameFor(model => model.NetworkTargets)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> @Html.DisplayFor(model => model.NetworkTargets)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <dt>
             @Html.DisplayNameFor(model => model.NetworkDrugTargetCount)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.NetworkDrugTargetCount)
+            @Html.DisplayFor(model => model.NetworkDrugTargetCount)<a data-toggle="modal" href="#modal7"> more>></a>
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkDrugTargets)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkDrugTargets)
-        </dd>
+        <div class="modal fade" id="modal7">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">@Html.DisplayNameFor(model => model.NetworkDrugTargets)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> @Html.DisplayFor(model => model.NetworkDrugTargets)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <dt>
             @Html.DisplayNameFor(model => model.NetworkBestResultCount)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.NetworkBestResultCount)
+            @Html.DisplayFor(model => model.NetworkBestResultCount)<a data-toggle="modal" href="#modal8"> more>></a>
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkBestResultNodes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkBestResultNodes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ScheduledToStop)
-        </dt>
-        @if (Model.ScheduledToStop == true)
-        {
-            <dd>
-                Yes
-            </dd>
-        }
-        else
-        {
-            <dd>
-                No
-            </dd>
-        }
-        @*<dd>
-            @Html.DisplayFor(model => model.ScheduledToStop)
-        </dd>*@
+        <div class="modal fade" id="modal8">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">@Html.DisplayNameFor(model => model.NetworkBestResultNodes)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> @Html.DisplayFor(model => model.NetworkBestResultNodes)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dl>
+    <hr style="border-width:2px">
+    <dl class="dl-horizontal">
+        <p style="font-size:140%">Algorithm:</p>
         <dt>
             @Html.DisplayNameFor(model => model.AlgorithmType)
         </dt>
@@ -279,11 +352,9 @@
             </dd>
 
         }
-
-
     </dl>
 </div>
 <div>
-    @*<a asp-action="Edit" asp-route-id="@Model.AnalysisId">Edit</a><br />*@
-    <a asp-action="ViewAll"><i class="typcn typcn-arrow-back" style="font-size:200%; color:black"></i> Back to List</a>
+   @*<a asp-action="Edit" asp-route-id="@Model.AnalysisId">Edit</a><br />*@
+<a asp-action="ViewAll"><i class="typcn typcn-arrow-back" style="font-size:200%; color:black"></i> Back to List</a>
 </div>

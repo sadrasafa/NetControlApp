@@ -186,5 +186,7 @@ namespace NetControlApp.Controllers
         {
             return _context.AnalysisModel.Any(e => e.AnalysisId == id);
         }
+
+        
     }
 }
