@@ -13,7 +13,7 @@ namespace NetControlApp.Algorithms
         /// <param name="keptNodes">The nodes for which to keep the control path intact.</param>
         /// <param name="controlPath">The current control path.</param>
         /// <returns>The new control paths.</returns>
-        private static Dictionary<string, List<string>> ResetControlPath(List<string> keptNodes, Dictionary<string, List<string>> controlPath)
+        public static Dictionary<string, List<string>> ResetControlPath(List<string> keptNodes, Dictionary<string, List<string>> controlPath)
         {
             var newControlPath = new Dictionary<string, List<string>>(controlPath);
             var matchingNodes = newControlPath.Keys.Except(keptNodes).ToList();
@@ -29,7 +29,7 @@ namespace NetControlApp.Algorithms
         /// </summary>
         /// <param name="matchedEdges">The list of edges corresponding to the maximum matching.</param>
         /// <returns>List of left-side matched nodes.</returns>
-        private static List<String> GetMatchedNodes(List<(string, string)> matchedEdges)
+        public static List<String> GetMatchedNodes(List<(string, string)> matchedEdges)
         {
             return matchedEdges.Select((edge) => edge.Item1).Distinct().ToList();
         }
@@ -40,7 +40,7 @@ namespace NetControlApp.Algorithms
         /// <param name="currentTargets">All of the nodes on the right side of the bipartite graph.</param>
         /// <param name="matchedEdges">The list of edges corresponding to the maximum matching.</param>
         /// <returns>List of right-side unmatched nodes.</returns>
-        private static List<String> GetUnmatchedNodes(List<string> currentTargets, List<(string, string)> matchedEdges)
+        public static List<String> GetUnmatchedNodes(List<string> currentTargets, List<(string, string)> matchedEdges)
         {
             return currentTargets.Except(matchedEdges.Select((edge) => edge.Item2).Distinct()).ToList();
         }
@@ -51,7 +51,7 @@ namespace NetControlApp.Algorithms
         /// <param name="matchedEdges">The list of edges corresponding to the maximum matching.</param>
         /// <param name="controlPath">The current control path.</param>
         /// <returns>The new control paths.</returns>
-        private static Dictionary<string, List<string>> UpdateControlPath(List<(string, string)> matchedEdges, Dictionary<string, List<string>> controlPath)
+        public static Dictionary<string, List<string>> UpdateControlPath(List<(string, string)> matchedEdges, Dictionary<string, List<string>> controlPath)
         {
             var newControlPath = new Dictionary<string, List<string>>(controlPath);
             foreach (var edge in matchedEdges)
@@ -74,7 +74,7 @@ namespace NetControlApp.Algorithms
         /// <param name="edges">The full list of edges in the graph.</param>
         /// <param name="heuristic">The search heuristic.</param>
         /// <returns>The list of edges ending in the given node, based on the provided heuristics.</returns>
-        private static List<(string, string)> GetHeuristicEdges(String target, List<(String, String)> edges, String heuristic)
+        public static List<(string, string)> GetHeuristicEdges(String target, List<(String, String)> edges, String heuristic)
         {
             // We temporarily return all edges which start with the given target.
             return edges.Where((edge) => edge.Item2 == target).ToList();
@@ -85,7 +85,7 @@ namespace NetControlApp.Algorithms
         /// </summary>
         /// <param name="controlPath">The current control path.</param>
         /// <returns>List of target nodes controlled by a node which controls only one target node.</returns>
-        private static List<String> GetKeptTargetNodes(Dictionary<String, List<String>> controlPath)
+        public static List<String> GetKeptTargetNodes(Dictionary<String, List<String>> controlPath)
         {
             var keptTargetNodes = new List<String>();
             var controllingNodes = AlgorithmGreedyFunctions.GetControllingNodes(controlPath);
@@ -107,7 +107,7 @@ namespace NetControlApp.Algorithms
         /// </summary>
         /// <param name="controlPath">The control path of the current iteration.</param>
         /// <returns></returns>
-        private static Dictionary<String, String> GetControlledNodes(Dictionary<String, List<String>> controlPath)
+        public static Dictionary<String, String> GetControlledNodes(Dictionary<String, List<String>> controlPath)
         {
             var controlNodes = new Dictionary<String, String>();
             foreach (var item in controlPath)
@@ -122,7 +122,7 @@ namespace NetControlApp.Algorithms
         /// </summary>
         /// <param name="controlPath">The control path of the current iteration.</param>
         /// <returns></returns>
-        private static Dictionary<String, List<String>> GetControllingNodes(Dictionary<String, List<String>> controlPath)
+        public static Dictionary<String, List<String>> GetControllingNodes(Dictionary<String, List<String>> controlPath)
         {
             var controlNodes = new Dictionary<String, List<String>>();
             foreach (var item in controlPath)
@@ -148,7 +148,7 @@ namespace NetControlApp.Algorithms
         /// <param name="edges">The edges of the bipartite graph.</param>
         /// <param name="rand">The random variable for choosing randomly a maximum matching.</param>
         /// <returns></returns>
-        private static List<(String, String)> GetMaximumMatching(List<String> leftNodes, List<String> rightNodes, List<(String, String)> edges, Random rand)
+        public static List<(String, String)> GetMaximumMatching(List<String> leftNodes, List<String> rightNodes, List<(String, String)> edges, Random rand)
         {
             // The Wikipedia algorithm uses considers the left nodes as U, and the right ones as V. But, as the unmatched nodes are considered, in order,
             // from the left side of the bipartite graph, the obtained matching would not be truly random, especially on the first step.
