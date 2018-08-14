@@ -1,5 +1,9 @@
 ﻿@model NetControlApp.Models.AnalysisModel
 
+<link rel="stylesheet" href="~/assets/fonts/typicons.min.css">
+<link rel="stylesheet" href="~/assets/css/viewAll.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 @{
     ViewData["Title"] = "Delete";
 }
@@ -8,221 +12,357 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>AnalysesModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.StartTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AnalysisName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AnalysisName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserIsNetworkSeed)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserIsNetworkSeed)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserGivenNodes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserGivenNodes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserGivenTarget)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserGivenTarget)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserGivenDrugTarget)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserGivenDrugTarget)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkNodeCount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkNodeCount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkNodes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkNodes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkEdgeCount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkEdgeCount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkEdges)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkEdges)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkTargetCount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkTargetCount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkTargets)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkTargets)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkDrugTargetCount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkDrugTargetCount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkDrugTargets)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkDrugTargets)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkBestResultCount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkBestResultCount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetworkBestResultNodes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetworkBestResultNodes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ScheduledToStop)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ScheduledToStop)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AlgorithmType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AlgorithmType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticRandomSeed)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticRandomSeed)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticMaxIteration)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticMaxIteration)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticMaxIterationNoImprovement)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticMaxIterationNoImprovement)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticMaxPathLength)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticMaxPathLength)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticPopulationSize)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticPopulationSize)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticElementsRandom)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticElementsRandom)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticPercentageRandom)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticPercentageRandom)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticPercentageElite)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticPercentageElite)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GeneticProbabilityMutation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GeneticProbabilityMutation)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyRandomSeed)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyRandomSeed)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyMaxIteration)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyMaxIteration)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyMaxIterationNoImprovement)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyMaxIterationNoImprovement)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyMaxPathLength)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyMaxPathLength)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyRepeats)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyRepeats)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GreedyHeuristics)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GreedyHeuristics)
-        </dd>
-    </dl>
-    
+    <div>
+        <h3> @Html.DisplayFor(model => model.AnalysisName) </h3>
+        <hr />
+        <dl class="dl-horizontal">
+            <p style="font-size:140%">Overview:</p>
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.StartTime)
+            </dd>
+            @if (Model.ScheduledToStop == true)
+            {
+                <dt>
+                    Stop Time
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EndTime)
+                </dd>
+            }
+            else
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EndTime)
+                </dd>
+            }
+            <dt>
+                @Html.DisplayNameFor(model => model.AnalysisName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AnalysisName)
+            </dd>
+            @if (!Model.Status.Equals("Completed"))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.ScheduledToStop)
+                </dt>
+
+                @if (Model.ScheduledToStop == true)
+                {
+                    <dd>
+                        Yes
+                    </dd>
+                }
+                else
+                {
+                    <dd>
+                        No
+                    </dd>
+                }
+
+            }
+
+
+        </dl>
+        <hr style="border-width:2px">
+        <div>
+            <p style="font-size:140%">User Input:</p>
+            <p style="font-size:110% ;display:inline-block; margin-right:5.5rem"><b>@Html.DisplayNameFor(model => model.UserIsNetworkSeed)</b></p>
+            @if (Model.UserIsNetworkSeed == true)
+            {
+                <p style="font-size:110%; display:inline-block">Yes</p>
+            }
+            else
+            {
+                <p style="font-size:110%; display:inline-block">No</p>
+            }
+            <br />
+            <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal1">View @Html.DisplayNameFor(model => model.UserGivenNodes)</a></p> |
+            <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal2">View @Html.DisplayNameFor(model => model.UserGivenTarget)</a></p>
+            @if (Model.UserGivenDrugTarget != null)
+            {
+                <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal3"> | View @Html.DisplayNameFor(model => model.UserGivenDrugTarget)</a></p>
+
+            }
+
+        </div>
+        <div class="modal fade" id="modal1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">@Html.DisplayNameFor(model => model.UserGivenNodes)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> @Html.DisplayFor(model => model.UserGivenNodes)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modal2">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">@Html.DisplayNameFor(model => model.UserGivenTarget)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> @Html.DisplayFor(model => model.UserGivenTarget)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modal3">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title"> @Html.DisplayNameFor(model => model.UserGivenDrugTarget)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p> @Html.DisplayFor(model => model.UserGivenDrugTarget)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="border-width:2px">
+
+        <dl class="dl-horizontal">
+            <p style="font-size:140%">Output:</p>
+            <dt>
+                @Html.DisplayNameFor(model => model.NetworkNodeCount)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NetworkNodeCount)<a data-toggle="modal" href="#modal4"> more>></a>
+            </dd>
+            <div class="modal fade" id="modal4">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">@Html.DisplayNameFor(model => model.NetworkNodes)</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p> @Html.DisplayFor(model => model.NetworkNodes)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <dt>
+                @Html.DisplayNameFor(model => model.NetworkEdgeCount)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NetworkEdgeCount)<a data-toggle="modal" href="#modal5"> more>></a>
+            </dd>
+            <div class="modal fade" id="modal5">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">@Html.DisplayNameFor(model => model.NetworkEdges)</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p> @Html.DisplayFor(model => model.NetworkEdges)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.NetworkTargetCount)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NetworkTargetCount)<a data-toggle="modal" href="#modal6"> more>></a>
+            </dd>
+            <div class="modal fade" id="modal6">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">@Html.DisplayNameFor(model => model.NetworkTargets)</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p> @Html.DisplayFor(model => model.NetworkTargets)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.NetworkDrugTargetCount)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NetworkDrugTargetCount) <a data-toggle="modal" href="#modal7"> more>></a>
+
+            </dd>
+            <div class="modal fade" id="modal7">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">@Html.DisplayNameFor(model => model.NetworkDrugTargets)</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p> @Html.DisplayFor(model => model.NetworkDrugTargets)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.NetworkBestResultCount)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NetworkBestResultCount)<a data-toggle="modal" href="#modal8"> more>></a>
+            </dd>
+            <div class="modal fade" id="modal8">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">@Html.DisplayNameFor(model => model.NetworkBestResultNodes)</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p> @Html.DisplayFor(model => model.NetworkBestResultNodes)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </dl>
+        <hr style="border-width:2px">
+        <dl class="dl-horizontal">
+            <p style="font-size:140%">Algorithm:</p>
+            <dt>
+                @Html.DisplayNameFor(model => model.AlgorithmType)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AlgorithmType)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.AlgorithmCurrentIteration)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AlgorithmCurrentIteration)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.AlgorithmCurrentIterationNoImprovement)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AlgorithmCurrentIterationNoImprovement)
+            </dd>
+            @if (Model.AlgorithmType.Equals("genetic"))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.GeneticRandomSeed)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GeneticRandomSeed)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GeneticMaxIteration)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GeneticMaxIteration)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GeneticMaxIterationNoImprovement)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GeneticMaxIterationNoImprovement)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GeneticMaxPathLength)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GeneticMaxPathLength)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GeneticPopulationSize)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GeneticPopulationSize)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GeneticElementsRandom)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GeneticElementsRandom)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GeneticPercentageRandom)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GeneticPercentageRandom)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GeneticPercentageElite)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GeneticPercentageElite)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GeneticProbabilityMutation)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GeneticProbabilityMutation)
+                </dd>
+
+            }
+            else
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.GreedyRandomSeed)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GreedyRandomSeed)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GreedyMaxIteration)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GreedyMaxIteration)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GreedyMaxIterationNoImprovement)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GreedyMaxIterationNoImprovement)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GreedyMaxPathLength)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GreedyMaxPathLength)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GreedyRepeats)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GreedyRepeats)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.GreedyHeuristics)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.GreedyHeuristics)
+                </dd>
+
+            }
+        </dl>
+    </div>
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="AnalysisId" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
