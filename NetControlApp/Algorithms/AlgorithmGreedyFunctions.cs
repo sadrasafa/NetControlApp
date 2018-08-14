@@ -7,118 +7,56 @@ namespace NetControlApp.Algorithms
 {
     class AlgorithmGreedyFunctions
     {
-        public static void InitialProgram()
+        /// <summary>
+        /// Cuts the control paths of all target nodes, other than the specified nodes to be kept.
+        /// </summary>
+        /// <param name="keptNodes">The nodes for which to keep the control path intact.</param>
+        /// <param name="controlPath">The current control path.</param>
+        /// <returns>The new control paths.</returns>
+        private static Dictionary<string, List<string>> ResetControlPath(List<string> keptNodes, Dictionary<string, List<string>> controlPath)
         {
-            var randomSeed = new Random().Next();
-            var separators = new List<String>() { ";", "\t", "\n", "\r" };
-            var rand = new Random(randomSeed);
-
-            var graphType = "Big";
-            var graphText = System.IO.File.ReadAllText($@"C:\Users\vpopescu\source\repos\NetControl\NetControl\Networks\{graphType}Graph.txt");
-            var targetText = System.IO.File.ReadAllText($@"C:\Users\vpopescu\source\repos\NetControl\NetControl\Networks\{graphType}Target.txt");
-
-            var greedyRepeats = 1;
-            var greedyHeuristic = "";
-            var greedyMaxPathLength = 20;
-            var greedyMaxIterations = 100;
-            var greedyMaxIterationsNoImprovement = 100;
-
-            var nodes = AlgorithmFunctions.GetNodes(graphText, separators);
-            var edges = AlgorithmFunctions.GetEdges(graphText, separators);
-            var targets = AlgorithmFunctions.GetTargetNodes(targetText, nodes, separators);
-
-            Console.WriteLine($"{nodes.Count} nodes, {edges.Count} edges, {targets.Count} targets");
-
-            var currentIteration = 0;
-            var currentIterationNoImprovement = 0;
-            var bestResult = targets.Count;
-            while (currentIteration < greedyMaxIterations && currentIterationNoImprovement < greedyMaxIterationsNoImprovement)
+            var newControlPath = new Dictionary<string, List<string>>(controlPath);
+            var matchingNodes = newControlPath.Keys.Except(keptNodes).ToList();
+            foreach (var item in matchingNodes)
             {
-                var better = false;
-                var controlPath = new Dictionary<String, List<String>>();
-                targets.ForEach((node) => controlPath[node] = new List<String>() { node });
-                var controlNodes = new List<String>();
-                var currentRepeat = 0;
-                while (currentRepeat < greedyRepeats)
-                {
-                    var currentTargets = new List<String>(targets);
-                    var currentPathLength = 0;
-                    var keptNodes = AlgorithmGreedyFunctions.GetKeptTargetNodes(controlPath);
-                    currentTargets = currentTargets.Except(keptNodes).ToList();
-                    //Console.WriteLine("Kept nodes:");
-                    //keptNodes.ForEach((node) => Console.Write($"{node} "));
-                    //Console.WriteLine();
-                    do
-                    {
-                        var currentEdges = new List<(String, String)>();
-                        foreach (var target in currentTargets)
-                        {
-                            currentEdges.AddRange(AlgorithmGreedyFunctions.GetHeuristicEdges(target, edges, greedyHeuristic));
-                        }
-                        var leftNodes = nodes;
-                        var rightNodes = currentTargets;
-                        var matchingEdges = currentEdges;
-                        // Here begins the part for the "repeat" optimization.
-                        foreach (var item in keptNodes)
-                        {
-                            if (currentPathLength < controlPath[item].Count)
-                            {
-                                rightNodes.Add(controlPath[item][currentPathLength]);
-                            }
-                            if (currentPathLength + 1 < controlPath[item].Count)
-                            {
-                                currentEdges.Add((controlPath[item][currentPathLength], controlPath[item][currentPathLength + 1]));
-                            }
-                        }
-                        var matchedEdges = AlgorithmGreedyFunctions.GetMaximumMatching(leftNodes, rightNodes, matchingEdges, rand);
-                        AlgorithmGreedyFunctions.UpdateControlPath(matchedEdges, controlPath);
-                        var unmatchedRightNodes = AlgorithmGreedyFunctions.GetUnmatchedNodes(currentTargets, matchedEdges);
-                        var matchedLeftNodes = AlgorithmGreedyFunctions.GetMatchedNodes(matchedEdges);
-                        currentTargets = matchedLeftNodes;
-                        currentPathLength++;
-                    } while (currentTargets.Any() && currentPathLength < greedyMaxPathLength);
-                    currentRepeat++;
-                }
-                var c = GetControllingNodes(controlPath).Values.Distinct().Count();
-                // If the current solution is better than the previously obtained best solution.
-                if (c < bestResult)
-                {
-                    Console.WriteLine($"{c} nodes in solution.");
-                    //foreach (var item in controlPath)
-                    //{
-                    //    Console.Write($"{item.Key} : ");
-                    //    foreach (var node in item.Value)
-                    //    {
-                    //        Console.Write($"{node} ");
-                    //    }
-                    //    Console.WriteLine();
-                    //}
-                    //Console.WriteLine();
-                    bestResult = c;
-                }
-                else
-                {
-                    currentIterationNoImprovement++;
-                }
-                currentIteration++;
+                newControlPath[item] = new List<string>() { item };
             }
+            return newControlPath;
         }
 
-        private static List<String> GetMatchedNodes(List<(string, string)> matchingEdges)
+        /// <summary>
+        /// Computes the left-side matched nodes corresponding to the matched edges.
+        /// </summary>
+        /// <param name="matchedEdges">The list of edges corresponding to the maximum matching.</param>
+        /// <returns>List of left-side matched nodes.</returns>
+        private static List<String> GetMatchedNodes(List<(string, string)> matchedEdges)
         {
-            return matchingEdges.Select((edge) => edge.Item1).Distinct().ToList();
+            return matchedEdges.Select((edge) => edge.Item1).Distinct().ToList();
         }
 
-        private static List<String> GetUnmatchedNodes(List<string> currentTargets, List<(string, string)> matchingEdges)
+        /// <summary>
+        /// Computes the right-side unmatched nodes corresponding to the matched edges.
+        /// </summary>
+        /// <param name="currentTargets">All of the nodes on the right side of the bipartite graph.</param>
+        /// <param name="matchedEdges">The list of edges corresponding to the maximum matching.</param>
+        /// <returns>List of right-side unmatched nodes.</returns>
+        private static List<String> GetUnmatchedNodes(List<string> currentTargets, List<(string, string)> matchedEdges)
         {
-            return currentTargets.Except(matchingEdges.Select((edge) => edge.Item2).Distinct()).ToList();
+            return currentTargets.Except(matchedEdges.Select((edge) => edge.Item2).Distinct()).ToList();
         }
 
-        private static void UpdateControlPath(List<(string, string)> matchingEdges, Dictionary<string, List<string>> controlPath)
+        /// <summary>
+        /// Updates the control paths for all targets, based on the provided matched edges.
+        /// </summary>
+        /// <param name="matchedEdges">The list of edges corresponding to the maximum matching.</param>
+        /// <param name="controlPath">The current control path.</param>
+        /// <returns>The new control paths.</returns>
+        private static Dictionary<string, List<string>> UpdateControlPath(List<(string, string)> matchedEdges, Dictionary<string, List<string>> controlPath)
         {
-            foreach (var edge in matchingEdges)
+            var newControlPath = new Dictionary<string, List<string>>(controlPath);
+            foreach (var edge in matchedEdges)
             {
-                foreach (var item in controlPath)
+                foreach (var item in newControlPath)
                 {
                     if (item.Value.Last() == edge.Item2)
                     {
@@ -126,14 +64,27 @@ namespace NetControlApp.Algorithms
                     }
                 }
             }
+            return newControlPath;
         }
 
+        /// <summary>
+        /// Computes all of the edges ending in the given node, based on the provided heuristic.
+        /// </summary>
+        /// <param name="target">The node of the graph whose in-going edges to compute.</param>
+        /// <param name="edges">The full list of edges in the graph.</param>
+        /// <param name="heuristic">The search heuristic.</param>
+        /// <returns>The list of edges ending in the given node, based on the provided heuristics.</returns>
         private static List<(string, string)> GetHeuristicEdges(String target, List<(String, String)> edges, String heuristic)
         {
             // We temporarily return all edges which start with the given target.
             return edges.Where((edge) => edge.Item2 == target).ToList();
         }
 
+        /// <summary>
+        /// Computes the target nodes which are controlled by a node which controls only one target node.
+        /// </summary>
+        /// <param name="controlPath">The current control path.</param>
+        /// <returns>List of target nodes controlled by a node which controls only one target node.</returns>
         private static List<String> GetKeptTargetNodes(Dictionary<String, List<String>> controlPath)
         {
             var keptTargetNodes = new List<String>();
@@ -148,17 +99,14 @@ namespace NetControlApp.Algorithms
                     }
                 }
             }
-            //var controlNodes = AlgorithmGreedyFunctions.GetControlledNodes(controlPath);
-            //foreach (var node in controlNodes.Values.Distinct())
-            //{
-            //    if (controlNodes.Values.Count((item) => item == node) != 1)
-            //    {
-            //        keptTargetNodes.Add(controlNodes.First((item) => item.Value == node).Key);
-            //    }
-            //}
             return keptTargetNodes;
         }
 
+        /// <summary>
+        /// For each target node, it computes the node which controls it.
+        /// </summary>
+        /// <param name="controlPath">The control path of the current iteration.</param>
+        /// <returns></returns>
         private static Dictionary<String, String> GetControlledNodes(Dictionary<String, List<String>> controlPath)
         {
             var controlNodes = new Dictionary<String, String>();
@@ -169,6 +117,11 @@ namespace NetControlApp.Algorithms
             return controlNodes;
         }
 
+        /// <summary>
+        /// For each controlling node, it computes the target nodes that it controls.
+        /// </summary>
+        /// <param name="controlPath">The control path of the current iteration.</param>
+        /// <returns></returns>
         private static Dictionary<String, List<String>> GetControllingNodes(Dictionary<String, List<String>> controlPath)
         {
             var controlNodes = new Dictionary<String, List<String>>();
@@ -184,21 +137,6 @@ namespace NetControlApp.Algorithms
                 }
             }
             return controlNodes;
-        }
-
-        public static void Test()
-        {
-            //var separators = new List<String>() { ";", "\t", "\n", "\r" };
-            //var graphText = System.IO.File.ReadAllText($@"C:\Users\vpopescu\source\repos\NetControl\NetControl\Networks\TestGraph.txt");
-            //var edges = AlgorithmFunctions.GetEdges(graphText, separators);
-            var left = new List<String>() { "8", "10", "11", "13" };
-            var right = new List<String>() { "6", "7", "9", "5", "4", "11", "12"};
-            var edges = new List<(String, String)>() { ("8", "6"), ("8", "7"), ("8", "9"), ("10", "5"), ("11", "4"), ("13", "11"), ("13", "12") };
-            var rand = new Random();
-            for (int i = 0; i < 10; i++)
-            {
-                var j = GetMaximumMatching(left, right, edges, rand);
-            }
         }
 
         /// <summary>
@@ -339,9 +277,120 @@ namespace NetControlApp.Algorithms
             return true;
         }
 
-        private static List<(String, String)> GetOppositeEdges(List<(String, String)> edges)
+        /// <summary>
+        /// The initial testing program of the greedy algorithm.
+        /// </summary>
+        public static void InitialProgram()
         {
-            return edges.Select((item) => (item.Item2, item.Item1)).ToList();
+            var randomSeed = new Random().Next();
+            var separators = new List<String>() { ";", "\t", "\n", "\r" };
+            var rand = new Random(randomSeed);
+
+            var graphType = "Small";
+            var graphText = System.IO.File.ReadAllText($@"C:\Users\vpopescu\source\repos\NetControl\NetControl\Networks\{graphType}Graph.txt");
+            var targetText = System.IO.File.ReadAllText($@"C:\Users\vpopescu\source\repos\NetControl\NetControl\Networks\{graphType}Target.txt");
+
+            var greedyRepeats = 3;
+            var greedyHeuristic = "";
+            var greedyMaxPathLength = 5;
+            var greedyMaxIterations = 10;
+            var greedyMaxIterationsNoImprovement = 10;
+
+            var nodes = AlgorithmFunctions.GetNodes(graphText, separators);
+            var edges = AlgorithmFunctions.GetEdges(graphText, separators);
+            var targets = AlgorithmFunctions.GetTargetNodes(targetText, nodes, separators);
+
+            Console.WriteLine($"{nodes.Count} nodes, {edges.Count} edges, {targets.Count} targets");
+
+            // Set up for the initial iteration.
+            var currentIteration = 0;
+            var currentIterationNoImprovement = 0;
+            var bestResult = targets.Count;
+            // Run for as long as we haven't reached the final iteration or the final iteration without improvement.
+            while (currentIteration < greedyMaxIterations && currentIterationNoImprovement < greedyMaxIterationsNoImprovement)
+            {
+                // Set up the control path to start from the target nodes.
+                var controlPath = new Dictionary<String, List<String>>();
+                targets.ForEach((node) => controlPath[node] = new List<String>() { node });
+                var currentRepeat = 0;
+                while (currentRepeat < greedyRepeats)
+                {
+                    var currentTargets = new List<String>(targets);
+                    var currentPathLength = 0;
+                    // If it is the first check of the current iteration, we have no kept nodes, so the current targets are simply the targets.
+                    // The optimization part for the "repeats" starts here.
+                    var keptNodes = AlgorithmGreedyFunctions.GetKeptTargetNodes(controlPath);
+                    controlPath = AlgorithmGreedyFunctions.ResetControlPath(keptNodes, controlPath);
+                    currentTargets = currentTargets.Except(keptNodes).ToList();
+                    // Run until there are no current targets or we reached the maximum path length.
+                    while (currentTargets.Any() && currentPathLength < greedyMaxPathLength)
+                    {
+                        // Compute the current edges ending in the current targets.
+                        var currentEdges = new List<(String, String)>();
+                        foreach (var target in currentTargets)
+                        {
+                            currentEdges.AddRange(AlgorithmGreedyFunctions.GetHeuristicEdges(target, edges, greedyHeuristic));
+                        }
+                        // Start building the bipartite graph for the current step.
+                        var leftNodes = currentEdges.Select((edge) => edge.Item1).Distinct().ToList();
+                        var rightNodes = new List<String>(currentTargets);
+                        var matchingEdges = new List<(String, String)>(currentEdges);
+                        // If it is the first check of the current iteration, we have no kept nodes, so the left nodes and edges remain unchanged.
+                        // Otherwise, we remove from the left nodes the corresponding nodes in the current step in the control paths for the kept nodes.
+                        // The optimization part for the "repeat" begins here.
+                        foreach (var item in keptNodes)
+                        {
+                            if (currentPathLength + 1 < controlPath[item].Count)
+                            {
+                                var leftNode = controlPath[item][currentPathLength + 1];
+                                leftNodes.Remove(leftNode);
+                                matchingEdges.RemoveAll((edge) => edge.Item1 == leftNode);
+                            }
+                        }
+                        // Compute the maximum matching and the matched left nodes, which will become the new current targets.
+                        var matchedEdges = AlgorithmGreedyFunctions.GetMaximumMatching(leftNodes, rightNodes, matchingEdges, rand);
+                        var unmatchedRightNodes = AlgorithmGreedyFunctions.GetUnmatchedNodes(currentTargets, matchedEdges);
+                        currentTargets = AlgorithmGreedyFunctions.GetMatchedNodes(matchedEdges);
+                        // And update the control path.
+                        controlPath = AlgorithmGreedyFunctions.UpdateControlPath(matchedEdges, controlPath);
+                        currentPathLength++;
+                    }
+                    currentRepeat++;
+                }
+                // The optimization part for the "cut to driven" parameter begins here.
+                var stop = false;
+                while (!stop)
+                {
+                    stop = true;
+                    foreach (var item1 in controlPath)
+                    {
+                        var controllingNode = item1.Value.Last();
+                        foreach (var item2 in controlPath)
+                        {
+                            var firstIndex = item2.Value.IndexOf(controllingNode);
+                            if (firstIndex != -1 && firstIndex != item2.Value.Count - 1)
+                            {
+                                item2.Value.RemoveRange(firstIndex, item2.Value.Count - 1 - firstIndex);
+                                stop = false;
+                            }
+                        }
+                    }
+                }
+                // We compute the result.
+                var controllingNodes = AlgorithmGreedyFunctions.GetControllingNodes(controlPath).Keys.ToList();
+                var result = controllingNodes.Count;
+                // If the current solution is better than the previously obtained best solution.
+                if (result < bestResult)
+                {
+                    bestResult = result;
+                    Console.WriteLine($"{result} nodes in best solution so far.");
+                }
+                else
+                {
+                    currentIterationNoImprovement++;
+                }
+                currentIteration++;
+            }
         }
     }
 }
