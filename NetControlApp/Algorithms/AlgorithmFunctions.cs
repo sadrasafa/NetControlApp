@@ -168,7 +168,7 @@ namespace NetControlApp.Algorithms
                 }
                 if (analysisModel.GreedyMaxPathLength == null)
                 {
-                    analysisModel.GreedyMaxPathLength = 0;
+                    analysisModel.GreedyMaxPathLength = analysisModel.NetworkNodeCount - 1;
                 }
                 if (analysisModel.GreedyRepeats == null)
                 {

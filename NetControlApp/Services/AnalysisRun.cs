@@ -128,7 +128,110 @@ namespace NetControlApp.Services
         /// <returns></returns>
         private async Task RunGreedyAlgorithm(AnalysisModel analysisModel, List<String> separators)
         {
-            throw new NotImplementedException();
+            // Get the list of nodes and edges from the generated network.
+            var nodes = AlgorithmFunctions.GetNodes(analysisModel.NetworkEdges, separators);
+            var edges = AlgorithmFunctions.GetEdges(analysisModel.NetworkEdges, separators);
+            var targets = AlgorithmFunctions.GetTargetNodes(analysisModel.NetworkTargets, nodes, separators);
+            var drugTargets = analysisModel.NetworkDrugTargetCount.Value != 0 ? AlgorithmFunctions.GetTargetNodes(analysisModel.NetworkDrugTargets, nodes, separators) : null;
+
+            // Set up for the first iteration.
+            var bestResult = targets.Count;
+            var rand = new Random(analysisModel.GreedyRandomSeed.Value);
+
+            // Run for as long as we haven't reached the final iteration or the final iteration without improvement.
+            while (analysisModel.AlgorithmCurrentIteration < analysisModel.GreedyMaxIteration && analysisModel.AlgorithmCurrentIterationNoImprovement < analysisModel.GreedyMaxIterationNoImprovement && !analysisModel.ScheduledToStop.Value)
+            {
+                // Set up the control path to start from the target nodes.
+                var controlPath = new Dictionary<String, List<String>>();
+                targets.ForEach((node) => controlPath[node] = new List<String>() { node });
+                var currentRepeat = 0;
+                while (currentRepeat < analysisModel.GreedyRepeats)
+                {
+                    var currentTargets = new List<String>(targets);
+                    var currentPathLength = 0;
+                    // If it is the first check of the current iteration, we have no kept nodes, so the current targets are simply the targets.
+                    // The optimization part for the "repeats" starts here.
+                    var keptNodes = AlgorithmGreedyFunctions.GetKeptTargetNodes(controlPath);
+                    controlPath = AlgorithmGreedyFunctions.ResetControlPath(keptNodes, controlPath);
+                    currentTargets = currentTargets.Except(keptNodes).ToList();
+                    while (currentTargets.Any() && currentPathLength + 1 < analysisModel.GreedyMaxPathLength)
+                    {
+                        // Compute the current edges ending in the current targets.
+                        var currentEdges = new List<(String, String)>();
+                        foreach (var target in currentTargets)
+                        {
+                            currentEdges.AddRange(AlgorithmGreedyFunctions.GetHeuristicEdges(target, edges, analysisModel.GreedyHeuristics));
+                        }
+                        // Start building the bipartite graph for the current step.
+                        var leftNodes = currentEdges.Select((edge) => edge.Item1).Distinct().ToList();
+                        var rightNodes = new List<String>(currentTargets);
+                        var matchingEdges = new List<(String, String)>(currentEdges);
+                        // If it is the first check of the current iteration, we have no kept nodes, so the left nodes and edges remain unchanged.
+                        // Otherwise, we remove from the left nodes the corresponding nodes in the current step in the control paths for the kept nodes.
+                        // The optimization part for the "repeat" begins here.
+                        foreach (var item in keptNodes)
+                        {
+                            if (currentPathLength + 1 < controlPath[item].Count)
+                            {
+                                var leftNode = controlPath[item][currentPathLength + 1];
+                                leftNodes.Remove(leftNode);
+                                matchingEdges.RemoveAll((edge) => edge.Item1 == leftNode);
+                            }
+                        }
+                        // Compute the maximum matching and the matched left nodes, which will become the new current targets.
+                        var matchedEdges = AlgorithmGreedyFunctions.GetMaximumMatching(leftNodes, rightNodes, matchingEdges, rand);
+                        var unmatchedRightNodes = AlgorithmGreedyFunctions.GetUnmatchedNodes(currentTargets, matchedEdges);
+                        currentTargets = AlgorithmGreedyFunctions.GetMatchedNodes(matchedEdges);
+                        // And update the control path.
+                        controlPath = AlgorithmGreedyFunctions.UpdateControlPath(matchedEdges, controlPath);
+                        currentPathLength++;
+                    }
+                    currentRepeat++;
+                }
+                // The optimization part for the "cut to driven" parameter begins here.
+                var stop = false;
+                while (!stop)
+                {
+                    stop = true;
+                    foreach (var item1 in controlPath)
+                    {
+                        var controllingNode = item1.Value.Last();
+                        foreach (var item2 in controlPath)
+                        {
+                            var firstIndex = item2.Value.IndexOf(controllingNode);
+                            if (firstIndex != -1 && firstIndex != item2.Value.Count - 1)
+                            {
+                                item2.Value.RemoveRange(firstIndex, item2.Value.Count - 1 - firstIndex);
+                                stop = false;
+                            }
+                        }
+                    }
+                }
+                // We compute the result.
+                var controllingNodes = AlgorithmGreedyFunctions.GetControllingNodes(controlPath).Keys.ToList();
+                var result = controllingNodes.Count;
+                // If the current solution is better than the previously obtained best solution.
+                if (result < bestResult)
+                {
+                    bestResult = result;
+                    var resultNodes = "";
+                    analysisModel.AlgorithmCurrentIterationNoImprovement = 0;
+                    analysisModel.NetworkBestResultCount = result;
+                    controllingNodes.ForEach((node) => resultNodes += nodes + ";");
+                    analysisModel.NetworkBestResultNodes = resultNodes;
+                }
+                else
+                {
+                    analysisModel.AlgorithmCurrentIterationNoImprovement++;
+                }
+                analysisModel.AlgorithmCurrentIteration++;
+                analysisModel.Status = $"Analysis ongoing ({analysisModel.AlgorithmCurrentIteration} / {analysisModel.GreedyMaxIteration}, " +
+                    $"{analysisModel.AlgorithmCurrentIterationNoImprovement} / {analysisModel.GreedyMaxIterationNoImprovement}).";
+                await _context.SaveChangesAsync();
+            }
+            analysisModel.Status = "Completed";
+            analysisModel.EndTime = DateTime.Now;
+            await _context.SaveChangesAsync();
         }
     }
 }

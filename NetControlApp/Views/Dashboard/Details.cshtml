@@ -88,8 +88,13 @@
         }
         <br />
         <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal1">View @Html.DisplayNameFor(model => model.UserGivenNodes)</a></p> |
-        <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal2">View @Html.DisplayNameFor(model => model.UserGivenTarget)</a></p> |
-        <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal3">View @Html.DisplayNameFor(model => model.UserGivenDrugTarget)</a></p>
+        <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal2">View @Html.DisplayNameFor(model => model.UserGivenTarget)</a></p> 
+        @if (Model.UserGivenDrugTarget != null)
+        {
+           <p style="display:inline-block; font-size:120%"><a data-toggle="modal" href="#modal3"> | View @Html.DisplayNameFor(model => model.UserGivenDrugTarget)</a></p>
+
+        }
+        
     </div>
     <div class="modal fade" id="modal1">
         <div class="modal-dialog">
@@ -197,7 +202,8 @@
             @Html.DisplayNameFor(model => model.NetworkDrugTargetCount)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.NetworkDrugTargetCount)<a data-toggle="modal" href="#modal7"> more>></a>
+            @Html.DisplayFor(model => model.NetworkDrugTargetCount) <a data-toggle="modal" href="#modal7"> more>></a>
+
         </dd>
         <div class="modal fade" id="modal7">
             <div class="modal-dialog">
