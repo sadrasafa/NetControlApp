@@ -27,4 +27,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Algorithms\OmnipathNetwork.serialized">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
