@@ -5,6 +5,9 @@ Improvements:
 
 •	Add the possibility for more users to see an analysis.
 
+• Option of uploading your own network - Team 1
+
+• Work on the home page and make it user friendly
 
 Known bugs:
 
@@ -12,23 +15,11 @@ Known bugs:
 
 Team 3:
 
-•	Still show partial results for stopped analysis
-
 •	Maybe also make it able to restart – Feature to be considered at the end if there is time – Controller and Thread
-
-•	Results are visual or XML? --- XML
-
-•	Is it optimal to have 1 object per edge and can it scale with large graphs?? - edges can be strings and you take them 2 by 2
-
-• It should work on a cluster or at least many threads. Check the environment available and then adapt to the resources. 
-
 
 Team 1:
 
 •	Cookies terms(GDPR)
-
-•	Team 3 requires reinforcements. They have a snake problem with Pythons and Sharp C’s.
-
 
 Team 2:
 
@@ -38,8 +29,15 @@ Team 2:
 
   o	More informative about the type of Heuristics used
   
-  o	Separate different types of data (user data, technicalities, etc.)
-  
   o	Add download button
+  
+  • Refresh the box not the page
+  
+  • Add warning on delete page that it will delete all related data from database
+  
+  • Give some explanations for users in the new analysis page
+  
+  • Ongoing at the top and completed ones after(separated by HR) -- Completed ones sorted by end time not start time
 
+  o User friendly displaying of nodes and edges
 
