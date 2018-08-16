@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /NetControlApp/Controllers/TestController.cs
 /NetControlApp/Views/Test
+/NetControlApp

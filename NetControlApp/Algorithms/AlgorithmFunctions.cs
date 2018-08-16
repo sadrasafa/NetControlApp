@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace NetControlApp.Algorithms
 {
@@ -398,5 +399,38 @@ namespace NetControlApp.Algorithms
             }
             return edges.Distinct().ToList();
         }
+        /// <summary>
+        /// Parses the edges in the given graphml text.
+        /// </summary>
+        /// <param name="graphml">The graphml text to parse in xml format.</param>
+        /// <returns>The list of edges in the graph, as a string array. An edge goes from a node in an even positions in the array, to the following node.</returns>
+        public static List<(String, String)> GetGraphmlEdges(string graphml)
+        {
+            XDocument doc = XDocument.Load(graphml);
+            XNamespace ns = doc.Root.Name.Namespace;
+            XElement graph = doc.Element(ns + "graphml").Element(ns + "graph");
+            var edges = (from edge in graph.Descendants(ns + "edge")
+                         select (edge.Attribute("source").Value, edge.Attribute("target").Value)
+                         ).ToList<(String, String)>();
+
+            return edges;
+        }
+        /// <summary>
+        /// Parses the nodes in the given graphml text.
+        /// </summary>
+        /// <param name="graphml">The graphml text to parse in xml format.</param>
+        /// <returns>The list of nodes in the graph.</returns>
+        public static List<String> GetGraphmlNodes(string graphml)
+        {
+            XDocument doc = XDocument.Load(graphml);
+            XNamespace ns = doc.Root.Name.Namespace;
+            XElement graph = doc.Element(ns + "graphml").Element(ns + "graph");
+            var nodes = (from node in graph.Descendants(ns + "node")
+                         select node.Attribute("id").Value
+                         ).ToList<String>();
+
+            return nodes; //this may include nodes that are not associated with any edges.
+        }
+        
     }
 }
