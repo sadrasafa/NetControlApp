@@ -35,10 +35,11 @@
     border-radius: .4em;
     transition: background .3s;
 }
-    .file-upload__label:hover {
+
+.file-upload__label:hover {
         cursor: pointer;
         background: #e6e6e6;
-    }
+}
 
 .file-upload__input {
     position: absolute;
