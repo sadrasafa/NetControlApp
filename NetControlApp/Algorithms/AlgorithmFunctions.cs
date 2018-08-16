@@ -4,7 +4,9 @@ using NetControlApp.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,8 +37,85 @@ namespace NetControlApp.Algorithms
             // Checks if the network is provided as seed nodes.
             if (analysisModel.UserIsNetworkSeed)
             {
-                analysisModel.Status = "The seed nodes part of the program is not yet implemented.";
-                toReturn = false;
+                //analysisModel.Status = "The seed nodes part of the program is not yet implemented.";
+                //toReturn = false;
+                // Load the seed nodes from the given text.
+                var seedText = analysisModel.UserGivenDrugTarget == null ? analysisModel.UserGivenNodes + ";" + analysisModel.UserGivenTarget : 
+                    analysisModel.UserGivenNodes + ";" + analysisModel.UserGivenTarget + ";" + analysisModel.UserGivenDrugTarget;
+                var seedNodes = AlgorithmFunctions.GetNodes(seedText, separators);
+                // If there are no seed nodes, return an error.
+                if (seedNodes.Count == 0)
+                {
+                    analysisModel.Status = "No seed nodes have been given.";
+                    toReturn = false;
+                }
+                else
+                {
+                    // Reads the edges from the file.
+                    var fullNetworkText = File.ReadAllText(@"Algorithms\OmnipathNetwork.txt");
+                    var fullNetworkEdges = AlgorithmFunctions.GetEdges(fullNetworkText, separators);
+                    // Or stream the full network from the file.
+                    //Stream openFileStream = File.OpenRead(@"Algorithms\OmnipathNetwork.serialized");
+                    //BinaryFormatter deserializer = new BinaryFormatter();
+                    //var fullNetworkEdges = (List<(String, String)>)deserializer.Deserialize(openFileStream);
+                    //openFileStream.Close();
+                    // Identify the specified build algorithm.
+                    var buildAlgorithm = analysisModel.UserGivenNetworkGeneration == "neighbors" ? -1 :
+                        analysisModel.UserGivenNetworkGeneration == "gap0" ? 0 :
+                        analysisModel.UserGivenNetworkGeneration == "gap1" ? 1 :
+                        analysisModel.UserGivenNetworkGeneration == "gap2" ? 2 :
+                        analysisModel.UserGivenNetworkGeneration == "gap2" ? 2 : -1;
+                    // Generate the edges from the seed nodes based on the provided algorithm.
+                    var edges = AlgorithmFunctions.GetEdgesFromSeed(fullNetworkEdges, seedNodes, buildAlgorithm);
+                    // Get the network nodes from the list of edges.
+                    var nodes = edges.Select((edge) => edge.Item1).Concat(edges.Select((edge) => edge.Item2)).Distinct().ToList();
+                    // Get the target nodes that appear in the graph.
+                    var targets = AlgorithmFunctions.GetTargetNodes(analysisModel.UserGivenTarget, nodes, separators);
+                    if (targets.Count == 0)
+                    {
+                        analysisModel.Status = "None of the given target nodes could be found in the network.";
+                        toReturn = false;
+                    }
+                    else
+                    {
+                        analysisModel.NetworkEdgeCount = edges.Count;
+                        analysisModel.NetworkEdges = "";
+                        foreach (var edge in edges)
+                        {
+                            analysisModel.NetworkEdges += edge.Item1 + ";" + edge.Item2 + ";";
+                        }
+                        analysisModel.NetworkNodeCount = nodes.Count;
+                        analysisModel.NetworkNodes = "";
+                        foreach (var node in nodes)
+                        {
+                            analysisModel.NetworkNodes += node + ";";
+                        }
+                        analysisModel.NetworkTargetCount = targets.Count;
+                        analysisModel.NetworkTargets = "";
+                        foreach (var node in targets)
+                        {
+                            analysisModel.NetworkTargets += node + ";";
+                        }
+                        if (analysisModel.UserGivenDrugTarget != null)
+                        {
+                            var drugTargets = AlgorithmFunctions.GetTargetNodes(analysisModel.UserGivenDrugTarget, nodes, separators);
+                            analysisModel.NetworkDrugTargetCount = drugTargets.Count;
+                            analysisModel.NetworkDrugTargets = "";
+                            foreach (var node in drugTargets)
+                            {
+                                analysisModel.NetworkDrugTargets += node + ";";
+                            }
+                        }
+                        else
+                        {
+                            analysisModel.NetworkDrugTargetCount = 0;
+                            analysisModel.NetworkDrugTargets = null;
+                        }
+                        UpdateAlgorithmParameters(analysisModel);
+                        analysisModel.Status = "Networks generated and saved into the database.";
+                        toReturn = true;
+                    }
+                }
             }
             else
             {
@@ -45,7 +124,7 @@ namespace NetControlApp.Algorithms
                 // If there is an uneven number of nodes, return an error.
                 if (edges.Count == 0)
                 {
-                    analysisModel.Status = "There is only one node given in the file.";
+                    analysisModel.Status = "No edges have been given.";
                     toReturn = false;
                 }
                 else
