@@ -134,6 +134,20 @@ namespace NetControlApp.Services
             var targets = AlgorithmFunctions.GetTargetNodes(analysisModel.NetworkTargets, nodes, separators);
             var drugTargets = analysisModel.NetworkDrugTargetCount.Value != 0 ? AlgorithmFunctions.GetTargetNodes(analysisModel.NetworkDrugTargets, nodes, separators) : null;
 
+            // Get the heuristic list from the string.
+            var fullSeparator = ";";
+            var halfSeparator = ",";
+            var heuristics = AlgorithmGreedyFunctions.GetHeuristic(analysisModel.GreedyHeuristics, fullSeparator, halfSeparator);
+            // Get all heuristics.
+            var allHeuristics = new List<string>();
+            foreach (var item in heuristics)
+            {
+                foreach (var h in item)
+                {
+                    allHeuristics.Add(h);
+                }
+            }
+
             // Set up for the first iteration.
             var bestResult = targets.Count;
             var rand = new Random(analysisModel.GreedyRandomSeed.Value);
@@ -157,15 +171,11 @@ namespace NetControlApp.Services
                     while (currentTargets.Any() && currentPathLength + 1 < analysisModel.GreedyMaxPathLength)
                     {
                         // Compute the current edges ending in the current targets.
-                        var currentEdges = new List<(String, String)>();
-                        foreach (var target in currentTargets)
-                        {
-                            currentEdges.AddRange(AlgorithmGreedyFunctions.GetHeuristicEdges(target, edges, analysisModel.GreedyHeuristics));
-                        }
+                        var heuristicEdges = AlgorithmGreedyFunctions.GetHeuristicEdges(currentTargets, edges, heuristics, allHeuristics, controlPath, drugTargets);
                         // Start building the bipartite graph for the current step.
-                        var leftNodes = currentEdges.Select((edge) => edge.Item1).Distinct().ToList();
+                        var leftNodes = heuristicEdges.Select((edge) => edge.Item1).Distinct().ToList();
                         var rightNodes = new List<String>(currentTargets);
-                        var matchingEdges = new List<(String, String)>(currentEdges);
+                        var matchingEdges = new List<(String, String)>(heuristicEdges);
                         // If it is the first check of the current iteration, we have no kept nodes, so the left nodes and edges remain unchanged.
                         // Otherwise, we remove from the left nodes the corresponding nodes in the current step in the control paths for the kept nodes.
                         // The optimization part for the "repeat" begins here.

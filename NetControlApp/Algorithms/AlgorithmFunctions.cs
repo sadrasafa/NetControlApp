@@ -255,7 +255,7 @@ namespace NetControlApp.Algorithms
                 }
                 if (analysisModel.GreedyHeuristics == null)
                 {
-                    analysisModel.GreedyHeuristics = "(->@CA)(->@PA)(->D)(->CA)(->PA)(->N)(->T)";
+                    analysisModel.GreedyHeuristics = "A,B,C,D,E,F,G;Z";
                 }
             }
         }

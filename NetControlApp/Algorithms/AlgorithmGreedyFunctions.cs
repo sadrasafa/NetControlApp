@@ -53,7 +53,12 @@ namespace NetControlApp.Algorithms
         /// <returns>The new control paths.</returns>
         public static Dictionary<string, List<string>> UpdateControlPath(List<(string, string)> matchedEdges, Dictionary<string, List<string>> controlPath)
         {
-            var newControlPath = new Dictionary<string, List<string>>(controlPath);
+            var newControlPath = new Dictionary<string, List<string>>();
+            foreach (var item in controlPath)
+            {
+                newControlPath[item.Key] = new List<string>();
+                newControlPath[item.Key].AddRange(item.Value);
+            }
             foreach (var edge in matchedEdges)
             {
                 foreach (var item in newControlPath)
@@ -61,6 +66,7 @@ namespace NetControlApp.Algorithms
                     if (item.Value.Last() == edge.Item2)
                     {
                         item.Value.Add(edge.Item1);
+                        break;
                     }
                 }
             }
@@ -70,14 +76,160 @@ namespace NetControlApp.Algorithms
         /// <summary>
         /// Computes all of the edges ending in the given node, based on the provided heuristic.
         /// </summary>
-        /// <param name="target">The node of the graph whose in-going edges to compute.</param>
-        /// <param name="edges">The full list of edges in the graph.</param>
-        /// <param name="heuristic">The search heuristic.</param>
-        /// <returns>The list of edges ending in the given node, based on the provided heuristics.</returns>
-        public static List<(string, string)> GetHeuristicEdges(String target, List<(String, String)> edges, String heuristic)
+        /// <param name="targets"></param>
+        /// <param name="edges"></param>
+        /// <param name="heuristics"></param>
+        /// <param name="allHeuristics"></param>
+        /// <param name="controlPath"></param>
+        /// <param name="drugTargetNodes"></param>
+        /// <returns></returns>
+        public static List<(string, string)> GetHeuristicEdges(List<string> targets, List<(string, string)> edges, List<List<string>> heuristics, List<string> allHeuristics, Dictionary<string, List<string>> controlPath, List<string> drugTargetNodes = null)
         {
-            // We temporarily return all edges which start with the given target.
-            return edges.Where((edge) => edge.Item2 == target).ToList();
+            var heuristicEdges = new List<(string, string)>();
+            // Get all edges in the current control path, if needed.
+            var currentEdges = new List<(string, string)>();
+            if (allHeuristics.Contains("A") || allHeuristics.Contains("C") || allHeuristics.Contains("E"))
+            {
+                foreach (var item in controlPath)
+                {
+                    for (int index = 0; index < item.Value.Count - 1; index++)
+                    {
+                        currentEdges.Add((item.Value[index + 1], item.Value[index]));
+                    }
+                }
+                currentEdges = currentEdges.Distinct().ToList();
+            }
+            // Get all existing driven nodes, if needed.
+            var drivenNodes = new List<string>();
+            var currentLength = controlPath.Max((item) => item.Value.Count);
+            if (allHeuristics.Contains("C") || allHeuristics.Contains("D"))
+            {
+                foreach (var item in controlPath)
+                {
+                    if (item.Value.Count < currentLength)
+                    {
+                        drivenNodes.Add(item.Value.Last());
+                    }
+                }
+            }
+            // Get all previously seen nodes in the control paths, if needed.
+            var currentNodes = new List<string>();
+            if (allHeuristics.Contains("E") || allHeuristics.Contains("F"))
+            {
+                foreach (var item in controlPath)
+                {
+                    foreach (var node in item.Value)
+                    {
+                        currentNodes.Add(node);
+                    }
+                }
+                currentNodes = currentNodes.Distinct().ToList();
+            }
+            // Get all edges starting from a drug target node and ending in target nodes, if needed.
+            var temporaryDrugEdges = new List<(string, string)>();
+            if (drugTargetNodes != null && (allHeuristics.Contains("A") || allHeuristics.Contains("B")))
+            {
+                temporaryDrugEdges = edges.Where((edge) => targets.Contains(edge.Item2) && drugTargetNodes.Contains(edge.Item1)).ToList();
+            }
+            // Get all edges starting from an already driven node and ending in target nodes, if needed.
+            var temporaryDrivenEdges = new List<(string, string)>();
+            if (allHeuristics.Contains("C") || allHeuristics.Contains("D"))
+            {
+                temporaryDrivenEdges = edges.Where((edge) => targets.Contains(edge.Item2) && drivenNodes.Contains(edge.Item1)).ToList();
+            }
+            // Get all edges starting from a previously seen node in the control paths, if needed.
+            var temporarySeenEdges = new List<(string, string)>();
+            if (allHeuristics.Contains("E") || allHeuristics.Contains("F"))
+            {
+                temporarySeenEdges = edges.Where((edge) => targets.Contains(edge.Item2) && currentNodes.Contains(edge.Item1)).ToList();
+            }
+            // Get all edges not starting from a node in the current control path for a node, if needed (to avoid loops).
+            var temporaryControlEdges = new List<(string, string)>();
+            if (allHeuristics.Contains("G"))
+            {
+                foreach (var target in targets)
+                {
+                    // Get the nodes in the current control path.
+                    var currentPathNodes = controlPath.First((item) => item.Value.Last() == target).Value.Distinct();
+                    // Get all edges from nodes not in the current control path to the current target and add them to list.
+                    temporaryControlEdges.AddRange(edges.Where((edge) => edge.Item2 == target && !currentPathNodes.Contains(edge.Item1)));
+                }
+            }
+            // Get all possible edges.
+            var allEdges = edges.Where((edge) => targets.Contains(edge.Item2)).ToList();
+            // For all heuristic strings, separated by ";"
+            foreach (var heur in heuristics)
+            {
+                if (!heuristicEdges.Any())
+                {
+                    foreach (var h in heur)
+                    {
+                        // Add previously seen edges from drug-target nodes.
+                        if (drugTargetNodes != null && h == "A")
+                        {
+                            heuristicEdges.AddRange(currentEdges.Intersect(temporaryDrugEdges));
+                        }
+                        // Add all edges from drug-target nodes.
+                        else if (drugTargetNodes != null && h == "B")
+                        {
+                            heuristicEdges.AddRange(temporaryDrugEdges);
+                        }
+                        // Add previously seen edges from already driven nodes.
+                        else if (h == "C")
+                        {
+                            heuristicEdges.AddRange(currentEdges.Intersect(temporaryDrivenEdges));
+                        }
+                        // Add all edges from already driven nodes.
+                        else if (h == "D")
+                        {
+                            heuristicEdges.AddRange(temporaryDrivenEdges);
+                        }
+                        // Add previously seen edges from anywhere in the control path.
+                        else if (h == "E")
+                        {
+                            heuristicEdges.AddRange(currentEdges.Intersect(temporarySeenEdges));
+                        }
+                        // Add all edges from previously seen nodes anywhere in the control path.
+                        else if (h == "F")
+                        {
+                            heuristicEdges.AddRange(temporarySeenEdges);
+                        }
+                        // Add all edges from a node that has not appeared in the current control path (to preferably avoid loops).
+                        else if (h == "G")
+                        {
+                            heuristicEdges.AddRange(temporaryControlEdges);
+                        }
+                        // Add all possible edges.
+                        else if (h == "Z")
+                        {
+                            heuristicEdges.AddRange(allEdges);
+                        }
+                    }
+                }
+            }
+            // We return all of the obtained edges.
+            return heuristicEdges;
+        }
+
+        /// <summary>
+        /// Computes the list of heuristics, based on the user-given text.
+        /// </summary>
+        /// <param name="heuristic"></param>
+        /// <param name="fullSeparator"></param>
+        /// <param name="halfSeparator"></param>
+        /// <returns></returns>
+        public static List<List<string>> GetHeuristic(string heuristic, string fullSeparator, string halfSeparator)
+        {
+            var heuristics = new List<List<string>>();
+            foreach (var fullItem in heuristic.Split(fullSeparator, StringSplitOptions.RemoveEmptyEntries))
+            {
+                heuristics.Add(new List<string>());
+                foreach (var halfItem in fullItem.Split(halfSeparator, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    heuristics[heuristics.Count - 1].Add(halfItem);
+                }
+            }
+            return heuristics;
         }
 
         /// <summary>
@@ -287,8 +439,9 @@ namespace NetControlApp.Algorithms
             var rand = new Random(randomSeed);
 
             var graphType = "Small";
-            var graphText = System.IO.File.ReadAllText($@"C:\Users\vpopescu\source\repos\NetControl\NetControl\Networks\{graphType}Graph.txt");
-            var targetText = System.IO.File.ReadAllText($@"C:\Users\vpopescu\source\repos\NetControl\NetControl\Networks\{graphType}Target.txt");
+            var graphText = System.IO.File.ReadAllText($@"Networks\{graphType}Graph.txt");
+            var targetText = System.IO.File.ReadAllText($@"Networks\{graphType}Target.txt");
+            var drugTargetText = System.IO.File.ReadAllText($@"Networks\DrugTarget.txt");
 
             var greedyRepeats = 3;
             var greedyHeuristic = "";
@@ -296,9 +449,25 @@ namespace NetControlApp.Algorithms
             var greedyMaxIterations = 10;
             var greedyMaxIterationsNoImprovement = 10;
 
+            var fullSeparator = ";";
+            var halfSeparator = ",";
+
+            // Get the heuristic list from the string.
+            var heuristics = AlgorithmGreedyFunctions.GetHeuristic(greedyHeuristic, fullSeparator, halfSeparator);
+            // Get all heuristics.
+            var allHeuristics = new List<string>();
+            foreach (var item in heuristics)
+            {
+                foreach (var h in item)
+                {
+                    allHeuristics.Add(h);
+                }
+            }
+
             var nodes = AlgorithmFunctions.GetNodes(graphText, separators);
             var edges = AlgorithmFunctions.GetEdges(graphText, separators);
             var targets = AlgorithmFunctions.GetTargetNodes(targetText, nodes, separators);
+            var drugTargets = AlgorithmFunctions.GetTargetNodes(drugTargetText, nodes, separators);
 
             Console.WriteLine($"{nodes.Count} nodes, {edges.Count} edges, {targets.Count} targets");
 
@@ -326,15 +495,11 @@ namespace NetControlApp.Algorithms
                     while (currentTargets.Any() && currentPathLength < greedyMaxPathLength)
                     {
                         // Compute the current edges ending in the current targets.
-                        var currentEdges = new List<(String, String)>();
-                        foreach (var target in currentTargets)
-                        {
-                            currentEdges.AddRange(AlgorithmGreedyFunctions.GetHeuristicEdges(target, edges, greedyHeuristic));
-                        }
+                        var heuristicEdges = AlgorithmGreedyFunctions.GetHeuristicEdges(currentTargets, edges, heuristics, allHeuristics, controlPath, drugTargets);
                         // Start building the bipartite graph for the current step.
-                        var leftNodes = currentEdges.Select((edge) => edge.Item1).Distinct().ToList();
+                        var leftNodes = heuristicEdges.Select((edge) => edge.Item1).Distinct().ToList();
                         var rightNodes = new List<String>(currentTargets);
-                        var matchingEdges = new List<(String, String)>(currentEdges);
+                        var matchingEdges = new List<(String, String)>(heuristicEdges);
                         // If it is the first check of the current iteration, we have no kept nodes, so the left nodes and edges remain unchanged.
                         // Otherwise, we remove from the left nodes the corresponding nodes in the current step in the control paths for the kept nodes.
                         // The optimization part for the "repeat" begins here.
@@ -351,6 +516,8 @@ namespace NetControlApp.Algorithms
                         var matchedEdges = AlgorithmGreedyFunctions.GetMaximumMatching(leftNodes, rightNodes, matchingEdges, rand);
                         var unmatchedRightNodes = AlgorithmGreedyFunctions.GetUnmatchedNodes(currentTargets, matchedEdges);
                         currentTargets = AlgorithmGreedyFunctions.GetMatchedNodes(matchedEdges);
+                        // If it is in loop, then add a random node to unmatched nodes.
+
                         // And update the control path.
                         controlPath = AlgorithmGreedyFunctions.UpdateControlPath(matchedEdges, controlPath);
                         currentPathLength++;
