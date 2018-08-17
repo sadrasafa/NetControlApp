@@ -91,11 +91,12 @@ function readFileAndGraphml(fileInput, textArea) {
             var xmlDoc = $.parseXML(fileValues),
                 $xml = $(xmlDoc),
                 $edges = $xml.find("edge");
+            var edges = "";
             //append edges to the text area as "sourceNode  destinationNode". (one edge in each line)
-            
             $.each($edges, function () {
-                $("#" + textArea).append($(this).attr("source") + "\t" + $(this).attr("target") + "\n"); 
+                edges += ($(this).attr("source") + "\t" + $(this).attr("target") + "\n");
             });
+            $("#" + textArea).val(edges);
         }
         else {
             $("#" + textArea).val(fileValues);
