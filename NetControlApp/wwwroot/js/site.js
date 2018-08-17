@@ -2,7 +2,7 @@
 
     // Reads the file from the computer, and writes its content in the corresponding text area.
     $("#nodesFile").on('change', function () {
-        readFile("nodesFile", "nodesTextArea");
+        readFileAndGraphml("nodesFile", "nodesTextArea");
     });
 
     // Reads the file from the computer, and writes its content in the corresponding text area.
@@ -76,13 +76,25 @@ function readFile(fileInput, textArea) {
     var fileReader = new FileReader();
     fileReader.onload = function (e) {
         fileValues = e.target.result;
-        if (fileValues.includes("graphml")) {
+        $("#" + textArea).val(fileValues);
+    };
+    fileReader.readAsText(selectedFile);
+}
+
+// this function is used only for reading edges from the file because it can be in graphml format. "readFile" function is used for other textboxes.
+function readFileAndGraphml(fileInput, textArea) {
+    var selectedFile = document.getElementById(fileInput).files[0];
+    var fileReader = new FileReader();
+    fileReader.onload = function (e) {
+        fileValues = e.target.result;
+        if (fileValues.includes("graphml")) { // if the file contains the string "graphml", treat it as a graphml xml file.
             var xmlDoc = $.parseXML(fileValues),
                 $xml = $(xmlDoc),
                 $edges = $xml.find("edge");
-
+            //append edges to the text area as "sourceNode  destinationNode". (one edge in each line)
+            
             $.each($edges, function () {
-                $("#" + textArea).append($(this).attr("source") + "\t" + $(this).attr("target") + "\n");
+                $("#" + textArea).append($(this).attr("source") + "\t" + $(this).attr("target") + "\n"); 
             });
         }
         else {
@@ -92,19 +104,4 @@ function readFile(fileInput, textArea) {
     fileReader.readAsText(selectedFile);
 }
 
-function readGraphml(fileInput, textArea) {
-    var selectedFile = document.getElementById(fileInput).files[0];
-    var fileReader = new FileReader();
-    fileReader.onload = function (e) {
-        fileValues = e.target.result;
-        var xmlDoc = $.parseXML(fileValues),
-            $xml = $(xmlDoc),
-            $edges = $xml.find("edge");
 
-        $.each($edges, function () {
-            $("#" + textArea).append($(this).attr("source") + "\t" + $(this).attr("target") + "\n");
-        });
-
-    };
-    fileReader.readAsText(selectedFile);
-}
