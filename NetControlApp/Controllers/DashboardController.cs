@@ -35,7 +35,8 @@ namespace NetControlApp.Controllers
         public async Task<IActionResult> ViewAll()
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
-            var analyses = _context.AnalysisModel.Where(a => a.User == user).OrderByDescending(a => a.StartTime);
+            var analyses = _context.AnalysisModel.Where(a => a.User == user).OrderByDescending(a => a.Status).ThenByDescending(a => a.StartTime).ToList();
+
             return View(analyses);
         }
 

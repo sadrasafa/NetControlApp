@@ -1,45 +1,24 @@
-﻿
-.fileUpload {
-    position: relative;
-    overflow: hidden;
-    margin: 10px;
-}
-
-.fileUpload input.upload {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    font-size: 200px;
-    cursor: pointer;
-    opacity: 0;
-    filter: alpha(opacity=0);
-}
-
-/*****************************************
-  upload button styles
-******************************************/
-.file-upload {
-    margin-top:5px;
+﻿.file-upload {
+    margin-top: 5px;
     position: relative;
     display: inline-block;
 }
 
 .file-upload__label {
     display: block;
-    padding: 1em 2em;
+    padding: 0.5rem 0.5rem;
     color: #000;
     background: #fff;
     border: solid 1px #ccc;
     border-radius: .4em;
     transition: background .3s;
+    font-size:85%;
 }
 
-.file-upload__label:hover {
+    .file-upload__label:hover {
         cursor: pointer;
         background: #e6e6e6;
-}
+    }
 
 .file-upload__input {
     position: absolute;
@@ -52,7 +31,3 @@
     height: 1px;
     opacity: 0;
 }
-
-/*****************************************
- design styles
-******************************************/
