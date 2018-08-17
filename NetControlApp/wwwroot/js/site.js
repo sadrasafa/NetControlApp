@@ -76,7 +76,35 @@ function readFile(fileInput, textArea) {
     var fileReader = new FileReader();
     fileReader.onload = function (e) {
         fileValues = e.target.result;
-        $("#" + textArea).val(fileValues);
+        if (fileValues.includes("graphml")) {
+            var xmlDoc = $.parseXML(fileValues),
+                $xml = $(xmlDoc),
+                $edges = $xml.find("edge");
+
+            $.each($edges, function () {
+                $("#" + textArea).append($(this).attr("source") + "\t" + $(this).attr("target") + "\n");
+            });
+        }
+        else {
+            $("#" + textArea).val(fileValues);
+        }
+    };
+    fileReader.readAsText(selectedFile);
+}
+
+function readGraphml(fileInput, textArea) {
+    var selectedFile = document.getElementById(fileInput).files[0];
+    var fileReader = new FileReader();
+    fileReader.onload = function (e) {
+        fileValues = e.target.result;
+        var xmlDoc = $.parseXML(fileValues),
+            $xml = $(xmlDoc),
+            $edges = $xml.find("edge");
+
+        $.each($edges, function () {
+            $("#" + textArea).append($(this).attr("source") + "\t" + $(this).attr("target") + "\n");
+        });
+
     };
     fileReader.readAsText(selectedFile);
 }
