@@ -9,9 +9,9 @@ Improvements:
 
 • Work on the home page and make it user friendly
 
-Known bugs:
+• Add "Eastern European Standard Time" to the displayed date.
 
-•	The nodes are not correctly loaded if the network is given as seed nodes.
+• FDA approved drugs and drug trargets to be uploaded.
 
 Team 3:
 
