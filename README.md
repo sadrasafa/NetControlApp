@@ -9,6 +9,8 @@ Improvements:
 
 • Work on the home page and make it user friendly
 
+• Add "Eastern European Standard Time" to the displayed date.
+
 Team 3:
 
 •	Maybe also make it able to restart – Feature to be considered at the end if there is time – Controller and Thread
