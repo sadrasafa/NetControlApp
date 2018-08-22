@@ -11,6 +11,8 @@ Improvements:
 
 • Add "Eastern European Standard Time" to the displayed date.
 
+• FDA approved drugs and drug trargets to be uploaded.
+
 Team 3:
 
 •	Maybe also make it able to restart – Feature to be considered at the end if there is time – Controller and Thread
