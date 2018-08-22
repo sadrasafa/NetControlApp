@@ -87,7 +87,8 @@ function readFileAndGraphml(fileInput, textArea) {
     var fileReader = new FileReader();
     fileReader.onload = function (e) {
         fileValues = e.target.result;
-        if (fileValues.includes("graphml")) { // if the file contains the string "graphml", treat it as a graphml xml file.
+        var fileExtension = selectedFile.name.split('.').pop();
+        if (fileExtension === "xml") { // if the file extension is xml, treat it as a graphml xml file.
             var xmlDoc = $.parseXML(fileValues),
                 $xml = $(xmlDoc),
                 $edges = $xml.find("edge");
