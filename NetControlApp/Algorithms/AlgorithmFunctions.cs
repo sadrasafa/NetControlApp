@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
@@ -431,6 +432,300 @@ namespace NetControlApp.Algorithms
 
             return nodes; //this may include nodes that are not associated with any edges.
         }
-        
+
+        /// <summary>
+        /// Checks if the matrix associated with the network has a rank equal to the number of targets.
+        /// </summary>
+        /// <param name="edges">List of the edges of the network.</param>
+        /// <param name="inputs">List of the inputs of the network.</param>
+        /// <param name="targets">List of the targets of the network.</param>
+        /// <returns>A boolean indicating whether the matrix associated with the network has rank equal to the number of the targets in the network or not</returns>
+        public static bool MatrixCheckRank(List<(String, String)> edges, List<String> inputs, List<String> targets)
+        {
+            //Extract the nodes from the edges
+            List<String> nodes = new List<String>();
+            foreach (var edge in edges)
+            {
+                nodes.Add(edge.Item1);
+                nodes.Add(edge.Item2);
+            }
+            nodes = nodes.Distinct().ToList();
+
+
+            /*In case some driver nodes are not in 'nodes' (This happens if a driver node doesn't have any
+                edges associated with it)
+                Remove it from the set of driver nodes.*/
+            inputs = inputs.Intersect(nodes).ToList();
+
+            /*In case some target nodes are not in 'nodes' (This happens if a target node doesn't have any
+              edges associated with it)
+                Remove it from the set of target nodes.*/
+            targets = targets.Intersect(nodes).ToList();
+
+            int n = nodes.Count;
+            int p = targets.Count;
+            int m = inputs.Count;
+
+            BigInteger[,] A = new BigInteger[n, n];
+
+            foreach (var edge in edges)
+            {
+                A[nodes.IndexOf(edge.Item2), nodes.IndexOf(edge.Item1)] = 1;
+            }
+
+            BigInteger[,] B = new BigInteger[n, m];
+            foreach (var input in inputs)
+            {
+                B[nodes.IndexOf(input), inputs.IndexOf(input)] = 1;
+            }
+
+            BigInteger[,] C = new BigInteger[p, n];
+            foreach (var target in targets)
+            {
+                C[targets.IndexOf(target), nodes.IndexOf(target)] = 1;
+            }
+
+            var M = MatrixMultiply(C, B);
+            if (MatrixRank(M) == p)
+                return true;
+
+            BigInteger[,] ithPower = new BigInteger[n, n];
+            for (int i = 0; i < n; i++)
+                ithPower[i, i] = 1;
+
+            for (int i = 1; i < n; i++)
+            {
+                ithPower = MatrixMultiply(ithPower, A);
+                var toAppend = MatrixMultiply(MatrixMultiply(C, ithPower), B);
+                M = MatrixAppend(M, toAppend);
+                //MatrixPrint(M);
+                var rank = MatrixRank(M);
+                if (rank == p)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Mutiplies Matrix A by B.
+        /// </summary>
+        /// <param name="A">Matrix A.</param>
+        /// <param name="B">Matrix B.</param>
+        /// <returns>A*B as Matrix</returns>
+        public static BigInteger[,] MatrixMultiply(BigInteger[,] A, BigInteger[,] B)
+        {
+            int m = A.GetLength(0);
+            int n = A.GetLength(1);
+            int q = B.GetLength(0);
+            int p = B.GetLength(1);
+            if (n != q)
+            {
+                Console.WriteLine("Dimensions of Matrices don't match. Cannot Multiply.");
+                return null;
+            }
+            BigInteger[,] C = new BigInteger[m, p];
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < p; j++)
+                {
+                    BigInteger val = 0;
+                    for (int k = 0; k < n; k++)
+                    {
+                        val += A[i, k] * B[k, j];
+                    }
+                    C[i, j] = val;
+                }
+            }
+            return C;
+        }
+
+        /// <summary>
+        /// Raises matrix A to the power k.
+        /// </summary>
+        /// <param name="A">Matrix A.</param>
+        /// <param name="k">The power to be raised.</param>
+        /// <returns>A**k as Matrix</returns>
+        public static BigInteger[,] MatrixPower(BigInteger[,] A, int k)
+        {
+
+            if (k < 0)
+            {
+                Console.WriteLine("Power cannot be negative. Cannot raise to power.");
+            }
+            int n = A.GetLength(0);
+            int m = A.GetLength(1);
+            if (n != m)
+            {
+                Console.WriteLine("Matrix is not square. Cannot raise to power.");
+                return null;
+            }
+            if (k == 0)
+            {
+                BigInteger[,] C = new BigInteger[n, n];
+                for (int i = 0; i < n; i++)
+                    C[i, i] = 1;
+                return C;
+            }
+            else if (k == 1)
+            {
+                BigInteger[,] C = new BigInteger[n, n];
+                for (int i = 0; i < n; i++)
+                    for (int j = 0; j < n; j++)
+                        C[i, j] = A[i, j];
+                return C;
+            }
+            else if (k == 2)
+            {
+                return MatrixMultiply(A, A);
+            }
+            else
+            {
+                return MatrixMultiply(MatrixPower(A, k - 1), A);
+            }
+        }
+
+        /// <summary>
+        /// Appends matrix B to the right of matrix A.
+        /// </summary>
+        /// <param name="A">Matrix A.</param>
+        /// <param name="B">Matrix B to be appended.</param>
+        /// <returns>A|B as a Matrix</returns>
+        public static BigInteger[,] MatrixAppend(BigInteger[,] A, BigInteger[,] B)
+        {
+            int m = A.GetLength(0);
+            int n = A.GetLength(1);
+            int q = B.GetLength(0);
+            int p = B.GetLength(1);
+            if (m != q)
+            {
+                Console.WriteLine("Matrix Dimensions Don't Match. Cannot Append");
+                return null;
+            }
+            BigInteger[,] C = new BigInteger[m, n + p];
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    C[i, j] = A[i, j];
+                }
+                for (int j = n; j < n + p; j++)
+                {
+                    C[i, j] = B[i, j - n];
+                }
+            }
+            return C;
+        }
+
+        /// <summary>
+        /// Applies Gaussian Elimination to the matrix A.
+        /// </summary>
+        /// <param name="A">Matrix A.</param>
+        /// <returns>row echelon form of matrix A</returns>
+        public static BigInteger[,] MatrixGaussianElimination(BigInteger[,] A)
+        {
+            int m = A.GetLength(0);
+            int n = A.GetLength(1);
+            BigInteger[,] C = new BigInteger[m, n];
+            for (int i = 0; i < m; i++)
+                for (int j = 0; j < n; j++)
+                    C[i, j] = A[i, j];
+
+            int h = 0;
+            int k = 0;
+
+            while (h < m && k < n)
+            {
+                int pivot = -1;
+                for (int i = h; i < m; i++)
+                    if (C[i, k] != 0)
+                    {
+                        pivot = i;
+                        break;
+                    }
+                if (pivot == -1)
+                    k++;
+                else
+                {
+                    MatrixSwapRows(C, h, pivot);
+                    for (int i = h + 1; i < m; i++)
+                    {
+                        BigInteger f = C[i, k];
+                        C[i, k] = 0;
+                        for (int j = k + 1; j < n; j++)
+                        {
+                            C[i, j] = (C[i, j] * C[h, k] - f * C[h, j]);
+                        }
+                    }
+                    h++;
+                    k++;
+                }
+            }
+            return C;
+        }
+
+
+        /// <summary>
+        /// Swaps rows of the input matrix A.
+        /// </summary>
+        /// <param name="A">Matrix A.</param>
+        /// <param name="row1">row to be swapped.</param>
+        /// <param name="row2">row to be swapped.</param>
+        public static void MatrixSwapRows(BigInteger[,] A, int row1, int row2)
+        {
+            int n = A.GetLength(1);
+            BigInteger[] temp = new BigInteger[n];
+            for (int i = 0; i < n; i++)
+                temp[i] = A[row1, i];
+            for (int i = 0; i < n; i++)
+                A[row1, i] = A[row2, i];
+            for (int i = 0; i < n; i++)
+                A[row2, i] = temp[i];
+
+        }
+
+
+        /// <summary>
+        /// Calculates rank of the matrix A using Gaussian Elimination.
+        /// </summary>
+        /// <param name="A">Matrix A.</param>
+        /// <returns>rank of matrix A</returns>
+        public static int MatrixRank(BigInteger[,] A)
+        {
+            BigInteger[,] C = MatrixGaussianElimination(A);
+            int m = C.GetLength(0);
+            int n = C.GetLength(1);
+            int rank = 0;
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (C[i, j] != 0)
+                    {
+                        rank++;
+                        break;
+                    }
+                }
+            }
+            return rank;
+        }
+
+        /// <summary>
+        /// Prints Matrix A.
+        /// </summary>
+        /// <param name="A">Matrix A.</param>
+        public static void MatrixPrint(BigInteger[,] A)
+        {
+            Console.WriteLine("Printing Matrix: ");
+            for (int i = 0; i < A.GetLength(0); i++)
+            {
+                for (int j = 0; j < A.GetLength(1); j++)
+                {
+                    Console.Write(A[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("______________________________");
+        }
+
     }
 }
