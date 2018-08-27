@@ -539,50 +539,6 @@ namespace NetControlApp.Algorithms
             return C;
         }
 
-        /// <summary>
-        /// Raises matrix A to the power k.
-        /// </summary>
-        /// <param name="A">Matrix A.</param>
-        /// <param name="k">The power to be raised.</param>
-        /// <returns>A**k as Matrix</returns>
-        public static BigInteger[,] MatrixPower(BigInteger[,] A, int k)
-        {
-
-            if (k < 0)
-            {
-                Console.WriteLine("Power cannot be negative. Cannot raise to power.");
-            }
-            int n = A.GetLength(0);
-            int m = A.GetLength(1);
-            if (n != m)
-            {
-                Console.WriteLine("Matrix is not square. Cannot raise to power.");
-                return null;
-            }
-            if (k == 0)
-            {
-                BigInteger[,] C = new BigInteger[n, n];
-                for (int i = 0; i < n; i++)
-                    C[i, i] = 1;
-                return C;
-            }
-            else if (k == 1)
-            {
-                BigInteger[,] C = new BigInteger[n, n];
-                for (int i = 0; i < n; i++)
-                    for (int j = 0; j < n; j++)
-                        C[i, j] = A[i, j];
-                return C;
-            }
-            else if (k == 2)
-            {
-                return MatrixMultiply(A, A);
-            }
-            else
-            {
-                return MatrixMultiply(MatrixPower(A, k - 1), A);
-            }
-        }
 
         /// <summary>
         /// Appends matrix B to the right of matrix A.
@@ -672,6 +628,8 @@ namespace NetControlApp.Algorithms
         /// <param name="row2">row to be swapped.</param>
         public static void MatrixSwapRows(BigInteger[,] A, int row1, int row2)
         {
+            if (row1 == row2)
+                return;
             int n = A.GetLength(1);
             BigInteger[] temp = new BigInteger[n];
             for (int i = 0; i < n; i++)
@@ -695,9 +653,10 @@ namespace NetControlApp.Algorithms
             int m = C.GetLength(0);
             int n = C.GetLength(1);
             int rank = 0;
+            int j = 0;
             for (int i = 0; i < m; i++)
             {
-                for (int j = 0; j < n; j++)
+                for (j = 0; j < n; j++)
                 {
                     if (C[i, j] != 0)
                     {
@@ -708,24 +667,5 @@ namespace NetControlApp.Algorithms
             }
             return rank;
         }
-
-        /// <summary>
-        /// Prints Matrix A.
-        /// </summary>
-        /// <param name="A">Matrix A.</param>
-        public static void MatrixPrint(BigInteger[,] A)
-        {
-            Console.WriteLine("Printing Matrix: ");
-            for (int i = 0; i < A.GetLength(0); i++)
-            {
-                for (int j = 0; j < A.GetLength(1); j++)
-                {
-                    Console.Write(A[i, j] + " ");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("______________________________");
-        }
-
     }
 }
